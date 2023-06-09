@@ -3,7 +3,7 @@ import {
     FocusContext,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/stores';
 import { FocusableElement } from '../types';
 import {
     ExitPopupContainer,

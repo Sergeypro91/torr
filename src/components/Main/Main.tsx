@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { routes, useRouteStore } from '@/store';
+import { routes, useRouteStore } from '@/stores';
 import {
     Downloads,
     Files,
@@ -7,6 +7,7 @@ import {
     Info,
     Person,
     Picture,
+    Profile,
     Search,
     Settings,
     Torrents,
@@ -32,6 +33,8 @@ export const Main = () => {
                 return <Torrents />;
             case `${routes.picture}/${routes.files}`:
                 return <Files />;
+            case routes.profile:
+                return <Profile />;
             case routes.settings:
                 return <Settings />;
             case routes.info:

@@ -5,5 +5,6 @@ export * from './Picture';
 export * from './Person';
 export * from './Torrents';
 export * from './Files';
+export * from './Profile';
 export * from './Settings';
 export * from './Info';

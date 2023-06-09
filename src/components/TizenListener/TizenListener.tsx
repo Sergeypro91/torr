@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { useTizenListener } from '@/hooks';
-import { useAppStore, useRouteStore } from '@/store';
+import { useAppStore, useRouteStore } from '@/stores';
 
 const TizenListener = () => {
     const { pathName } = useRouteStore((state) => state.route);

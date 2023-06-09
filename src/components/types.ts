@@ -7,3 +7,12 @@ export type NavProps = {
     pathName: string;
     params?: URLSearchParams;
 };
+
+export type ElementWithFocusedChild = {
+    hasFocusedChild?: boolean;
+};
+
+export type FocusedItem = {
+    active?: string | boolean;
+    focused?: string | boolean;
+};

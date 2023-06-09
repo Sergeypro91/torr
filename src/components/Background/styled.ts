@@ -6,5 +6,4 @@ export const BackgroundContainer = styled.div`
     align-items: center;
     justify-content: center;
     transition: ${({ theme }) => theme.transition};
-    z-index: 0;
 `;

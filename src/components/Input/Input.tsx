@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { InputContainer } from './styled';
+import { InputContainer, InputField } from './styled';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { debounce } from 'lodash-es';
 
@@ -43,7 +43,7 @@ export const Input = ({
 
     return (
         <InputContainer ref={ref} focused={focused} focusKey={focusKey}>
-            <input
+            <InputField
                 ref={inputRef}
                 defaultValue={defaultValue}
                 placeholder={placeholder}

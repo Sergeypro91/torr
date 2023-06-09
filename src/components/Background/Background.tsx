@@ -1,6 +1,6 @@
 import React from 'react';
 import { BackgroundContainer } from './styled';
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/stores';
 
 export const Background = () => {
     const selectedAsset = useAppStore((state) => state.selectedAsset);

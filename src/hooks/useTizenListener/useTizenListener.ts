@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/stores';
 import { deepLink } from '@/lib';
 
 type UseTizenListenerOptions = { backPress?: () => void };
@@ -28,7 +28,7 @@ export const useTizenListener = (
 
         return () => {
             document.removeEventListener('keydown', onKeyDown);
-            document.addEventListener('appcontrol', onDeepLink);
+            document.removeEventListener('appcontrol', onDeepLink);
         };
     }, [onKeyDown, onDeepLink]);
 

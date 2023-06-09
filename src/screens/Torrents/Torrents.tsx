@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { TorrentsContainer } from './styled';
-import { useRouteStore } from '@/store';
+import { useRouteStore } from '@/stores';
 
 export const Torrents = () => {
     const getParams = useRouteStore((store) => store.getParams);

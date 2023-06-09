@@ -11,9 +11,9 @@ import {
 export const Home = () => {
     return (
         <HomeContainer>
-            <HomeLeft></HomeLeft>
-            <HomeCenter></HomeCenter>
-            <HomeRight></HomeRight>
+            <HomeLeft />
+            <HomeCenter />
+            <HomeRight />
             <HomeBottom>
                 <Content />
             </HomeBottom>

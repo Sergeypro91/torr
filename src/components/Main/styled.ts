@@ -5,5 +5,4 @@ export const MainContainer = styled.main`
     display: flex;
     flex-direction: column;
     transition: ${({ theme }) => theme.transition};
-    z-index: 1;
 `;

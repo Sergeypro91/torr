@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, memo } from 'react';
-import { ContentContainer, ContentWrapper } from './styled';
 import { rows } from '@/assets/data';
-import { ContentRow } from './ContentRow';
 import {
     FocusableComponentLayout,
     FocusContext,
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
+import { useAppStore } from '@/stores';
 import { FocusableElement } from '../types';
-import { useAppStore } from '@/store';
+import { ContentRow } from './ContentRow';
+import { ContentContainer, ContentWrapper } from './styled';
 
 export const Content = memo(() => {
     const selectAsset = useAppStore((state) => state.selectAsset);

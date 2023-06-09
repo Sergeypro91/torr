@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { PictureContainer } from './styled';
-import { routes, useRouteStore } from '@/store';
+import { routes, useRouteStore } from '@/stores';
 import { NavItem } from '@/components';
 import {
     FocusContext,
@@ -31,10 +31,10 @@ export const Picture = () => {
     }, [focusSelf]);
 
     return (
-        <PictureContainer>
-            <div>PICTURE - {pictureId}</div>
+        <FocusContext.Provider value={focusKey}>
+            <PictureContainer>
+                <div>PICTURE - {pictureId}</div>
 
-            <FocusContext.Provider value={focusKey}>
                 <div ref={ref}>
                     <NavItem route={torrentsRoute}>
                         <h2>Torrents</h2>
@@ -43,7 +43,7 @@ export const Picture = () => {
                         <h2>Files</h2>
                     </NavItem>
                 </div>
-            </FocusContext.Provider>
-        </PictureContainer>
+            </PictureContainer>
+        </FocusContext.Provider>
     );
 };

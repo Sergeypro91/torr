@@ -31,14 +31,14 @@ const theme = {
         arg3?: number,
     ) {
         return `
-              ${arg0 ? `${arg0 * this.space}px` : ''}
-              ${arg1 ? `${arg1 * this.space}px` : ''}
-              ${arg2 ? `${arg2 * this.space}px` : ''}
-              ${arg3 ? `${arg3 * this.space}px` : ''}
+              ${arg0 ? `${arg0 * this.space}px` : arg0 ?? ''}
+              ${arg1 ? `${arg1 * this.space}px` : arg1 ?? ''}
+              ${arg2 ? `${arg2 * this.space}px` : arg2 ?? ''}
+              ${arg3 ? `${arg3 * this.space}px` : arg3 ?? ''}
             `;
     },
     typography: {
-        fontFamily:
+        fontFamilyMain:
             'Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, Noto Sans, sans-serif',
         h1: {
             'font-size': 76,
@@ -95,6 +95,9 @@ const theme = {
         },
     },
     transition: 'all 300ms ease-out',
+    boxShadow: {
+        targetBorder: '0 0 0 4px white',
+    },
 };
 
 export const defaultTheme: DefaultTheme = theme;

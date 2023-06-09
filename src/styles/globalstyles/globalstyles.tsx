@@ -3,11 +3,13 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   html,
   body {
-    font-family: ${({ theme }) => theme.typography.fontFamily};
+    min-width: 1920px;
+    min-height: 1080px;
+    font-family: ${({ theme }) => theme.typography.fontFamilyMain};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: ${({ theme }) => theme.palette.black};
-    color: ${({ theme }) => theme.palette.gray['30']};
+    color: ${({ theme }) => theme.palette.gray['60']};
   }
   
   h1 {
@@ -28,6 +30,12 @@ const GlobalStyle = createGlobalStyle`
   
   p {
     ${({ theme }) => theme.typography.p};
+  }
+  
+  svg {
+      width: ${({ theme }) => theme.spacing(8)};
+      height: ${({ theme }) => theme.spacing(8)};
+      fill: ${({ theme }) => theme.palette.gray['60']};
   }
 `;
 

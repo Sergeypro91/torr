@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { WelcomeScreenContainer } from './styled';
-import { useAppStore } from '@/store';
+import { useAppStore } from '@/stores';
 
 export const WelcomeScreen = () => {
     const isWelcomeScreenShown = useAppStore(
