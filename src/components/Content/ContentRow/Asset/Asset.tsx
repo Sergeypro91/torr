@@ -5,7 +5,7 @@ import {
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { FocusableElement } from '../../../types';
+import { FocusableElement } from '@/types';
 import { AssetContainer, AssetInner, AssetWrapper } from './styled';
 
 export type AssetProps = FocusableElement & {

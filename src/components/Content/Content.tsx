@@ -6,10 +6,12 @@ import {
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { useAppStore } from '@/stores';
-import { FocusableElement } from '../types';
+import { useAppStore, useTrendingMoviesStore } from '@/stores';
+import { FocusableElement, MediaType, MovieSlim, TimeWindow } from '@/types';
+import { Trends } from '@/components';
+import { WEEK_TRENDING_MOVIES } from '@/hooks';
 import { ContentRow } from './ContentRow';
-import { ContentContainer, ContentWrapper } from './styled';
+import { ContentWrapper } from './styled';
 
 export const Content = memo(() => {
     const selectAsset = useAppStore((state) => state.selectAsset);
@@ -36,19 +38,29 @@ export const Content = memo(() => {
         [ref],
     );
 
+    const trendMovies = useTrendingMoviesStore((state) => state.trendMovies);
+    const setTrendMovies = useTrendingMoviesStore(
+        (state) => state.setTrendMovies,
+    );
+
     return (
         <FocusContext.Provider value={focusKey}>
-            <ContentWrapper>
-                <ContentContainer ref={ref}>
-                    {rows.map(({ title }, id) => (
-                        <ContentRow
-                            key={`content-${title}-${id}`}
-                            section={title}
-                            onFocus={onFocus}
-                            setSelectedAsset={selectAsset}
-                        />
-                    ))}
-                </ContentContainer>
+            <ContentWrapper ref={ref}>
+                <Trends<MovieSlim>
+                    trendsState={trendMovies}
+                    setTrendsState={setTrendMovies}
+                    mediaType={MediaType.MOVIE}
+                    timeWindow={TimeWindow.WEEK}
+                    queryKey={WEEK_TRENDING_MOVIES}
+                />
+                {rows.map(({ title }, id) => (
+                    <ContentRow
+                        key={`content-${title}-${id}`}
+                        section={title}
+                        onFocus={onFocus}
+                        setSelectedAsset={selectAsset}
+                    />
+                ))}
             </ContentWrapper>
         </FocusContext.Provider>
     );

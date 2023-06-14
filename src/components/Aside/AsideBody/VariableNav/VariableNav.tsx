@@ -2,7 +2,7 @@ import React, { Fragment, memo, useCallback } from 'react';
 import { useRouteStore } from '@/stores';
 import { FocusDetails } from '@noriginmedia/norigin-spatial-navigation';
 import { NavItem } from '@/components';
-import { NavProps } from '@/components/types';
+import { NavProps } from '@/types';
 import { rows } from '@/assets/data';
 import { MenuItem } from '@/components/Aside/AsideBody/MenuItem';
 import { Devider } from '@/components/Aside/AsideBody/VariableNav/styled';

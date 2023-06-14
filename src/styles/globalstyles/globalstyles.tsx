@@ -3,8 +3,6 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   html,
   body {
-    min-width: 1920px;
-    min-height: 1080px;
     font-family: ${({ theme }) => theme.typography.fontFamilyMain};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

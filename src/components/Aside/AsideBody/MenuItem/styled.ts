@@ -1,23 +1,5 @@
-import styled, { DefaultTheme } from 'styled-components';
-import { FocusedItem } from '@/components/types';
-
-const defineColor = ({
-    theme,
-    active,
-    focused,
-}: FocusedItem & {
-    theme: DefaultTheme;
-}) => {
-    if (focused) {
-        return theme.palette.black;
-    }
-
-    if (active) {
-        return theme.palette.white;
-    }
-
-    return theme.palette.gray['60'];
-};
+import styled from 'styled-components';
+import { FocusedItem } from '@/types';
 
 export const MenuItemContainer = styled.div<FocusedItem>`
     height: ${({ theme }) => theme.spacing(12)};
@@ -27,7 +9,8 @@ export const MenuItemContainer = styled.div<FocusedItem>`
     background-color: ${({ theme, focused }) =>
         focused ? theme.palette.white : 'none'};
     border-radius: ${({ theme }) => theme.spacing(2)};
-    color: ${defineColor};
+    color: ${({ theme, focused }) =>
+        focused ? theme.palette.black : theme.palette.gray['20']};
     mix-blend-mode: ${({ focused }) => (focused ? 'lighten' : 'none')};
     text-transform: uppercase;
     transition: ${({ theme }) => theme.transition};

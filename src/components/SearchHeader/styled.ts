@@ -7,7 +7,7 @@ export const SearchHeaderContainer = styled.div`
     padding: ${({ theme }) => theme.spacing(10)};
 
     & > *:not(:empty):not(:first-child) {
-        margin-left: ${({ theme }) => theme.spacing(5)};
+        margin-left: ${({ theme }) => theme.spacing(10)};
     }
 `;
 

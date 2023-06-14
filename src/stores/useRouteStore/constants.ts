@@ -2,7 +2,7 @@ export const routes = {
     home: '',
     search: 'search',
     downloads: 'downloads',
-    picture: ' picture',
+    picture: ' movie',
     person: 'person',
     torrents: 'torrents',
     files: 'files',

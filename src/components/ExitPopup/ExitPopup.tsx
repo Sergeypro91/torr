@@ -4,7 +4,7 @@ import {
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { useAppStore } from '@/stores';
-import { FocusableElement } from '../types';
+import { FocusableElement } from '@/types';
 import {
     ExitPopupContainer,
     Prompt,

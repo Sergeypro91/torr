@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type useSearchStore = {
+export type UseSearchStore = {
     searchFilter?: string;
 
     setSearchFilter: (option?: string) => void;
 };
 
-export const useSearchStore = create<useSearchStore>()(
+export const useSearchStore = create<UseSearchStore>()(
     devtools((set) => ({
         searchFilter: undefined,
 

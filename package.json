@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "build_tizen": "cp tizen/* build && tizen build-web -- build && tizen package -t wgt -s Sample -- build/.buildResult",
-    "deploy": "tizen install -n Torr.wgt -- build/.buildResult"
+    "deploy_tizen": "tizen install -n Torr.wgt -- build/.buildResult",
+    "build_api_client": "npx openapi-typescript http://localhost:3000/api-json --output ./src/api/documentation.ts"
   },
   "dependencies": {
     "@noriginmedia/norigin-spatial-navigation": "^1.3.1",
@@ -17,6 +18,7 @@
     "polished": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.11.2",
     "styled-components": "^5.3.11",
     "tizen-common-web": "^2.0.1",
@@ -32,6 +34,7 @@
     "@types/tizen-common-web": "^2.0.2",
     "eslint": "^8.41.0",
     "eslint-config-next": "^13.4.4",
+    "openapi-typescript-fetch": "^1.1.3",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4"
   }

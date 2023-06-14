@@ -3,13 +3,12 @@ import { MenuItemContainer } from './styled';
 
 export type MenuItemProps = {
     children: ReactNode;
-    active?: string;
     focused?: string;
 };
 
-export const MenuItem = ({ children, active, focused }: MenuItemProps) => {
+export const MenuItem = ({ children, focused }: MenuItemProps) => {
     return (
-        <MenuItemContainer active={active} focused={focused}>
+        <MenuItemContainer focused={focused}>
             <h3>{children}</h3>
         </MenuItemContainer>
     );

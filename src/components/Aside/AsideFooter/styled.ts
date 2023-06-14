@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FocusedItem } from '@/components/types';
+import { FocusedItem } from '@/types';
 
 export const AsideFooterContainer = styled.div`
     display: grid;
@@ -54,7 +54,7 @@ export const Info = styled.div<FocusedItem>`
 
     & > svg {
         fill: ${({ theme, focused }) =>
-            focused ? theme.palette.black : theme.palette.gray['60']};
+            focused ? theme.palette.black : theme.palette.gray['20']};
         transition: ${({ theme }) => theme.transition};
     }
 

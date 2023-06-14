@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { FocusableElement } from '@/components/types';
+import { FocusableElement } from '@/types';
 
 type AppStore = {
     data: string;

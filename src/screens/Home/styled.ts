@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const HomeContainer = styled.div`
     flex: 1 100%;
     display: grid;
-    grid: repeat(2, minmax(66%, 2fr)) / repeat(3, 1fr);
+    grid: 2fr 1fr / repeat(3, 1fr);
     grid-template-areas:
         'left center right'
         'bottom bottom bottom';
@@ -34,4 +34,5 @@ export const HomeBottom = styled.div`
     grid-area: bottom;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 `;

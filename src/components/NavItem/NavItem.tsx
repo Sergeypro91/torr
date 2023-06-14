@@ -1,4 +1,4 @@
-import React, { JSX, useCallback, useMemo } from 'react';
+import React, { JSX, useCallback } from 'react';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { Route, useRouteStore } from '@/stores';
 import { NavItemContainer } from './styled';
@@ -10,13 +10,7 @@ export type NavItemProps = {
 };
 
 export const NavItem = ({ children, route, navigateTo }: NavItemProps) => {
-    const { pathName } = useRouteStore((state) => state.route);
     const navigate = useRouteStore((state) => state.navigate);
-
-    const isNavActive = useMemo(
-        () => route.pathName === pathName,
-        [route, pathName],
-    );
 
     const handleNavigateTo = useCallback(
         (route: Route) => {
@@ -43,7 +37,6 @@ export const NavItem = ({ children, route, navigateTo }: NavItemProps) => {
         <NavItemContainer ref={ref} onClick={handleClick}>
             {React.Children.map(children, (child) => {
                 return React.cloneElement(child, {
-                    active: isNavActive ? '1' : undefined,
                     focused: focused ? '1' : undefined,
                 });
             })}

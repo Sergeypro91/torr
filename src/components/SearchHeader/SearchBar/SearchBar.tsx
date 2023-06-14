@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { SearchBarContainer } from './styled';
+import { Divider, SearchBarContainer } from './styled';
 import { Input, Selector } from '@/components';
 import { useRouteStore, useSearchStore } from '@/stores';
 import { Loupe } from '@/assets/images/svgr';
@@ -43,11 +43,13 @@ export const SearchBar = () => {
                 onPress={onPress}
                 onInput={onInput}
             />
+            <Divider />
             <Selector
                 currentOption={searchFilter}
                 setOption={setSearchFilter}
                 options={selectorOptions}
             />
+            <Divider />
             <Button icon={Loupe} size="big" action={handleSubmit} />
         </SearchBarContainer>
     );

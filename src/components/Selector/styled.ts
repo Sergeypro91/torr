@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FocusedItem } from '@/components/types';
+import { FocusedItem } from '@/types';
 
 export const SelectorOptionsWrapper = styled.div`
     width: 100%;
@@ -14,12 +14,6 @@ export const SelectorOptions = styled.ul`
     justify-content: center;
     scroll-snap-type: y mandatory;
     padding: ${({ theme }) => theme.spacing(6, 0)};
-
-    &:hover {
-        & > * {
-            opacity: 1;
-        }
-    }
 `;
 
 export const SelectorOption = styled.li<{
@@ -31,7 +25,7 @@ export const SelectorOption = styled.li<{
     justify-content: center;
     text-transform: capitalize;
     color: ${({ theme, selected }) =>
-        selected ? theme.palette.gray['40'] : theme.palette.gray['70']};
+        selected ? theme.palette.gray['20'] : theme.palette.gray['50']};
     cursor: pointer;
     opacity: ${({ selected }) => (selected ? '1' : '0')};
     transform: ${({ selected }) => (selected ? 'scale(1)' : 'scale(0.7)')};
@@ -50,7 +44,7 @@ export const Arrows = styled.div`
     & > svg {
         width: ${({ theme }) => theme.spacing(3)};
         height: auto;
-        fill: ${({ theme }) => theme.palette.gray['40']};
+        fill: ${({ theme }) => theme.palette.gray['50']};
     }
 `;
 
@@ -59,7 +53,7 @@ export const SelectorContainer = styled.div<FocusedItem>`
     display: flex;
     padding: ${({ theme }) => theme.spacing(0, 4)};
     background-color: ${({ theme, focused }) =>
-        focused ? theme.palette.white : 'inherit'};
+        focused ? theme.palette.white : ''};
     mix-blend-mode: ${({ focused }) => (focused ? 'lighten' : 'none')};
     transition: ${({ theme }) => theme.transition};
 
@@ -67,11 +61,14 @@ export const SelectorContainer = styled.div<FocusedItem>`
         margin-left: ${({ theme }) => theme.spacing(4)};
     }
 
-    & > * {
-        filter: ${({ focused }) => (focused ? 'invert(1)' : 'none')};
-    }
-
     ${SelectorOption} {
         opacity: ${({ focused }) => (focused ? '1' : 'none')};
+        filter: ${({ focused }) => (focused ? 'invert(1)' : '')};
+    }
+
+    &:hover {
+        ${SelectorOption} { {
+            opacity: 1;
+        }
     }
 `;

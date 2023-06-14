@@ -1,8 +1,7 @@
 import React, { memo, useCallback, useRef } from 'react';
 import {
+    ContentRowAssets,
     ContentRowContainer,
-    ContentRowList,
-    ContentRowWrapper,
     ContentRowTitle,
 } from './styled';
 import { assets } from '@/assets/data';
@@ -13,7 +12,7 @@ import {
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { FocusableElement } from '@/components/types';
+import { FocusableElement } from '@/types';
 
 export type ContentRowProps = {
     section: string;
@@ -54,24 +53,20 @@ export const ContentRow = memo(
 
         return (
             <FocusContext.Provider value={focusKey}>
-                <ContentRowWrapper ref={ref}>
-                    <ContentRowTitle focused={hasFocusedChild}>
-                        {section}
-                    </ContentRowTitle>
+                <ContentRowContainer ref={ref} focused={hasFocusedChild}>
+                    <ContentRowTitle>{section}</ContentRowTitle>
 
-                    <ContentRowList ref={scrollingRef}>
-                        <ContentRowContainer>
-                            {assets.map(({ title, color }) => (
-                                <Asset
-                                    key={`${section}${title}`}
-                                    title={`${section}${title}`}
-                                    color={color}
-                                    onFocus={onAssetFocus}
-                                />
-                            ))}
-                        </ContentRowContainer>
-                    </ContentRowList>
-                </ContentRowWrapper>
+                    <ContentRowAssets ref={scrollingRef}>
+                        {assets.map(({ title, color }) => (
+                            <Asset
+                                key={`${section}${title}`}
+                                title={`${section}${title}`}
+                                color={color}
+                                onFocus={onAssetFocus}
+                            />
+                        ))}
+                    </ContentRowAssets>
+                </ContentRowContainer>
             </FocusContext.Provider>
         );
     },

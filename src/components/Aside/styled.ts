@@ -1,18 +1,15 @@
 import styled from 'styled-components';
-import { ElementWithFocusedChild } from '@/components/types';
 
-export const AsideWrapper = styled.aside<ElementWithFocusedChild>`
-    grid-area: aside;
-    max-width: ${({ hasFocusedChild }) => (hasFocusedChild ? '100vw' : '0px')};
+export const AsideWrapper = styled.aside`
+    position: relative;
     transition: ${({ theme }) => theme.transition};
+    background-color: rgba(0, 0, 0, 0.8);
 `;
 
-export const AsideContainer = styled.div<ElementWithFocusedChild>`
+export const AsideContainer = styled.div`
+    width: 350px;
     height: 100%;
     display: flex;
     flex-direction: column;
     padding: ${({ theme }) => theme.spacing(8)};
-    white-space: nowrap;
-    opacity: ${({ hasFocusedChild }) => (hasFocusedChild ? '1' : '0')};
-    transition: ${({ theme }) => theme.transition};
 `;

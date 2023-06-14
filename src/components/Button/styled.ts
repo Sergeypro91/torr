@@ -1,6 +1,6 @@
 import styled, { DefaultTheme } from 'styled-components';
 import { ButtonSize } from '@/components';
-import { FocusedItem } from '@/components/types';
+import { FocusedItem } from '@/types';
 
 const defineSize = ({
     theme,
@@ -41,7 +41,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
         isIconButton ? '0' : theme.spacing(0, 4)};
     border: 0;
     background-color: ${({ theme, focused }) =>
-        focused ? theme.palette.white : 'inherit'};
+        focused ? theme.palette.white : ''};
     mix-blend-mode: ${({ focused }) => (focused ? 'lighten' : 'none')};
     cursor: pointer;
     transition: ${({ theme }) => theme.transition};
@@ -55,8 +55,8 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     }
 
     & > * {
-        fill: ${({ theme }) => theme.palette.gray['40']};
-        color: ${({ theme }) => theme.palette.gray['40']};
+        fill: ${({ theme }) => theme.palette.gray['20']};
+        color: ${({ theme }) => theme.palette.gray['20']};
     }
 
     &:focus-visible {

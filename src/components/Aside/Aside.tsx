@@ -23,8 +23,8 @@ export const Aside = memo(() => {
 
     return (
         <FocusContext.Provider value={focusKey}>
-            <AsideWrapper ref={ref} hasFocusedChild={hasFocusedChild}>
-                <AsideContainer hasFocusedChild={hasFocusedChild}>
+            <AsideWrapper ref={ref}>
+                <AsideContainer>
                     <AsideHeader />
                     <AsideBody />
                     <AsideFooter />

@@ -1,36 +1,33 @@
-import styled from "styled-components";
-import { rgba } from "polished";
+import styled from 'styled-components';
+import { FocusedItem } from '@/types';
 
-export const ContentRowContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+export const ContentRowContainer = styled.div<FocusedItem>`
+    display: flex;
+    flex-direction: column;
+    padding-left: ${({ theme }) => theme.spacing(10)};
+    opacity: ${({ focused }) => (focused ? 1 : 0.5)};
+    transition: ${({ theme }) => theme.transition};
 
-  & > *:not(:first-child):not(:only-child) {
-    margin-left: calc(100vw / 100);
-  }
+    & > *:not(:first-child):not(:only-child) {
+        margin-top: ${({ theme }) => theme.spacing(5)};
+    }
 `;
 
-export const ContentRowWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & > *:not(:first-child):not(:only-child) {
-    margin-top: calc(100vw / 100);
-  }
-`;
-export const ContentRowTitle = styled.h2<{ focused: boolean }>`
-  color: ${({ focused }) => (focused ? "white" : rgba("white", 0.15))};
-  margin: calc(100vw / 100) calc(100vw / 100) calc(100vw / 200);
+export const ContentRowTitle = styled.h3`
+    font-weight: 600;
+    color: ${({ theme }) => theme.palette.white};
 `;
 
-export const ContentRowList = styled.div`
-  display: flex;
-  overflow-y: auto;
-  padding-right: calc(100vw / 100);
+export const ContentRowAssets = styled.div`
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
 
-  &::-webkit-scrollbar {
-    display: none;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+    & > *:not(:first-child):not(:only-child) {
+        margin-left: ${({ theme }) => theme.spacing(10)};
+    }
+
+    & > *:last-child {
+        padding-right: ${({ theme }) => theme.spacing(10)};
+    }
 `;
