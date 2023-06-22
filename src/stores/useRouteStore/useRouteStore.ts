@@ -21,12 +21,15 @@ export type RouteStore = {
 export const useRouteStore = create<RouteStore>()(
     devtools((set) => ({
         route: { pathName: '' },
-        history: [],
+        history: [{ pathName: '' }],
 
         navigate: (route: Route) =>
             set((state) => {
                 if (!route.pathName) {
-                    return { route: route, history: [] };
+                    return {
+                        route: { ...route, params: state.history[0]['params'] },
+                        history: [state.history[0]],
+                    };
                 } else if (
                     shouldNavigate({ prevRoute: state.route, newRoute: route })
                 ) {

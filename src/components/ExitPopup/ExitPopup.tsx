@@ -4,7 +4,8 @@ import {
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { useAppStore } from '@/stores';
-import { FocusableElement } from '@/types';
+import { SelectElement } from '@/types';
+import { closeApp } from '@/utils';
 import {
     ExitPopupContainer,
     Prompt,
@@ -12,24 +13,23 @@ import {
     PromptTitle,
     PromptActions,
 } from './styled';
-import { closeApp } from '@/lib';
 
 type PromptKeyProps = {
-    title: string;
-    onPress: (props: Pick<FocusableElement, 'title'>) => void;
+    focusId: string;
+    onPress: (props: Pick<SelectElement, 'focusId'>) => void;
 };
 
-const PromptKey = ({ title, onPress }: PromptKeyProps) => {
+const PromptKey = ({ focusId, onPress }: PromptKeyProps) => {
     const { ref, focused } = useFocusable({
         onEnterPress: onPress,
         extraProps: {
-            title,
+            focusId,
         },
     });
 
     return (
         <PromptKeyContainer ref={ref} focused={focused}>
-            {title}
+            {focusId}
         </PromptKeyContainer>
     );
 };
@@ -47,18 +47,18 @@ export const Exit = () => {
 
         return () => {
             if (selectedAsset) {
-                setFocus(selectedAsset.title);
+                setFocus(selectedAsset.focusId);
             }
         };
     }, [focusSelf, selectedAsset, setFocus]);
 
     const onPress = useCallback(
-        (props: Pick<FocusableElement, 'title'>) => {
-            if (props.title === 'Leave') {
+        (props: Pick<SelectElement, 'focusId'>) => {
+            if (props.focusId === 'Leave') {
                 closeApp();
             } else {
                 if (selectedAsset) {
-                    setFocus(selectedAsset.title);
+                    setFocus(selectedAsset.focusId);
                 }
                 toggleExit(false);
             }
@@ -77,13 +77,13 @@ export const Exit = () => {
                     <PromptActions ref={ref}>
                         <PromptKey
                             key="Leave"
-                            title="Leave"
+                            focusId="Leave"
                             onPress={onPress}
                         />
 
                         <PromptKey
                             key="Return"
-                            title="Return"
+                            focusId="Return"
                             onPress={onPress}
                         />
                     </PromptActions>

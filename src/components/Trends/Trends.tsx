@@ -1,49 +1,82 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ApiResponse } from 'openapi-typescript-fetch';
 import { useQuery } from 'react-query';
-import { getTrends } from '@/api';
-import { MediaType, Pagination, TimeWindow } from '@/types';
+import { UseTrendsStore } from '@/stores';
+import { AssetType, Pagination, SelectElement } from '@/types';
+import {
+    FocusableComponentLayout,
+    FocusDetails,
+} from '@noriginmedia/norigin-spatial-navigation';
+import { ContentRow } from '@/components';
 import { TrendsContainer } from './styled';
 
-export type TrendsProps<T> = {
-    trendsState: Pagination<T> | null;
-    setTrendsState: (trendsState: Pagination<T>) => void;
-    mediaType: MediaType;
-    timeWindow: TimeWindow;
+export type TrendsProps = {
+    state: UseTrendsStore<AssetType>;
+    getTrends: (page?: number) => Promise<ApiResponse<Pagination<AssetType>>>;
     queryKey: (page?: number) => (string | number)[];
+    name?: string;
+    onFocus?: (
+        layout: FocusableComponentLayout,
+        props: SelectElement,
+        event: FocusDetails,
+    ) => void;
+    focusOnLoad?: (id: string) => void;
+    onSelect?: (asset: SelectElement) => void;
 };
 
-export const Trends = <T,>({
-    trendsState,
-    setTrendsState,
-    mediaType,
-    timeWindow,
+export const Trends = ({
+    state,
+    getTrends,
     queryKey,
-}: TrendsProps<T>) => {
+    name = '',
+    onFocus = () => {},
+    focusOnLoad = () => {},
+    onSelect = () => {},
+}: TrendsProps) => {
+    const { trends, setTrends } = state;
     const [page, setPage] = useState(1);
 
-    const request = async (page?: number) => {
-        const { data } = await getTrends({
-            mediaType,
-            timeWindow,
-            page,
-        });
+    const sectionId = useMemo(
+        () => `${queryKey()[0]}`.replace(/\s/g, ''),
+        [queryKey],
+    );
 
-        return data as Pagination<T>;
+    const request = async (page?: number) => {
+        const { data } = await getTrends(page);
+
+        return data;
     };
 
-    const { isLoading, isError, error, data, isFetching, isPreviousData } =
-        useQuery({
-            queryKey: queryKey(page),
-            queryFn: () => request(page),
-            keepPreviousData: true,
-        });
+    const { isLoading, isError, data } = useQuery({
+        queryKey: queryKey(page),
+        queryFn: () => request(page),
+        keepPreviousData: true,
+    });
 
     useEffect(() => {
         if (data) {
-            console.log('DATA', data);
-            setTrendsState(data);
+            focusOnLoad(sectionId);
+            setTrends(data);
         }
-    }, [data, setTrendsState]);
+    }, [data, focusOnLoad, sectionId, setTrends]);
 
-    return <TrendsContainer>TEST</TrendsContainer>;
+    return (
+        <TrendsContainer>
+            <>
+                {isError ? <div>ERROR HAPPEN</div> : null}
+
+                {trends?.results.length ? (
+                    <ContentRow
+                        sectionId={sectionId}
+                        sectionName={name}
+                        trends={trends.results}
+                        onFocus={onFocus}
+                        onSelect={onSelect}
+                    />
+                ) : null}
+
+                {isLoading ? <div>LOADING...</div> : null}
+            </>
+        </TrendsContainer>
+    );
 };

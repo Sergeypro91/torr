@@ -43,7 +43,7 @@ const theme = {
         h1: {
             'font-size': 76,
             'line-height': 92,
-            'font-weight': '700',
+            'font-weight': '800',
         },
         h2: {
             'font-size': 47,

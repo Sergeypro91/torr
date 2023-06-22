@@ -1,33 +1,43 @@
-import React, { useCallback, useEffect, memo } from 'react';
-import { rows } from '@/assets/data';
+import React, { useCallback, useEffect, memo, useMemo } from 'react';
+import { ApiResponse } from 'openapi-typescript-fetch';
+import { getTrends } from '@/api';
 import {
     FocusableComponentLayout,
     FocusContext,
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { useAppStore, useTrendingMoviesStore } from '@/stores';
-import { FocusableElement, MediaType, MovieSlim, TimeWindow } from '@/types';
+import { useAppStore, useRouteStore, useTrendingMoviesStore } from '@/stores';
+import {
+    AssetType,
+    MediaType,
+    MovieSlim,
+    Pagination,
+    SelectElement,
+    TimeWindow,
+} from '@/types';
 import { Trends } from '@/components';
 import { WEEK_TRENDING_MOVIES } from '@/hooks';
-import { ContentRow } from './ContentRow';
 import { ContentWrapper } from './styled';
+import { debounce } from 'lodash-es';
 
 export const Content = memo(() => {
+    const params = useRouteStore((state) => state.getParams());
     const selectAsset = useAppStore((state) => state.selectAsset);
-    const { ref, focusSelf, focusKey } = useFocusable({
+    const movieTrendsState = useTrendingMoviesStore((state) => state);
+    const { ref, focusSelf, setFocus, focusKey } = useFocusable({
         focusable: true,
         trackChildren: true,
     });
 
-    useEffect(() => {
-        focusSelf();
-    }, [focusSelf]);
+    const selectedAssetId = useMemo(() => {
+        return params['selectedAssetId'] || null;
+    }, [params]);
 
     const onFocus = useCallback(
         (
             layout: FocusableComponentLayout,
-            props: FocusableElement,
+            props: AssetType,
             event: FocusDetails,
         ) => {
             ref.current.scrollTo({
@@ -38,29 +48,50 @@ export const Content = memo(() => {
         [ref],
     );
 
-    const trendMovies = useTrendingMoviesStore((state) => state.trendMovies);
-    const setTrendMovies = useTrendingMoviesStore(
-        (state) => state.setTrendMovies,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleSelectAsset = useCallback(
+        debounce((asset: SelectElement) => selectAsset(asset), 300),
+        [selectAsset],
+    );
+
+    const getWeeklyMovieTrends = async (
+        page?: number,
+    ): Promise<ApiResponse<Pagination<MovieSlim>>> =>
+        // TODO find way to typing enum string literal in generated documentation
+        // @ts-ignore
+        getTrends({
+            mediaType: MediaType.MOVIE,
+            timeWindow: TimeWindow.WEEK,
+            page,
+        });
+
+    useEffect(() => {
+        if (selectedAssetId) {
+            setFocus(selectedAssetId);
+        }
+    }, [selectedAssetId, setFocus]);
+
+    const handleFocus = useCallback(
+        (id: string) => {
+            if (!selectedAssetId) {
+                setFocus(id);
+            }
+        },
+        [selectedAssetId, setFocus],
     );
 
     return (
         <FocusContext.Provider value={focusKey}>
             <ContentWrapper ref={ref}>
-                <Trends<MovieSlim>
-                    trendsState={trendMovies}
-                    setTrendsState={setTrendMovies}
-                    mediaType={MediaType.MOVIE}
-                    timeWindow={TimeWindow.WEEK}
+                <Trends
+                    name="trend movie"
+                    state={movieTrendsState}
+                    getTrends={getWeeklyMovieTrends}
                     queryKey={WEEK_TRENDING_MOVIES}
+                    onFocus={onFocus}
+                    focusOnLoad={handleFocus}
+                    onSelect={handleSelectAsset}
                 />
-                {rows.map(({ title }, id) => (
-                    <ContentRow
-                        key={`content-${title}-${id}`}
-                        section={title}
-                        onFocus={onFocus}
-                        setSelectedAsset={selectAsset}
-                    />
-                ))}
             </ContentWrapper>
         </FocusContext.Provider>
     );

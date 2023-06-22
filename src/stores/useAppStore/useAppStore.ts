@@ -1,19 +1,19 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { FocusableElement } from '@/types';
+import { SelectElement } from '@/types';
 
 type AppStore = {
     data: string;
     exit: boolean;
     isBackPress: boolean;
-    selectedAsset: null | FocusableElement;
+    selectedAsset: null | SelectElement;
     isNavActive: boolean;
     isWelcomeScreenShown: boolean;
 
     setData: (dataString: string) => void;
     toggleExit: (status?: boolean) => void;
     toggleBackPress: (status?: boolean) => void;
-    selectAsset: (asset: FocusableElement) => void;
+    selectAsset: (asset: SelectElement) => void;
     toggleNavActive: (status?: boolean) => void;
     toggleWelcomeScreenShown: () => void;
 };

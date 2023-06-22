@@ -14,6 +14,8 @@ export const HomeLeft = styled.div`
     grid-area: left;
     display: flex;
     flex-direction: column;
+    padding: ${({ theme }) => theme.spacing(10)};
+    overflow: hidden;
 `;
 
 export const HomeCenter = styled.div`
@@ -35,4 +37,9 @@ export const HomeBottom = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 1) 100%
+    );
 `;

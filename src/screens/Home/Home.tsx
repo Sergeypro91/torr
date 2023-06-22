@@ -1,5 +1,5 @@
 import React from 'react';
-import { Content } from '@/components';
+import { AssetInfo, Content } from '@/components';
 import {
     HomeBottom,
     HomeContainer,
@@ -11,7 +11,9 @@ import {
 export const Home = () => {
     return (
         <HomeContainer>
-            <HomeLeft />
+            <HomeLeft>
+                <AssetInfo />
+            </HomeLeft>
             <HomeCenter />
             <HomeRight />
             <HomeBottom>

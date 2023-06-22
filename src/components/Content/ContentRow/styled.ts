@@ -16,6 +16,10 @@ export const ContentRowContainer = styled.div<FocusedItem>`
 export const ContentRowTitle = styled.h3`
     font-weight: 600;
     color: ${({ theme }) => theme.palette.white};
+
+    &:first-letter {
+        text-transform: capitalize;
+    }
 `;
 
 export const ContentRowAssets = styled.div`

@@ -1,6 +1,32 @@
 import styled from 'styled-components';
 
-export const BackgroundContainer = styled.div<{ img: any; blur?: boolean }>`
+export const BackgroundBackground = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+`;
+
+export const BackgroundItem = styled.div`
+    width: 100%;
+    height: 100%;
+    animation: appearance 300ms ease-in;
+
+    @keyframes appearance {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+`;
+
+export const BackgroundContainer = styled.div<{
+    poster?: string;
+    blur?: boolean;
+}>`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -10,8 +36,6 @@ export const BackgroundContainer = styled.div<{ img: any; blur?: boolean }>`
     align-items: center;
     justify-content: center;
     transition: ${({ theme }) => theme.transition};
-    background-size: cover;
-    background-image: url(${({ img }) => img});
 
     &:after {
         content: '';
@@ -28,3 +52,5 @@ export const BackgroundContainer = styled.div<{ img: any; blur?: boolean }>`
         transition: ${({ theme }) => theme.transition};
     }
 `;
+
+export const BackgroundContent = styled.div``;

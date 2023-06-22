@@ -7,9 +7,9 @@ export const ExitPopupContainer = styled.div`
     position: absolute;
     background-color: black;
     z-index: 1;
-    animation: appiring 300ms ease-in;
+    animation: appearance 300ms ease-in;
 
-    @keyframes appiring {
+    @keyframes appearance {
         from {
             opacity: 0;
         }

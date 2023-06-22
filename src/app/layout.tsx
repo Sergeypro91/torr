@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledComponentsRegistry } from '@/lib';
+import { StyledComponentsRegistry } from '../utils';
 import './globals.css';
 
 export const metadata = {

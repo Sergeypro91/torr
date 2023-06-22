@@ -1,75 +1,81 @@
-import React, { memo, useCallback, useRef } from 'react';
-import {
-    ContentRowAssets,
-    ContentRowContainer,
-    ContentRowTitle,
-} from './styled';
-import { assets } from '@/assets/data';
-import { Asset } from './Asset';
+import React, { useCallback, useRef } from 'react';
 import {
     FocusableComponentLayout,
     FocusContext,
     FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { FocusableElement } from '@/types';
+import { AssetType, SelectElement } from '@/types';
+import {
+    ContentRowAssets,
+    ContentRowContainer,
+    ContentRowTitle,
+} from './styled';
+import { Asset } from './Asset';
 
-export type ContentRowProps = {
-    section: string;
+type ContentRowProps = {
+    sectionId: string;
+    sectionName: string;
+    trends: AssetType[];
     onFocus: (
         layout: FocusableComponentLayout,
-        props: FocusableElement,
-        details: FocusDetails,
+        props: SelectElement,
+        event: FocusDetails,
     ) => void;
-    setSelectedAsset: (asset: FocusableElement) => void;
+    onSelect: (asset: SelectElement) => void;
 };
 
-export const ContentRow = memo(
-    ({ section, onFocus, setSelectedAsset }: ContentRowProps) => {
-        const { ref, focusKey, hasFocusedChild } = useFocusable({
-            onFocus,
-            focusKey: section,
-            trackChildren: true,
-        });
+export const ContentRow = ({
+    sectionId,
+    sectionName,
+    trends,
+    onFocus,
+    onSelect,
+}: ContentRowProps) => {
+    const { ref, focusKey, hasFocusedChild } = useFocusable({
+        onFocus,
+        focusKey: sectionId,
+        trackChildren: true,
+    });
 
-        const scrollingRef = useRef<null | HTMLDivElement>(null);
+    const scrollingRef = useRef<null | HTMLDivElement>(null);
 
-        const onAssetFocus = useCallback(
-            (
-                layout: FocusableComponentLayout,
-                props: FocusableElement,
-                event: FocusDetails,
-            ) => {
-                setSelectedAsset(props);
-                if (scrollingRef.current) {
-                    scrollingRef.current.scrollTo({
-                        left: layout.x,
-                        behavior: 'smooth',
-                    });
-                }
-            },
-            [setSelectedAsset],
-        );
+    const onAssetFocus = useCallback(
+        (
+            layout: FocusableComponentLayout,
+            props: SelectElement,
+            event: FocusDetails,
+        ) => {
+            if (scrollingRef.current) {
+                scrollingRef.current.scrollTo({
+                    left: layout.x,
+                    behavior: 'smooth',
+                });
+            }
 
-        return (
-            <FocusContext.Provider value={focusKey}>
-                <ContentRowContainer ref={ref} focused={hasFocusedChild}>
-                    <ContentRowTitle>{section}</ContentRowTitle>
+            onSelect(props);
+        },
+        [onSelect],
+    );
 
-                    <ContentRowAssets ref={scrollingRef}>
-                        {assets.map(({ title, color }) => (
-                            <Asset
-                                key={`${section}${title}`}
-                                title={`${section}${title}`}
-                                color={color}
-                                onFocus={onAssetFocus}
-                            />
-                        ))}
-                    </ContentRowAssets>
-                </ContentRowContainer>
-            </FocusContext.Provider>
-        );
-    },
-);
+    return (
+        <FocusContext.Provider value={focusKey}>
+            <ContentRowContainer ref={ref} focused={hasFocusedChild}>
+                <ContentRowTitle>{sectionName}</ContentRowTitle>
+
+                <ContentRowAssets ref={scrollingRef}>
+                    {trends.map((props) => (
+                        <Asset
+                            key={`${sectionId}${props.tmdbId}`}
+                            focusId={`${sectionId}${props.tmdbId}`}
+                            onFocus={onAssetFocus}
+                            {...props}
+                        />
+                    ))}
+                </ContentRowAssets>
+            </ContentRowContainer>
+        </FocusContext.Provider>
+    );
+};
 
 ContentRow.displayName = 'ContentRow';

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useAppStore } from '@/stores';
-import { deepLink } from '@/lib';
+import { deepLink } from '@/utils';
 
 type UseTizenListenerOptions = { backPress?: () => void };
 
