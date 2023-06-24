@@ -47,7 +47,7 @@ export const App = ({ children }: PropsWithChildren) => {
                         <AppWrapper focused={isNavActive}>
                             {children}
                         </AppWrapper>
-                        <WelcomeScreen />
+                        {/*<WelcomeScreen />*/}
                         <ExitPopup />
                     </AppContainer>
                 </FocusContext.Provider>

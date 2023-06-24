@@ -50,6 +50,7 @@ export const BackgroundContainer = styled.div<{
                 ? 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
                 : 'linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 50%)'};
         transition: ${({ theme }) => theme.transition};
+        will-change: background;
     }
 `;
 

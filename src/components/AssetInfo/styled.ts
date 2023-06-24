@@ -18,9 +18,8 @@ export const AssetInfoTitle = styled.div`
     font-weight: 600;
     overflow: scroll;
 
-    h1 {
-        font-size: inherit;
-        line-height: normal;
+    * {
+        font-weight: ${({ theme }) => theme.typography.h1['font-weight']};
     }
 `;
 

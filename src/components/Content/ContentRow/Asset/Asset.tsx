@@ -1,12 +1,7 @@
-import React, { memo, useCallback } from 'react';
-import { routes, useRouteStore } from '@/stores';
-import {
-    FocusableComponentLayout,
-    FocusDetails,
-    useFocusable,
-} from '@noriginmedia/norigin-spatial-navigation';
-import { SelectElement } from '@/types';
+import React, { memo } from 'react';
 import { Poster } from '@/components';
+import { useAsset } from './useAsset';
+import { AssetProps } from './types';
 import {
     AssetInner,
     AssetWrapper,
@@ -14,46 +9,26 @@ import {
     AssetBackground,
 } from './styled';
 
-export type AssetProps = SelectElement & {
-    onFocus: (
-        layout: FocusableComponentLayout,
-        props: SelectElement,
-        details: FocusDetails,
-    ) => void;
-};
+export const Asset = memo((props: AssetProps) => {
+    const { ...data } = props;
+    const { ref, focused, focusId, handleAssetClick, handleAssetDoubleClick } =
+        useAsset({ ...props });
 
-export const Asset = memo(
-    ({ tmdbId, focusId, onFocus, ...imgData }: AssetProps) => {
-        const navigate = useRouteStore((store) => store.navigate);
-
-        const onPress = useCallback(() => {
-            const params = new URLSearchParams([['pictureId', tmdbId]]);
-
-            navigate({ pathName: routes.picture, params });
-        }, [navigate, tmdbId]);
-
-        const { ref, focused } = useFocusable({
-            focusKey: focusId,
-            onEnterPress: onPress,
-            onFocus,
-            extraProps: { tmdbId, focusId, ...imgData },
-        });
-
-        const handleAssetClick = useCallback(() => {
-            onPress();
-        }, [onPress]);
-
-        return (
-            <AssetWrapper ref={ref} onClick={handleAssetClick}>
-                <AssetContainer focused={focused}>
-                    <AssetBackground>
-                        <Poster data={imgData} size="w500" type="hPosterPath" />
-                    </AssetBackground>
-                    <AssetInner>{}</AssetInner>
-                </AssetContainer>
-            </AssetWrapper>
-        );
-    },
-);
+    return (
+        <AssetWrapper
+            ref={ref}
+            id={focusId}
+            onClick={handleAssetClick}
+            onDoubleClick={handleAssetDoubleClick}
+        >
+            <AssetContainer focused={focused}>
+                <AssetBackground>
+                    <Poster size="w500" type="hPosterPath" data={data} />
+                </AssetBackground>
+                <AssetInner>{}</AssetInner>
+            </AssetContainer>
+        </AssetWrapper>
+    );
+});
 
 Asset.displayName = 'Asset';

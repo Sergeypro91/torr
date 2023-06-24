@@ -25,7 +25,11 @@ export const ContentRowTitle = styled.h3`
 export const ContentRowAssets = styled.div`
     display: flex;
     flex-direction: row;
-    overflow: hidden;
+    will-change: scroll-position;
+    scroll-behavior: smooth;
+    overflow: auto;
+
+    ${({ theme }) => theme.hideScrollbar}
 
     & > *:not(:first-child):not(:only-child) {
         margin-left: ${({ theme }) => theme.spacing(10)};

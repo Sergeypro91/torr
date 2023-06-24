@@ -20,6 +20,7 @@ export type NavProps = {
 
 export type FocusedItem = {
     focused?: string | boolean;
+    isEmpty?: boolean;
 };
 
 export enum MediaType {

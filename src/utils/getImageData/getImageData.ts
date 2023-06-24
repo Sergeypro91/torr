@@ -7,20 +7,21 @@ import {
     PersonSlim,
 } from '@/types';
 
-type getImageTitleOption = Partial<MovieSlim | TvSlim | PersonSlim>;
+type getImageTitleOption = null | Partial<MovieSlim | TvSlim | PersonSlim>;
 
-export const getImageTitle = (data: getImageTitleOption) => {
-    const title = data.mediaType === MediaType.PERSON ? 'name' : 'title';
+export const getImageTitle = (data?: getImageTitleOption) => {
+    const title = data?.mediaType === MediaType.PERSON ? 'name' : 'title';
+    let result;
 
-    if (title in data) {
-        return String(data[title as keyof typeof data]);
+    if (data && title in data) {
+        result = data[title as keyof typeof data];
     }
 
-    return '';
+    return result ? `${result}` : '';
 };
 
 type getImageSrcOption = {
-    data: Partial<MovieSlim | TvSlim | PersonSlim>;
+    data?: null | Partial<MovieSlim | TvSlim | PersonSlim>;
     size: ImageSize;
     type: ImageType;
 };
@@ -31,24 +32,26 @@ export const getImageSrc = ({
     type = 'posterPath',
 }: getImageSrcOption) => {
     const imgService = process.env.NEXT_PUBLIC_API_IMG;
+    let result;
 
-    if (type in data) {
-        return `${imgService}${size}${data[type as keyof typeof data]}`;
+    if (data && type in data) {
+        result = data[type as keyof typeof data];
     }
 
-    return '';
+    return result ? `${imgService}${size}${result}` : '';
 };
 
 type GetImageBlurHashOption = {
-    data: Partial<MovieSlim | TvSlim | PersonSlim>;
+    data?: null | Partial<MovieSlim | TvSlim | PersonSlim>;
     type: ImageType;
 };
 export const getImageBlurHash = ({ data, type }: GetImageBlurHashOption) => {
     const imgType = `${type}BlurHash` as const;
+    let result;
 
-    if (imgType in data) {
-        return String(data[imgType as keyof typeof data]);
+    if (data && imgType in data) {
+        result = data[imgType as keyof typeof data];
     }
 
-    return null;
+    return result ? `${result}` : 'L00000fQfQfQfQfQfQfQfQfQfQfQ';
 };

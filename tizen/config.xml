@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns:tizen="http://tizen.org/ns/widgets" xmlns="http://www.w3.org/ns/widgets" id="http://192.168.19.110:3000" version="0.2.1" viewmodes="maximized">
     <access origin="*" subdomains="true"/>
-    <tizen:application id="WPwMyAPbCf.someTest020" package="WPwMyAPbCf" required_version="2.3"/>
+    <tizen:application id="WPwMyAPbCf.someTest022" package="WPwMyAPbCf" required_version="2.3"/>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
     <icon src="logo192.png"/>

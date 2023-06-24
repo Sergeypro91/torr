@@ -10,5 +10,6 @@ export const isOverflown = ({
     clientHeight,
     scrollWidth,
     scrollHeight,
-}: IsOverflownOptions) =>
-    scrollWidth > clientWidth || scrollHeight > clientHeight;
+}: IsOverflownOptions) => {
+    return scrollWidth > clientWidth || scrollHeight > clientHeight;
+};

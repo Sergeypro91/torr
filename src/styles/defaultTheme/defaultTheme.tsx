@@ -98,6 +98,11 @@ const theme = {
     boxShadow: {
         targetBorder: '0 0 0 4px white',
     },
+    skeleton: {
+        background:
+            'linear-gradient(90deg, #808080 0%, #ffffff 8%, #808080 16%)',
+        backgroundSize: '200% 100%',
+    },
 };
 
 export const defaultTheme: DefaultTheme = theme;

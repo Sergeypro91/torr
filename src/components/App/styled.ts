@@ -10,6 +10,6 @@ export const AppContainer = styled.div`
 
 export const AppWrapper = styled.div<FocusedItem>`
     display: flex;
-    transform: ${({ focused }) => (focused ? '' : 'translate(-350px)')};
+    transform: ${({ focused }) => (focused ? '' : 'translate3D(-350px, 0, 0)')};
     transition: ${({ theme }) => theme.transition};
 `;

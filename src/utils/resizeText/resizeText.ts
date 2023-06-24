@@ -17,22 +17,23 @@ export const resizeText = ({
     unit = 'px',
 }: ResizeTextOptions) => {
     (elements || [element]).forEach((el) => {
-        let i = minSize;
-        let overflow = false;
+        let i = maxSize;
+        let overflow = true;
 
         const parent = el?.parentElement;
 
         if (parent) {
             el.style.alignSelf = 'flex-start';
 
-            while (!overflow && i < maxSize) {
+            while (overflow && i > minSize) {
                 el.style.fontSize = `${i}${unit}`;
                 overflow = isOverflown(parent);
 
-                if (!overflow) i += step;
+                if (overflow) {
+                    i -= step;
+                }
             }
 
-            el.style.fontSize = `${i - step}${unit}`;
             el.style.alignSelf = 'flex-end';
         }
     });

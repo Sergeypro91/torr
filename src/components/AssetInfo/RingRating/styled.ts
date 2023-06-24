@@ -38,6 +38,7 @@ export const PercentRing = styled.circle<{ percent: number }>`
     transform-origin: center;
     filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
     transition: ${({ theme }) => theme.transition};
+    will-change: transform;
 `;
 
 export const Rate = styled.h3`

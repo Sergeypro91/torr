@@ -15,16 +15,19 @@ export const AssetInfo = () => {
 
     useEffect(() => {
         if (titleSpanRef.current) {
-            resizeText({ element: titleSpanRef.current, step: 0.5 });
+            resizeText({
+                element: titleSpanRef.current,
+                minSize: 47,
+                maxSize: 76,
+                step: 4,
+            });
         }
-    }, [title, titleSpanRef]);
+    }, [title]);
 
     return (
         <AssetInfoContainer>
             <AssetInfoTitle className="text-container">
-                <span ref={titleSpanRef} className="text">
-                    <h1>{title}</h1>
-                </span>
+                <span ref={titleSpanRef}>{title}</span>
             </AssetInfoTitle>
             <AssetInfoDetail>
                 <AssetInfoGeneral />

@@ -29,7 +29,7 @@ export const Poster = ({
     }, [data, size, type]);
 
     const blurHash = useMemo(() => {
-        return data ? getImageBlurHash({ data, type }) : null;
+        return getImageBlurHash({ data, type });
     }, [data, type]);
 
     const handleLoad = () => {
@@ -43,22 +43,20 @@ export const Poster = ({
 
     return (
         <>
-            {blurHash ? (
-                <BlurHashContainer
-                    hash={blurHash}
-                    width={'100%'}
-                    height={'100%'}
-                    resolutionX={32}
-                    resolutionY={32}
-                    punch={1}
-                />
-            ) : null}
             <PosterContainer
-                isLoaded={isLoaded}
                 src={imageSrc}
                 alt={alt || title}
                 loading="lazy"
                 onLoad={handleLoad}
+            />
+            <BlurHashContainer
+                opacity={isLoaded ? '0' : '1'}
+                hash={blurHash}
+                width={'100%'}
+                height={'100%'}
+                resolutionX={32}
+                resolutionY={32}
+                punch={1}
             />
         </>
     );
