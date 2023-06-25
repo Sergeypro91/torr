@@ -8,50 +8,41 @@ import {
 } from './styled';
 
 export type RingRatingProps = {
-    ratingScore: number | null;
-    radius?: number;
+    ratingScore: number;
+    size?: number;
     strokeWidth?: number;
 };
 
 export const RingRating = ({
     ratingScore,
-    radius = 40,
-    strokeWidth = 12,
+    size = 100,
+    strokeWidth = 6,
 }: RingRatingProps) => {
     const ratingPercent = useMemo(() => {
-        return ratingScore
-            ? parseInt(((ratingScore / 10) * 100).toFixed(), 10)
-            : 0;
+        return ratingScore ? Math.round((ratingScore / 10) * 100) : 0;
     }, [ratingScore]);
-
-    const size = useMemo(() => radius * 2 + strokeWidth, [radius, strokeWidth]);
-
-    if (!ratingScore) {
-        return null;
-    }
 
     return (
         <RingRatingContainer size={size}>
             <Rate>{ratingScore.toFixed(1)}</Rate>
 
-            <Pie viewBox={`0 0 ${size} ${size}`} size={size}>
+            <Pie viewBox={`0 0 40 40`} size={size}>
                 <FillRing
                     strokeWidth={`${strokeWidth}`}
+                    strokeDasharray={`100,100`}
                     fill="none"
-                    cx={`${size / 2}`}
-                    cy={`${size / 2}`}
-                    r={`${radius}`}
+                    cx="20"
+                    cy="20"
+                    r="15.91549431"
                 />
                 <PercentRing
                     percent={ratingPercent}
                     strokeWidth={`${strokeWidth}`}
                     strokeLinecap="round"
-                    strokeDasharray={`${
-                        ((2 * 3.14 * radius) / 100) * ratingPercent
-                    }`}
-                    cx={`${size / 2}`}
-                    cy={`${size / 2}`}
-                    r={`${radius}`}
+                    strokeDasharray={`${ratingPercent},100`}
+                    cx="20"
+                    cy="20"
+                    r="15.91549431"
                 />
             </Pie>
         </RingRatingContainer>

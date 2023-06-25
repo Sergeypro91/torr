@@ -32,6 +32,7 @@ export const FillRing = styled.circle`
     stroke: rgba(255, 255, 255, 0.3);
 `;
 export const PercentRing = styled.circle<{ percent: number }>`
+    opacity: ${({ percent }) => (percent ? '1' : '0')};
     stroke: ${({ theme, percent }) => getColor({ theme, percent })};
     fill: none;
     transform: rotate(-90deg);

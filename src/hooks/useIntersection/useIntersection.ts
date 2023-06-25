@@ -1,31 +1,36 @@
-import { RefObject, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-export const useIntersection = (
-    element: null | RefObject<HTMLSpanElement>,
-    rootMargin?: string,
-    trigger?: string,
-) => {
-    const [isVisible, setState] = useState(false);
+type useIntersectionProps = {
+    root?: null | HTMLDivElement;
+    rootMargin?: string;
+    threshold?: number;
+    target?: null | HTMLDivElement;
+    action?: () => void;
+};
+
+export const useIntersection = ({
+    root = null,
+    rootMargin = '',
+    threshold = 0,
+    target = null,
+    action = () => {},
+}: useIntersectionProps) => {
+    const [observer, setObserver] = useState<IntersectionObserver>();
+
+    const callback = useCallback(
+        ([entry]: IntersectionObserverEntry[]) => {
+            if (entry.isIntersecting) {
+                action();
+            }
+        },
+        [action],
+    );
 
     useEffect(() => {
-        const currRef = element?.current;
-        console.log('TRIGGER 2', currRef);
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setState(entry.isIntersecting);
-            },
-            { rootMargin },
+        setObserver(
+            new IntersectionObserver(callback, { root, rootMargin, threshold }),
         );
-        if (currRef) {
-            currRef && observer.observe(currRef);
-        }
+    }, [root, rootMargin, target, threshold, callback]);
 
-        return () => {
-            if (currRef) {
-                observer.unobserve(currRef);
-            }
-        };
-    }, [element, rootMargin, trigger]);
-
-    return isVisible;
+    return { observer };
 };

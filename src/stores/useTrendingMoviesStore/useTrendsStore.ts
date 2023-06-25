@@ -12,26 +12,28 @@ export const useTrendingMoviesStore = create<UseTrendsStore<any>>()(
     devtools((set) => ({
         trends: null,
 
-        setTrends: (trendMovies) =>
+        setTrends: (response) =>
             set((state) => {
                 if (state.trends) {
                     const currentPage = state.trends.page;
-                    const shouldUpdate = currentPage < trendMovies.page;
+                    const shouldUpdate = currentPage < response.page;
 
-                    return shouldUpdate
-                        ? {
-                              trends: {
-                                  ...trendMovies,
-                                  results: [
-                                      ...state.trends.results,
-                                      ...trendMovies.results,
-                                  ],
-                              },
-                          }
-                        : { trends: trendMovies };
+                    if (shouldUpdate) {
+                        return {
+                            trends: {
+                                ...response,
+                                results: [
+                                    ...state.trends.results,
+                                    ...response.results,
+                                ],
+                            },
+                        };
+                    }
+
+                    return { trends: state.trends };
                 }
 
-                return { trends: trendMovies };
+                return { trends: response };
             }),
     })),
 );

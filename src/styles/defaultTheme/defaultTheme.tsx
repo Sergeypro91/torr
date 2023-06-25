@@ -38,8 +38,8 @@ const theme = {
             `;
     },
     typography: {
-        fontFamilyMain:
-            'Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, Noto Sans, sans-serif',
+        flowCircular:
+            'FlowCircular, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, Noto Sans, sans-serif',
         h1: {
             'font-size': 76,
             'line-height': 92,

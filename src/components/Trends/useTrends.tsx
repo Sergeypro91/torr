@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { TrendsProps } from './types';
 
 export const useTrends = ({
@@ -9,7 +9,7 @@ export const useTrends = ({
     focusOnLoad = () => {},
 }: TrendsProps) => {
     const { trends, setTrends } = state;
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(trends?.page || 1);
 
     const sectionId = useMemo(
         () => `${queryKey()[0]}`.replace(/\s/g, ''),
@@ -26,6 +26,7 @@ export const useTrends = ({
         queryKey: queryKey(page),
         queryFn: () => request(page),
         keepPreviousData: true,
+        enabled: !!page,
     });
 
     const onLoadedData = useCallback(
@@ -35,11 +36,25 @@ export const useTrends = ({
         [focusOnLoad],
     );
 
+    const requestMore = useCallback(() => {
+        console.log('TRIGGER', isLoading);
+        if (!isLoading) {
+            setPage((prevState) => prevState + 1);
+        }
+    }, [isLoading]);
+
     useEffect(() => {
         if (data) {
             setTrends(data);
         }
     }, [data, setTrends]);
 
-    return { isError, isLoading, sectionId, onLoadedData, ...trends };
+    return {
+        isError,
+        isLoading,
+        sectionId,
+        onLoadedData,
+        requestMore,
+        ...trends,
+    };
 };

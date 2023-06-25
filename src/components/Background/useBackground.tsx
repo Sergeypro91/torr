@@ -16,16 +16,18 @@ export const useBackground = () => {
     }, [selectedAsset]);
 
     const addNewAsset = useCallback((assetData: SelectElement) => {
-        setAssets((prevState) => {
-            const assetIds = prevState.map(
-                (asset) => `${asset.tmdbId}${asset.mediaType}`,
-            );
-            const isNewAssetExist = assetIds.includes(
-                `${assetData.tmdbId}${assetData.mediaType}`,
-            );
+        setTimeout(() => {
+            setAssets((prevState) => {
+                const assetIds = prevState.map(
+                    (asset) => `${asset.tmdbId}${asset.mediaType}`,
+                );
+                const isNewAssetExist = assetIds.includes(
+                    `${assetData.tmdbId}${assetData.mediaType}`,
+                );
 
-            return isNewAssetExist ? prevState : [assetData, ...prevState];
-        });
+                return isNewAssetExist ? prevState : [assetData, ...prevState];
+            });
+        }, 300);
     }, []);
 
     const leaveNewAsset = () => {

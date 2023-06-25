@@ -34,7 +34,7 @@ export const useAssetInfo = () => {
             return selectedAsset.popularity;
         }
 
-        return null;
+        return 0;
     }, [selectedAsset]);
 
     const genres = useMemo(() => {

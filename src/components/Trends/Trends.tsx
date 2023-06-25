@@ -10,8 +10,14 @@ export const Trends = ({
     onSelect = () => {},
     ...restProps
 }: TrendsProps) => {
-    const { isError, isLoading, sectionId, results, onLoadedData } =
-        useTrends(restProps);
+    const {
+        isError,
+        isLoading,
+        sectionId,
+        results,
+        onLoadedData,
+        requestMore,
+    } = useTrends(restProps);
 
     return (
         <TrendsContainer>
@@ -21,6 +27,7 @@ export const Trends = ({
                 isError={isError}
                 isLoading={isLoading}
                 trends={results || []}
+                requestMore={requestMore}
                 onFocus={onFocus}
                 onSelect={onSelect}
                 onLoadedData={onLoadedData}

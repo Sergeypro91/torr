@@ -35,7 +35,9 @@ export const getImageSrc = ({
     let result;
 
     if (data && type in data) {
-        result = data[type as keyof typeof data];
+        result =
+            data[type as keyof typeof data] ||
+            data['backdropPath' as keyof typeof data];
     }
 
     return result ? `${imgService}${size}${result}` : '';
@@ -49,8 +51,10 @@ export const getImageBlurHash = ({ data, type }: GetImageBlurHashOption) => {
     const imgType = `${type}BlurHash` as const;
     let result;
 
-    if (data && imgType in data) {
-        result = data[imgType as keyof typeof data];
+    if (data) {
+        result =
+            data[imgType as keyof typeof data] ||
+            data['backdropPathBlurHash' as keyof typeof data];
     }
 
     return result ? `${result}` : 'L00000fQfQfQfQfQfQfQfQfQfQfQ';

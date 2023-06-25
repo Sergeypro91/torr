@@ -11,7 +11,7 @@ export const AssetInfoContainer = styled.div`
     }
 `;
 
-export const AssetInfoTitle = styled.div`
+export const AssetInfoTitle = styled.div<{ isEmpty?: boolean }>`
     flex: 1 100%;
     display: flex;
     color: ${({ theme }) => theme.palette.white};
@@ -19,6 +19,8 @@ export const AssetInfoTitle = styled.div`
     overflow: scroll;
 
     * {
+        font-family: ${({ theme, isEmpty }) =>
+            isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
         font-weight: ${({ theme }) => theme.typography.h1['font-weight']};
     }
 `;
@@ -34,7 +36,9 @@ export const AssetInfoDetail = styled.div`
     }
 `;
 
-export const AssetInfoDescription = styled.h3`
+export const AssetInfoDescription = styled.h3<{ isEmpty?: boolean }>`
+    font-family: ${({ theme, isEmpty }) =>
+        isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
     font-weight: 300;
     overflow: hidden;
     display: -webkit-box;

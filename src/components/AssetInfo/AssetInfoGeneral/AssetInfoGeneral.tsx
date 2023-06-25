@@ -3,6 +3,7 @@ import { useAssetInfo } from '../hooks';
 import { About, AssetInfoGeneralContainer, Genre, TypeAndDate } from './styled';
 import { RingRating } from '@/components/AssetInfo/RingRating';
 import { isOverflown } from '@/utils';
+import { lorem } from '../constants';
 
 export const AssetInfoGeneral = () => {
     const { rating, genres, type, releaseDate } = useAssetInfo();
@@ -19,10 +20,16 @@ export const AssetInfoGeneral = () => {
         <AssetInfoGeneralContainer>
             <RingRating ratingScore={rating} />
             <About>
-                <Genre ref={genreRef} isOverflown={isGenreOverflown}>
-                    <h4>{genres}</h4>
+                <Genre
+                    ref={genreRef}
+                    isOverflown={isGenreOverflown}
+                    isEmpty={!genres}
+                >
+                    <h4>{genres || lorem}</h4>
                 </Genre>
-                <TypeAndDate>{`${type}・${releaseDate}`}</TypeAndDate>
+                <TypeAndDate isEmpty={!type}>
+                    {type ? `${type}・${releaseDate}` : lorem}
+                </TypeAndDate>
             </About>
         </AssetInfoGeneralContainer>
     );

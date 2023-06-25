@@ -10,6 +10,8 @@ export type ContentRowProps = {
     isError: boolean;
     isLoading: boolean;
     trends: AssetType[];
+    skeletonCount?: number;
+    requestMore: () => void;
     onFocus: (
         layout: FocusableComponentLayout,
         props: AssetType,

@@ -1,4 +1,6 @@
 import React from 'react';
+import { SkeletonMultiplayer } from '@/components';
+import { useIntersection } from '@/hooks';
 import { useContentRow } from './useContentRow';
 import { ContentRowProps } from './types';
 import { Asset, AssetSkeleton } from './Asset';
@@ -9,7 +11,8 @@ import {
 } from './styled';
 
 export const ContentRow = (props: ContentRowProps) => {
-    const { sectionName, trends } = props;
+    const { sectionName, trends, skeletonCount = 5, requestMore } = props;
+
     const {
         FocusContext,
         ref,
@@ -19,6 +22,10 @@ export const ContentRow = (props: ContentRowProps) => {
         scrollingRef,
         getFocusId,
     } = useContentRow(props);
+
+    const { observer } = useIntersection({
+        action: requestMore,
+    });
 
     return (
         <FocusContext.Provider value={focusKey}>
@@ -34,7 +41,11 @@ export const ContentRow = (props: ContentRowProps) => {
                             {...trend}
                         />
                     ))}
-                    <AssetSkeleton />
+                    <SkeletonMultiplayer
+                        counter={skeletonCount}
+                        element={AssetSkeleton}
+                        observer={observer}
+                    />
                 </ContentRowAssets>
             </ContentRowContainer>
         </FocusContext.Provider>

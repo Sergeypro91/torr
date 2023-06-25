@@ -1,8 +1,8 @@
 'use client';
 
 import React, { PropsWithChildren } from 'react';
-import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from 'styled-components';
 import { useAppStore } from '@/stores';
 import { defaultTheme, GlobalStyle } from '@/styles';
@@ -11,7 +11,6 @@ import {
     Background,
     ExitPopup,
     KeydownListener,
-    WelcomeScreen,
 } from '@/components';
 import { useReactQuery, useTizenListener } from '@/hooks';
 import {

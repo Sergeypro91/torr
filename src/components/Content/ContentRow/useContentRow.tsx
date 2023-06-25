@@ -3,8 +3,8 @@ import { debounce } from 'lodash-es';
 import {
     FocusContext,
     FocusableComponentLayout,
-    FocusDetails,
     useFocusable,
+    setThrottle,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { AssetType, SelectElement } from '@/types';
 import { ContentRowProps } from '@/components/Content/ContentRow/types';
@@ -32,13 +32,14 @@ export const useContentRow = ({
 
     const updateSelectElement = debounce((selectElement: SelectElement) => {
         onSelect(selectElement);
-    }, 300);
+    }, 350);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const onAssetFocus = useCallback(
         (
             layout: FocusableComponentLayout,
             props: SelectElement,
-            event: FocusDetails,
+            // event: FocusDetails,
         ) => {
             if (scrollingRef.current) {
                 scrollingRef.current.scrollTo({
@@ -59,6 +60,13 @@ export const useContentRow = ({
             );
         }
     }, [trends, sectionId, onLoadedData]);
+
+    useEffect(() => {
+        setThrottle({
+            throttle: 250,
+            throttleKeypresses: true,
+        });
+    }, []);
 
     return {
         FocusContext,

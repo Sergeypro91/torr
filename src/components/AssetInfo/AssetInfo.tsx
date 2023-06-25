@@ -6,8 +6,9 @@ import {
     AssetInfoTitle,
 } from './styled';
 import { AssetInfoGeneral } from './AssetInfoGeneral';
-import { useAssetInfo } from './hooks';
 import { resizeText } from '@/utils';
+import { useAssetInfo } from './hooks';
+import { lorem } from './constants';
 
 export const AssetInfo = () => {
     const { title, description } = useAssetInfo();
@@ -26,12 +27,14 @@ export const AssetInfo = () => {
 
     return (
         <AssetInfoContainer>
-            <AssetInfoTitle className="text-container">
-                <span ref={titleSpanRef}>{title}</span>
+            <AssetInfoTitle isEmpty={!title}>
+                <span ref={titleSpanRef}>{title || lorem}</span>
             </AssetInfoTitle>
             <AssetInfoDetail>
                 <AssetInfoGeneral />
-                <AssetInfoDescription>{description}</AssetInfoDescription>
+                <AssetInfoDescription isEmpty={!description}>
+                    {description || lorem}
+                </AssetInfoDescription>
             </AssetInfoDetail>
         </AssetInfoContainer>
     );
