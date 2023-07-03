@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FocusedItem } from '@/types';
+import { CSSProperties } from 'react';
 
 export const AssetBackground = styled.div`
     width: 100%;
@@ -10,8 +11,8 @@ export const AssetBackground = styled.div`
     border-radius: ${({ theme }) => theme.spacing(2)};
 `;
 export const AssetContainer = styled.div<FocusedItem>`
-    width: calc(100vw / 6);
-    height: calc(9 / 16 * (100vw / 6));
+    width: 100%;
+    height: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -42,7 +43,8 @@ export const AssetInner = styled.div`
     }
 `;
 
-export const AssetSkeleton = styled(AssetWrapper)`
+export const AssetSkeleton = styled(AssetWrapper)<{ style?: CSSProperties }>`
+    ${({ style }) => (style ? { ...style } : '')}
     &::after {
         ${AssetContainer.componentStyle['rules']};
         content: '';

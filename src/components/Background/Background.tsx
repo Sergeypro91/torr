@@ -10,7 +10,7 @@ export const Background = () => {
         <BackgroundContainer blur={blur}>
             <BackgroundBackground>
                 {[...assets].reverse().map((asset) => (
-                    <BackgroundItem key={asset.tmdbId}>
+                    <BackgroundItem key={`${asset.tmdbId}${asset.mediaType}`}>
                         <Poster data={asset} type="backdropPath" />
                     </BackgroundItem>
                 ))}

@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { TrendsProps } from './types';
+import { debounce } from 'lodash-es';
 
 export const useTrends = ({
     state,
     getTrends,
     queryKey,
-    focusOnLoad = () => {},
-}: TrendsProps) => {
-    const { trends, setTrends } = state;
-    const [page, setPage] = useState(trends?.page || 1);
+}: Omit<TrendsProps, 'selectedItem'>) => {
+    const { dataState, setDataState } = state;
+    const [page, setPage] = useState(dataState?.page || 1);
 
-    const sectionId = useMemo(
+    const rowId = useMemo(
         () => `${queryKey()[0]}`.replace(/\s/g, ''),
         [queryKey],
     );
@@ -29,32 +29,30 @@ export const useTrends = ({
         enabled: !!page,
     });
 
-    const onLoadedData = useCallback(
-        (focusedAssetId: string) => {
-            focusOnLoad(`${focusedAssetId}`);
-        },
-        [focusOnLoad],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const requestMore = useCallback(
+        debounce(() => {
+            const dataPage = data?.page;
+            if (!isLoading) {
+                setPage((prevState) =>
+                    dataPage === prevState ? prevState + 1 : prevState,
+                );
+            }
+        }, 300),
+        [isLoading, data],
     );
-
-    const requestMore = useCallback(() => {
-        console.log('TRIGGER', isLoading);
-        if (!isLoading) {
-            setPage((prevState) => prevState + 1);
-        }
-    }, [isLoading]);
 
     useEffect(() => {
         if (data) {
-            setTrends(data);
+            setDataState(data);
         }
-    }, [data, setTrends]);
+    }, [data, setDataState]);
 
     return {
         isError,
         isLoading,
-        sectionId,
-        onLoadedData,
+        rowId,
         requestMore,
-        ...trends,
+        ...dataState,
     };
 };

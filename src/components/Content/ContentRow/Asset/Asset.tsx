@@ -7,12 +7,25 @@ import {
     AssetWrapper,
     AssetContainer,
     AssetBackground,
+    AssetSkeleton,
 } from './styled';
 
 export const Asset = memo((props: AssetProps) => {
-    const { ...data } = props;
-    const { ref, focused, focusId, handleAssetClick, handleAssetDoubleClick } =
-        useAsset({ ...props });
+    const { focusId, data, style } = props;
+    const {
+        ref,
+        focused,
+        handleAssetClick,
+        handleAssetDoubleClick,
+    } = useAsset({ ...props });
+
+    React.useEffect(() => {
+        console.log('RENDER ASSET');
+    }, [focusId]);
+
+    if (!data) {
+        return <AssetSkeleton style={style} />;
+    }
 
     return (
         <AssetWrapper
@@ -20,6 +33,7 @@ export const Asset = memo((props: AssetProps) => {
             id={focusId}
             onClick={handleAssetClick}
             onDoubleClick={handleAssetDoubleClick}
+            style={style}
         >
             <AssetContainer focused={focused}>
                 <AssetBackground>

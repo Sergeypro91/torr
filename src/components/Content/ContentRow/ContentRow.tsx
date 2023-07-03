@@ -1,51 +1,92 @@
-import React from 'react';
-import { SkeletonMultiplayer } from '@/components';
-import { useIntersection } from '@/hooks';
+import React, { useCallback } from 'react';
+import { ListChildComponentProps } from 'react-window';
+import InfiniteLoader from 'react-window-infinite-loader';
 import { useContentRow } from './useContentRow';
 import { ContentRowProps } from './types';
-import { Asset, AssetSkeleton } from './Asset';
+import { Asset } from './Asset';
 import {
     ContentRowAssets,
     ContentRowContainer,
     ContentRowTitle,
+    ContentRowAssetList,
 } from './styled';
 
 export const ContentRow = (props: ContentRowProps) => {
-    const { sectionName, trends, skeletonCount = 5, requestMore } = props;
+    const {
+        rowId,
+        rowTitle,
+        dataState,
+        margin = 40,
+        itemCount = 1000,
+        requestMore,
+        onAssetFocus,
+    } = props;
 
     const {
-        FocusContext,
         ref,
         focusKey,
+        rowWidth,
+        assetSize,
+        defineStyle,
+        FocusContext,
         hasFocusedChild,
-        onAssetFocus,
-        scrollingRef,
-        getFocusId,
-    } = useContentRow(props);
+        listRef,
+        infiniteLoaderRef,
+        handleListItemsRendered,
+    } = useContentRow({ ...props, margin });
 
-    const { observer } = useIntersection({
-        action: requestMore,
-    });
+    const Row = useCallback(
+        ({ index, style }: ListChildComponentProps) => {
+            const currStyle = defineStyle(style);
+            const currAsset = dataState[index];
+            const currFocusId = `${rowId}|${dataState[index]?.tmdbId}|${dataState[index]?.mediaType}`;
+
+            return (
+                <Asset
+                    style={currStyle}
+                    onAssetFocus={onAssetFocus}
+                    data={currAsset}
+                    focusId={currFocusId}
+                />
+            );
+        },
+        [defineStyle, dataState, rowId, onAssetFocus],
+    );
 
     return (
         <FocusContext.Provider value={focusKey}>
             <ContentRowContainer ref={ref} focused={hasFocusedChild}>
-                <ContentRowTitle>{sectionName}</ContentRowTitle>
+                <ContentRowTitle indent={margin}>{rowTitle}</ContentRowTitle>
 
-                <ContentRowAssets ref={scrollingRef}>
-                    {trends.map((trend) => (
-                        <Asset
-                            key={getFocusId(trend)}
-                            focusId={getFocusId(trend)}
-                            onFocus={onAssetFocus}
-                            {...trend}
-                        />
-                    ))}
-                    <SkeletonMultiplayer
-                        counter={skeletonCount}
-                        element={AssetSkeleton}
-                        observer={observer}
-                    />
+                <ContentRowAssets>
+                    <InfiniteLoader
+                        ref={infiniteLoaderRef}
+                        isItemLoaded={(index) => index < dataState.length}
+                        itemCount={itemCount}
+                        loadMoreItems={requestMore}
+                    >
+                        {({ onItemsRendered, ref }) => {
+                            return (
+                                <ContentRowAssetList
+                                    height={assetSize.height}
+                                    width={rowWidth}
+                                    itemCount={itemCount}
+                                    itemSize={assetSize.width + margin}
+                                    onItemsRendered={(event) => {
+                                        onItemsRendered(event);
+                                        handleListItemsRendered(event);
+                                    }}
+                                    layout="horizontal"
+                                    ref={(list) => {
+                                        listRef.current = list;
+                                        ref(list);
+                                    }}
+                                >
+                                    {Row}
+                                </ContentRowAssetList>
+                            );
+                        }}
+                    </InfiniteLoader>
                 </ContentRowAssets>
             </ContentRowContainer>
         </FocusContext.Provider>

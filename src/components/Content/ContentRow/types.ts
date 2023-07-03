@@ -5,18 +5,25 @@ import {
 import { AssetType, SelectElement } from '@/types';
 
 export type ContentRowProps = {
-    sectionId: string;
-    sectionName: string;
+    rowId: string;
+    rowTitle: string;
     isError: boolean;
     isLoading: boolean;
-    trends: AssetType[];
+    dataState: AssetType[];
+    selectedItem: null | string;
+    margin?: number;
+    itemCount?: number;
     skeletonCount?: number;
     requestMore: () => void;
-    onFocus: (
+    onRowFocus: (
         layout: FocusableComponentLayout,
-        props: AssetType,
-        event: FocusDetails,
+        asset: AssetType,
+        details: FocusDetails,
     ) => void;
-    onSelect: (asset: SelectElement) => void;
-    onLoadedData: (focusedAssetId: string) => void;
+    onAssetFocus: (
+        layout: FocusableComponentLayout,
+        asset: SelectElement,
+        details: FocusDetails,
+    ) => void;
+    onLoadFocus: (focusedAssetId: string) => void;
 };

@@ -1,80 +1,147 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { debounce } from 'lodash-es';
+import React, {
+    useRef,
+    useState,
+    useMemo,
+    useEffect,
+    CSSProperties,
+    useCallback,
+} from 'react';
 import {
     FocusContext,
-    FocusableComponentLayout,
     useFocusable,
     setThrottle,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { AssetType, SelectElement } from '@/types';
 import { ContentRowProps } from '@/components/Content/ContentRow/types';
+import { getAssetSize } from '@/utils';
+import { FixedSizeList } from 'react-window';
+import InfiniteLoader from 'react-window-infinite-loader';
 
 export const useContentRow = ({
-    sectionId,
-    trends,
-    onFocus,
-    onSelect,
-    onLoadedData,
-}: ContentRowProps) => {
-    const scrollingRef = useRef<null | HTMLDivElement>(null);
+    margin,
+    rowId,
+    dataState,
+    selectedItem,
+    onRowFocus,
+    onLoadFocus,
+}: ContentRowProps & { margin: number }) => {
+    const [rowWidth, setRowWidth] = useState(0);
+    const listRef = useRef<FixedSizeList | null>(null);
+    const infiniteLoaderRef = useRef<InfiniteLoader | null>(null);
+    const visibleItemsRef = useRef<{
+        visibleStartIndex: number;
+        visibleStopIndex: number;
+    }>();
+
+    const assetSize = useMemo(
+        () => getAssetSize({ rowWidth, margin, counter: 5 }),
+        [margin, rowWidth],
+    );
+
+    /**
+     * @describe Mixes extra padding into the styles of nested list items
+     * */
+    const defineStyle = useCallback(
+        (style: CSSProperties) => {
+            return { ...style, ...assetSize, marginLeft: margin };
+        },
+        [assetSize, margin],
+    );
+
     const { ref, focusKey, hasFocusedChild } = useFocusable({
-        onFocus,
-        focusKey: sectionId,
+        onFocus: onRowFocus,
+        focusKey: rowId,
         trackChildren: true,
     });
 
-    const getFocusId = useCallback(
-        (asset: AssetType) => {
-            return `${sectionId}${asset.tmdbId}${asset.mediaType}`;
-        },
-        [sectionId],
-    );
+    /**
+     * @describe Define the indexes of the list items visible in the viewport (first and last)
+     * */
+    const handleListItemsRendered = (params: {
+        visibleStartIndex: number;
+        visibleStopIndex: number;
+    }) => {
+        const { visibleStartIndex, visibleStopIndex } = params;
 
-    const updateSelectElement = debounce((selectElement: SelectElement) => {
-        onSelect(selectElement);
-    }, 350);
+        visibleItemsRef.current = { visibleStartIndex, visibleStopIndex };
+    };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const onAssetFocus = useCallback(
-        (
-            layout: FocusableComponentLayout,
-            props: SelectElement,
-            // event: FocusDetails,
-        ) => {
-            if (scrollingRef.current) {
-                scrollingRef.current.scrollTo({
-                    left: layout.x,
-                    behavior: 'smooth',
-                });
-            }
-
-            updateSelectElement(props);
-        },
-        [updateSelectElement],
-    );
-
+    /**
+     * @describe Calculates the length of the list component to further calculate the size of nested elements
+     * */
     useEffect(() => {
-        if (trends.length) {
-            onLoadedData(
-                `${sectionId}${trends[0].tmdbId}${trends[0].mediaType}`,
+        if (ref.current) {
+            setRowWidth(ref.current.getBoundingClientRect().width);
+        }
+    }, [ref]);
+
+    /**
+     * @describe Set focus to the first item in the list if no item is selected. Set by flag from parent component (only one per page)
+     * */
+    useEffect(() => {
+        if (dataState.length) {
+            onLoadFocus(
+                `${rowId}|${dataState[0].tmdbId}|${dataState[0].mediaType}`,
             );
         }
-    }, [trends, sectionId, onLoadedData]);
+    }, [onLoadFocus, rowId, dataState]);
 
+    /**
+     * @describe Focus throttling
+     * */
     useEffect(() => {
         setThrottle({
-            throttle: 250,
+            throttle: 400,
             throttleKeypresses: true,
         });
     }, []);
 
+    /**
+     * @describe Effect for handling situations when the user returns from another page to a previously viewed element
+     * */
+    useEffect(() => {
+        if (
+            visibleItemsRef.current &&
+            selectedItem &&
+            dataState.length &&
+            listRef.current
+        ) {
+            const [row, itemId, itemType] = selectedItem.split('|');
+            const isSelectedItemFromRow = rowId.replace(/\s/g, '') === row;
+
+            if (isSelectedItemFromRow) {
+                const selectedItemDataIndex = dataState.findIndex(
+                    (item) =>
+                        `${item.tmdbId}${item.mediaType}` ===
+                        `${itemId}${itemType}`,
+                );
+                const isItemOnScreen =
+                    selectedItemDataIndex >=
+                        visibleItemsRef.current?.visibleStartIndex &&
+                    selectedItemDataIndex <=
+                        visibleItemsRef.current?.visibleStopIndex;
+
+                if (!isItemOnScreen) {
+                    setTimeout(() => {
+                        listRef?.current?.scrollToItem(
+                            selectedItemDataIndex,
+                            'center',
+                        );
+                    });
+                }
+            }
+        }
+    }, [rowId, dataState, selectedItem]);
+
     return {
-        FocusContext,
         ref,
         focusKey,
+        rowWidth,
+        assetSize,
+        FocusContext,
         hasFocusedChild,
-        onAssetFocus,
-        scrollingRef,
-        getFocusId,
+        listRef,
+        infiniteLoaderRef,
+        defineStyle,
+        handleListItemsRendered,
     };
 };

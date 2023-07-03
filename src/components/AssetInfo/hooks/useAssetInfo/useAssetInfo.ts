@@ -39,7 +39,7 @@ export const useAssetInfo = () => {
 
     const genres = useMemo(() => {
         if (selectedAsset && selectedAsset.mediaType !== MediaType.PERSON) {
-            const genres = selectedAsset.genres;
+            const genres = selectedAsset.genres || [];
             const genreMap = new Map(
                 (selectedAsset.mediaType === MediaType.MOVIE
                     ? movieGenres

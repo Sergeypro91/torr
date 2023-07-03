@@ -6,31 +6,28 @@ import { TrendsProps } from './types';
 
 export const Trends = ({
     name = '',
-    onFocus = () => {},
-    onSelect = () => {},
+    selectedItem,
+    onRowFocus = () => {},
+    onAssetFocus = () => {},
+    onLoadFocus = () => {},
     ...restProps
 }: TrendsProps) => {
-    const {
-        isError,
-        isLoading,
-        sectionId,
-        results,
-        onLoadedData,
-        requestMore,
-    } = useTrends(restProps);
+    const { isError, isLoading, rowId, results, requestMore } =
+        useTrends(restProps);
 
     return (
         <TrendsContainer>
             <ContentRow
-                sectionId={sectionId}
-                sectionName={name}
+                rowId={rowId}
+                rowTitle={name}
                 isError={isError}
                 isLoading={isLoading}
-                trends={results || []}
+                dataState={results || []}
+                selectedItem={selectedItem}
                 requestMore={requestMore}
-                onFocus={onFocus}
-                onSelect={onSelect}
-                onLoadedData={onLoadedData}
+                onRowFocus={onRowFocus}
+                onAssetFocus={onAssetFocus}
+                onLoadFocus={onLoadFocus}
             />
         </TrendsContainer>
     );

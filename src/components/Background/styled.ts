@@ -6,6 +6,7 @@ export const BackgroundBackground = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+    overflow: hidden;
 `;
 
 export const BackgroundItem = styled.div`

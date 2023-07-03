@@ -3,37 +3,37 @@ import { devtools } from 'zustand/middleware';
 import { Pagination } from '@/types';
 
 export type UseTrendsStore<S> = {
-    trends: null | Pagination<S>;
+    dataState: null | Pagination<S>;
 
-    setTrends: (trendMovies: Pagination<S>) => void;
+    setDataState: (trendMovies: Pagination<S>) => void;
 };
 
 export const useTrendingMoviesStore = create<UseTrendsStore<any>>()(
     devtools((set) => ({
-        trends: null,
+        dataState: null,
 
-        setTrends: (response) =>
+        setDataState: (response) =>
             set((state) => {
-                if (state.trends) {
-                    const currentPage = state.trends.page;
+                if (state.dataState) {
+                    const currentPage = state.dataState.page;
                     const shouldUpdate = currentPage < response.page;
 
                     if (shouldUpdate) {
                         return {
-                            trends: {
+                            dataState: {
                                 ...response,
                                 results: [
-                                    ...state.trends.results,
+                                    ...state.dataState.results,
                                     ...response.results,
                                 ],
                             },
                         };
                     }
 
-                    return { trends: state.trends };
+                    return { dataState: state.dataState };
                 }
 
-                return { trends: response };
+                return { dataState: response };
             }),
     })),
 );

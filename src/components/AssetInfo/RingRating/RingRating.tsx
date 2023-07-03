@@ -14,7 +14,7 @@ export type RingRatingProps = {
 };
 
 export const RingRating = ({
-    ratingScore,
+    ratingScore = 0,
     size = 100,
     strokeWidth = 6,
 }: RingRatingProps) => {

@@ -1,15 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
+import { debounce } from 'lodash-es';
 import { ApiResponse } from 'openapi-typescript-fetch';
 import { getTrends } from '@/api';
 import {
     FocusContext,
     FocusableComponentLayout,
-    FocusDetails,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
 import { useAppStore, useRouteStore, useTrendingMoviesStore } from '@/stores';
 import {
-    AssetType,
     MediaType,
     MovieSlim,
     Pagination,
@@ -19,49 +18,12 @@ import {
 
 export const useContent = () => {
     const params = useRouteStore((state) => state.getParams());
-    const selectedAsset = useAppStore((state) => state.selectedAsset);
     const selectAsset = useAppStore((state) => state.selectAsset);
     const movieTrendsState = useTrendingMoviesStore((state) => state);
     const { ref, setFocus, focusKey } = useFocusable({
         focusable: true,
         trackChildren: true,
     });
-
-    const selectedAssetId = useMemo(() => {
-        return params['selectedAssetId'] || null;
-    }, [params]);
-
-    const handleFocus = useCallback(
-        (
-            layout: FocusableComponentLayout,
-            props: AssetType,
-            event: FocusDetails,
-        ) => {
-            ref.current.scrollTo({
-                top: layout.y,
-                behavior: 'smooth',
-            });
-        },
-        [ref],
-    );
-
-    const handleFocusOnLoad = useCallback(
-        (id: string) => {
-            if (!selectedAssetId) {
-                setFocus(id);
-            }
-        },
-        [selectedAssetId, setFocus],
-    );
-
-    const handleSelectAsset = useCallback(
-        (asset: SelectElement) => {
-            if (asset.focusId !== selectedAsset?.focusId) {
-                selectAsset(asset);
-            }
-        },
-        [selectAsset, selectedAsset],
-    );
 
     const getWeeklyMovieTrends = async (
         page?: number,
@@ -74,20 +36,66 @@ export const useContent = () => {
             page,
         });
 
+    const paramItem = useMemo(() => {
+        return params['selectedAssetId'] || null;
+    }, [params]);
+
+    const handleRowFocus = useCallback(
+        (layout: FocusableComponentLayout) => {
+            ref.current.scrollTo({
+                top: layout.y,
+                behavior: 'smooth',
+            });
+        },
+        [ref],
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const selectAssetDebounce = useCallback(
+        debounce((asset: SelectElement) => {
+            selectAsset(asset);
+        }, 600),
+        [],
+    );
+
+    const handleAssetFocus = useCallback(
+        (layout: FocusableComponentLayout, asset: SelectElement) => {
+            layout.node.scrollIntoView({
+                block: 'nearest',
+                behavior: 'smooth',
+                inline: 'center',
+            });
+
+            selectAssetDebounce(asset);
+        },
+        [selectAssetDebounce],
+    );
+
+    const handleOnLoadFocus = useCallback(
+        (id: string) => {
+            if (!paramItem) {
+                setFocus(id);
+            }
+        },
+        [paramItem, setFocus],
+    );
+
     useEffect(() => {
-        if (selectedAssetId) {
-            setFocus(selectedAssetId);
+        if (paramItem) {
+            setFocus(paramItem);
         }
-    }, [selectedAssetId, setFocus]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return {
         FocusContext,
         ref,
         focusKey,
+        paramItem,
         movieTrendsState,
         getWeeklyMovieTrends,
-        handleFocus,
-        handleFocusOnLoad,
-        handleSelectAsset,
+        handleRowFocus,
+        handleOnLoadFocus,
+        handleAssetFocus,
     };
 };

@@ -9,11 +9,12 @@ export const Content = memo(() => {
         FocusContext,
         ref,
         focusKey,
+        paramItem,
         movieTrendsState,
         getWeeklyMovieTrends,
-        handleFocus,
-        handleFocusOnLoad,
-        handleSelectAsset,
+        handleRowFocus,
+        handleOnLoadFocus,
+        handleAssetFocus,
     } = useContent();
 
     return (
@@ -24,9 +25,10 @@ export const Content = memo(() => {
                     state={movieTrendsState}
                     getTrends={getWeeklyMovieTrends}
                     queryKey={WEEK_TRENDING_MOVIES}
-                    onFocus={handleFocus}
-                    focusOnLoad={handleFocusOnLoad}
-                    onSelect={handleSelectAsset}
+                    selectedItem={paramItem}
+                    onRowFocus={handleRowFocus}
+                    onAssetFocus={handleAssetFocus}
+                    onLoadFocus={handleOnLoadFocus}
                 />
             </ContentWrapper>
         </FocusContext.Provider>

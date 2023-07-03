@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react';
-import { routes, useAppStore, useRouteStore } from '@/stores';
+import { routes, useRouteStore } from '@/stores';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { AssetProps } from './types';
 
 export const useAsset = ({
-    focusId = '',
-    onFocus = () => {},
-    ...data
+    focusId,
+    data,
+    onAssetFocus,
 }: AssetProps) => {
     const navigate = useRouteStore((store) => store.navigate);
-    const selectAsset = useAppStore((store) => store.selectAsset);
 
     const onPress = useCallback(() => {
         if (data?.tmdbId) {
@@ -19,18 +18,16 @@ export const useAsset = ({
         }
     }, [navigate, data]);
 
-    const { ref, focused } = useFocusable({
+    const { ref, focused, setFocus } = useFocusable({
         focusKey: focusId,
         onEnterPress: onPress,
-        onFocus,
+        onFocus: onAssetFocus,
         extraProps: { focusId, ...data },
     });
 
     const handleAssetClick = useCallback(() => {
-        if (data?.tmdbId) {
-            selectAsset({ focusId, ...data });
-        }
-    }, [selectAsset, focusId, data]);
+        setFocus(focusId);
+    }, [setFocus, focusId]);
 
     const handleAssetDoubleClick = useCallback(() => {
         onPress();
@@ -39,7 +36,6 @@ export const useAsset = ({
     return {
         ref,
         focused,
-        focusId,
         handleAssetClick,
         handleAssetDoubleClick,
     };
