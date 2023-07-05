@@ -33,9 +33,10 @@ export const VariableNav = memo(({ setFocus }: VariableNavProps) => {
                     <NavItem
                         route={{ pathName: title }}
                         navigateTo={navigateTo}
-                    >
-                        <MenuItem>{title}</MenuItem>
-                    </NavItem>
+                        render={(props) => (
+                            <MenuItem {...props}>{title}</MenuItem>
+                        )}
+                    />
                 </Fragment>
             );
         });

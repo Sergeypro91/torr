@@ -16,7 +16,7 @@ import {
 import { Gear, Info as InfoIcon, User } from '@/assets/images/svgr';
 
 export const AsideFooter = () => {
-    const { ref, focusKey, focusSelf } = useFocusable({
+    const { ref, focusKey } = useFocusable({
         trackChildren: true,
         saveLastFocusedChild: false,
     });
@@ -24,26 +24,35 @@ export const AsideFooter = () => {
     return (
         <FocusContext.Provider value={focusKey}>
             <AsideFooterContainer ref={ref}>
-                <NavItem route={{ pathName: routes.profile }}>
-                    <Profile>
-                        <UserPhoto>
-                            <User />
-                        </UserPhoto>
-                        <UserName>User_name</UserName>
-                    </Profile>
-                </NavItem>
+                <NavItem
+                    route={{ pathName: routes.profile }}
+                    render={(props) => (
+                        <Profile {...props}>
+                            <UserPhoto>
+                                <User />
+                            </UserPhoto>
+                            <UserName>User_name</UserName>
+                        </Profile>
+                    )}
+                />
 
-                <NavItem route={{ pathName: routes.info }}>
-                    <Info>
-                        <InfoIcon />
-                    </Info>
-                </NavItem>
+                <NavItem
+                    route={{ pathName: routes.info }}
+                    render={(props) => (
+                        <Info {...props}>
+                            <InfoIcon />
+                        </Info>
+                    )}
+                />
 
-                <NavItem route={{ pathName: routes.settings }}>
-                    <Settings>
-                        <Gear />
-                    </Settings>
-                </NavItem>
+                <NavItem
+                    route={{ pathName: routes.settings }}
+                    render={(props) => (
+                        <Settings {...props}>
+                            <Gear />
+                        </Settings>
+                    )}
+                />
             </AsideFooterContainer>
         </FocusContext.Provider>
     );

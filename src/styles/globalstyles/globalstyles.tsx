@@ -9,6 +9,10 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.palette.gray['60']};
   }
   
+  body {
+      overflow: hidden;
+  }
+  
   h1 {
     ${({ theme }) => theme.typography.h1};
   }

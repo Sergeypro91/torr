@@ -4,12 +4,12 @@ import { Route, useRouteStore } from '@/stores';
 import { NavItemContainer } from './styled';
 
 export type NavItemProps = {
-    children: JSX.Element;
     route: Route;
     navigateTo?: (route: Route) => void;
+    render: ({ focused }: { focused?: string }) => JSX.Element;
 };
 
-export const NavItem = ({ children, route, navigateTo }: NavItemProps) => {
+export const NavItem = ({ route, navigateTo, render }: NavItemProps) => {
     const navigate = useRouteStore((state) => state.navigate);
 
     const handleNavigateTo = useCallback(
@@ -35,11 +35,7 @@ export const NavItem = ({ children, route, navigateTo }: NavItemProps) => {
 
     return (
         <NavItemContainer ref={ref} onClick={handleClick}>
-            {React.Children.map(children, (child) => {
-                return React.cloneElement(child, {
-                    focused: focused ? '1' : undefined,
-                });
-            })}
+            {render({ focused: focused ? '1' : undefined })}
         </NavItemContainer>
     );
 };

@@ -17,4 +17,3 @@ export * from './Trends';
 export * from './Input';
 export * from './Main';
 export * from './WelcomeScreen';
-export * from './TVNav';

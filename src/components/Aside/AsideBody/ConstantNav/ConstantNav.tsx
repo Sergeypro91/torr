@@ -15,9 +15,15 @@ export const ConstantNav = memo(() => {
     return (
         <>
             {filteredConstantRoutes.map((route) => (
-                <NavItem key={route || 'home'} route={{ pathName: route }}>
-                    <MenuItem>{route || 'home'}</MenuItem>
-                </NavItem>
+                <NavItem
+                    key={route || 'home'}
+                    route={{ pathName: route }}
+                    render={(props) => {
+                        return (
+                            <MenuItem {...props}>{route || 'home'}</MenuItem>
+                        );
+                    }}
+                />
             ))}
         </>
     );

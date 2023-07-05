@@ -36,12 +36,11 @@ export const Picture = () => {
                 <div>PICTURE - {pictureId}</div>
 
                 <div ref={ref}>
-                    <NavItem route={torrentsRoute}>
-                        <h2>Torrents</h2>
-                    </NavItem>
-                    <NavItem route={filesRoute}>
-                        <h2>Files</h2>
-                    </NavItem>
+                    <NavItem
+                        route={torrentsRoute}
+                        render={() => <h2>Torrents</h2>}
+                    />
+                    <NavItem route={filesRoute} render={() => <h2>Files</h2>} />
                 </div>
             </PictureContainer>
         </FocusContext.Provider>

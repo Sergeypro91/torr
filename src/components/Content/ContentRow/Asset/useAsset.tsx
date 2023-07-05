@@ -3,11 +3,7 @@ import { routes, useRouteStore } from '@/stores';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { AssetProps } from './types';
 
-export const useAsset = ({
-    focusId,
-    data,
-    onAssetFocus,
-}: AssetProps) => {
+export const useAsset = ({ focusId, data, onAssetFocus }: AssetProps) => {
     const navigate = useRouteStore((store) => store.navigate);
 
     const onPress = useCallback(() => {
@@ -22,7 +18,7 @@ export const useAsset = ({
         focusKey: focusId,
         onEnterPress: onPress,
         onFocus: onAssetFocus,
-        extraProps: { focusId, ...data },
+        extraProps: data ? { focusId, ...data } : undefined,
     });
 
     const handleAssetClick = useCallback(() => {

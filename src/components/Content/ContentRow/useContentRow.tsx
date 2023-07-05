@@ -91,7 +91,6 @@ export const useContentRow = ({
     useEffect(() => {
         setThrottle({
             throttle: 400,
-            throttleKeypresses: true,
         });
     }, []);
 
