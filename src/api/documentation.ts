@@ -73,6 +73,10 @@ export interface paths {
     /** Получение трендов фильмов/сериалов */
     get: operations["PictureController_getPictureTrends"];
   };
+  "/api/picture/network/{mediaType}/{network}": {
+    /** Получение фильмов/сериалов определенной компании */
+    get: operations["PictureController_getNetworkPictures"];
+  };
   "/api/picture/recent-viewed": {
     /** Получение перечня недавно просматриваемых фильмов/сериалов */
     get: operations["PictureController_getRecentViewedPictures"];
@@ -166,9 +170,6 @@ export interface components {
       posterPath: string | null;
       hPosterPath: string | null;
       backdropPath: string | null;
-      posterPathBlurHash: string | null;
-      hPosterPathBlurHash: string | null;
-      backdropPathBlurHash: string | null;
       title: string;
       originalTitle: string;
       overview: string | null;
@@ -183,9 +184,6 @@ export interface components {
       posterPath: string | null;
       hPosterPath: string | null;
       backdropPath: string | null;
-      posterPathBlurHash: string | null;
-      hPosterPathBlurHash: string | null;
-      backdropPathBlurHash: string | null;
       title: string;
       originalTitle: string;
       overview: string;
@@ -199,7 +197,6 @@ export interface components {
       mediaType: string;
       name: string;
       profilePath: string | null;
-      profilePathBlurHash: string | null;
       popularity: number;
     };
     SearchResultDto: {
@@ -275,12 +272,24 @@ export interface components {
       credits: components["schemas"]["CreditsDto"];
       images: components["schemas"]["ImagesDto"];
     };
-    PictureDto: {
+    GetPictureResponseDto: {
       tmdbId: string;
       imdbId?: string | null;
       /** @enum {string} */
       mediaType: "all" | "movie" | "tv" | "person";
       pictureData: components["schemas"]["MovieDto"];
+    };
+    GetPictureTrendsResponseDto: {
+      page: number;
+      totalPages: number;
+      totalResults: number;
+      results: (components["schemas"]["MovieSlim"] | components["schemas"]["TvSlim"] | components["schemas"]["PersonSlim"])[];
+    };
+    GetNetworkPicturesResponseDto: {
+      page: number;
+      totalPages: number;
+      totalResults: number;
+      results: (components["schemas"]["MovieSlim"] | components["schemas"]["TvSlim"])[];
     };
     GetPreviewResultDto: Record<string, never>;
     GetTorrentDistributionInfoDto: {
@@ -710,7 +719,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PictureDto"];
+          "application/json": components["schemas"]["GetPictureResponseDto"];
         };
       };
       400: {
@@ -744,7 +753,41 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["SearchResultDto"];
+          "application/json": components["schemas"]["GetPictureTrendsResponseDto"];
+        };
+      };
+      400: {
+        content: {
+          "application/json": components["schemas"]["ErrorDto"];
+        };
+      };
+      401: {
+        content: {
+          "application/json": components["schemas"]["ErrorDto"];
+        };
+      };
+      404: {
+        content: {
+          "application/json": components["schemas"]["ErrorDto"];
+        };
+      };
+    };
+  };
+  /** Получение фильмов/сериалов определенной компании */
+  PictureController_getNetworkPictures: {
+    parameters: {
+      query?: {
+        page?: number;
+      };
+      path: {
+        mediaType: "all" | "movie" | "tv" | "person";
+        network: number;
+      };
+    };
+    responses: {
+      200: {
+        content: {
+          "application/json": components["schemas"]["GetNetworkPicturesResponseDto"];
         };
       };
       400: {
@@ -769,7 +812,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": (components["schemas"]["PictureDto"])[];
+          "application/json": (components["schemas"]["GetPictureResponseDto"])[];
         };
       };
       400: {

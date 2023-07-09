@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { TrendsProps } from './types';
+import { PictureLineProps } from './types';
 import { debounce } from 'lodash-es';
 
-export const useTrends = ({
+export const usePictureLine = ({
     state,
     getTrends,
     queryKey,
-}: Omit<TrendsProps, 'selectedItem'>) => {
+}: Omit<PictureLineProps, 'selectedItem'>) => {
     const { dataState, setDataState } = state;
     const [page, setPage] = useState(dataState?.page || 1);
 

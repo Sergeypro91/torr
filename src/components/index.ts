@@ -13,7 +13,7 @@ export * from './SearchInfo';
 export * from './SearchResult';
 export * from './Selector';
 export * from './TizenListener';
-export * from './Trends';
+export * from './PictureLine';
 export * from './Input';
 export * from './Main';
 export * from './WelcomeScreen';

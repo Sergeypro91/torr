@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash-es';
 import { useAppStore, useRouteStore } from '@/stores';
 import { getImageTitle } from '@/utils';
 import { SelectElement } from '@/types';
@@ -15,8 +16,9 @@ export const useBackground = () => {
         return selectedAsset ? getImageTitle(selectedAsset) : '';
     }, [selectedAsset]);
 
-    const addNewAsset = useCallback((assetData: SelectElement) => {
-        setTimeout(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const addNewAsset = useCallback(
+        debounce((assetData: SelectElement) => {
             setAssets((prevState) => {
                 const assetIds = prevState.map(
                     (asset) => `${asset.tmdbId}${asset.mediaType}`,
@@ -27,13 +29,12 @@ export const useBackground = () => {
 
                 return isNewAssetExist ? prevState : [assetData, ...prevState];
             });
-        }, 300);
-    }, []);
+        }, 600),
+        [],
+    );
 
     const leaveNewAsset = () => {
-        setTimeout(() => {
-            setAssets((prevState) => [prevState[0]]);
-        }, 300);
+        setAssets((prevState) => [prevState[0]]);
     };
 
     useEffect(() => {
@@ -49,7 +50,7 @@ export const useBackground = () => {
     }, [selectedAsset, addNewAsset]);
 
     useEffect(() => {
-        setParams({ selectedAssetId: selectedAsset?.focusId || '' });
+        setParams({ selectedAssetId: selectedAsset?.focusId ?? '' });
     }, [selectedAsset, setParams]);
 
     useEffect(() => {

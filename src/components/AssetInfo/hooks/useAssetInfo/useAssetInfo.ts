@@ -1,47 +1,49 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { debounce } from 'lodash-es';
 import { useAppStore } from '@/stores';
-import { useMemo } from 'react';
-import { MediaType, movieGenres, tvGenres } from '@/types';
+import { MediaType, movieGenres, SelectElement, tvGenres } from '@/types';
 
 export const useAssetInfo = () => {
     const selectedAsset = useAppStore((state) => state.selectedAsset);
+    const [asset, setAsset] = useState<SelectElement>();
 
     const title = useMemo(() => {
-        if (selectedAsset) {
-            if (selectedAsset.mediaType !== MediaType.PERSON) {
-                return selectedAsset.title;
+        if (asset) {
+            if (asset.mediaType !== MediaType.PERSON) {
+                return asset.title;
             }
 
-            return selectedAsset.name;
+            return asset.name;
         }
 
         return null;
-    }, [selectedAsset]);
+    }, [asset]);
 
     const description = useMemo(() => {
-        if (selectedAsset && selectedAsset.mediaType !== MediaType.PERSON) {
-            return selectedAsset.overview;
+        if (asset && asset.mediaType !== MediaType.PERSON) {
+            return asset.overview;
         }
 
         return null;
-    }, [selectedAsset]);
+    }, [asset]);
 
     const rating = useMemo(() => {
-        if (selectedAsset) {
-            if (selectedAsset.mediaType !== MediaType.PERSON) {
-                return selectedAsset.voteAverage;
+        if (asset) {
+            if (asset.mediaType !== MediaType.PERSON) {
+                return asset.voteAverage;
             }
 
-            return selectedAsset.popularity;
+            return asset.popularity;
         }
 
         return 0;
-    }, [selectedAsset]);
+    }, [asset]);
 
     const genres = useMemo(() => {
-        if (selectedAsset && selectedAsset.mediaType !== MediaType.PERSON) {
-            const genres = selectedAsset.genres || [];
+        if (asset && asset.mediaType !== MediaType.PERSON) {
+            const genres = asset.genres || [];
             const genreMap = new Map(
-                (selectedAsset.mediaType === MediaType.MOVIE
+                (asset.mediaType === MediaType.MOVIE
                     ? movieGenres
                     : tvGenres
                 ).map((genre) => [genre.id, genre]),
@@ -61,17 +63,31 @@ export const useAssetInfo = () => {
         }
 
         return null;
-    }, [selectedAsset]);
+    }, [asset]);
 
     const type = useMemo(() => {
-        return selectedAsset?.mediaType || null;
-    }, [selectedAsset]);
+        return asset?.mediaType ?? null;
+    }, [asset]);
 
     const releaseDate = useMemo(() => {
-        return selectedAsset && selectedAsset.mediaType !== MediaType.PERSON
-            ? new Date(selectedAsset.releaseDate).getFullYear()
+        return asset && asset.mediaType !== MediaType.PERSON
+            ? new Date(asset.releaseDate).getFullYear()
             : null;
-    }, [selectedAsset]);
+    }, [asset]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const setAssetsDebounce = useCallback(
+        debounce((currentAsset: SelectElement) => {
+            setAsset(currentAsset);
+        }, 600),
+        [],
+    );
+
+    useEffect(() => {
+        if (selectedAsset) {
+            setAssetsDebounce(selectedAsset);
+        }
+    }, [selectedAsset, setAssetsDebounce]);
 
     return { title, description, rating, genres, type, releaseDate };
 };

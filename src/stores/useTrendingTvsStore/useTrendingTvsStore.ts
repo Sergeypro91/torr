@@ -1,14 +1,8 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { Pagination } from '@/types';
+import { PictureLineStore } from '@/components';
 
-export type UseTrendsStore<S> = {
-    dataState: null | Pagination<S>;
-
-    setDataState: (trendMovies: Pagination<S>) => void;
-};
-
-export const useTrendingMoviesStore = create<UseTrendsStore<any>>()(
+export const useTrendingTvsStore = create<PictureLineStore<any>>()(
     devtools((set) => ({
         dataState: null,
 

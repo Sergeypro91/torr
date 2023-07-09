@@ -11,7 +11,8 @@ import { useAssetInfo } from './hooks';
 import { lorem } from './constants';
 
 export const AssetInfo = () => {
-    const { title, description } = useAssetInfo();
+    const { title, description, type, rating, genres, releaseDate } =
+        useAssetInfo();
     const titleSpanRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
@@ -28,12 +29,17 @@ export const AssetInfo = () => {
     return (
         <AssetInfoContainer>
             <AssetInfoTitle isEmpty={!title}>
-                <span ref={titleSpanRef}>{title || lorem}</span>
+                <span ref={titleSpanRef}>{title ?? lorem}</span>
             </AssetInfoTitle>
             <AssetInfoDetail>
-                <AssetInfoGeneral />
+                <AssetInfoGeneral
+                    genres={genres}
+                    rating={rating}
+                    type={type}
+                    releaseDate={releaseDate}
+                />
                 <AssetInfoDescription isEmpty={!description}>
-                    {description || lorem}
+                    {description ?? lorem}
                 </AssetInfoDescription>
             </AssetInfoDetail>
         </AssetInfoContainer>

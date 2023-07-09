@@ -1,22 +1,22 @@
 import React from 'react';
 import { ContentRow } from '@/components';
-import { TrendsContainer } from './styled';
-import { useTrends } from '@/components/Trends/useTrends';
-import { TrendsProps } from './types';
+import { PictureLineContainer } from './styled';
+import { usePictureLine } from '@/components/PictureLine/usePictureLine';
+import { PictureLineProps } from './types';
 
-export const Trends = ({
+export const PictureLine = ({
     name = '',
     selectedItem,
     onRowFocus = () => {},
     onAssetFocus = () => {},
     onLoadFocus = () => {},
     ...restProps
-}: TrendsProps) => {
+}: PictureLineProps) => {
     const { isError, isLoading, rowId, results, requestMore } =
-        useTrends(restProps);
+        usePictureLine(restProps);
 
     return (
-        <TrendsContainer>
+        <PictureLineContainer>
             <ContentRow
                 rowId={rowId}
                 rowTitle={name}
@@ -29,6 +29,6 @@ export const Trends = ({
                 onAssetFocus={onAssetFocus}
                 onLoadFocus={onLoadFocus}
             />
-        </TrendsContainer>
+        </PictureLineContainer>
     );
 };

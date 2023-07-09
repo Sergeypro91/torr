@@ -1,74 +1,62 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { debounce } from 'lodash-es';
-import { ApiResponse } from 'openapi-typescript-fetch';
-import { getTrends } from '@/api';
 import {
     FocusContext,
     FocusableComponentLayout,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { useAppStore, useRouteStore, useTrendingMoviesStore } from '@/stores';
 import {
-    MediaType,
-    MovieSlim,
-    Pagination,
-    SelectElement,
-    TimeWindow,
-} from '@/types';
+    useAppStore,
+    useRouteStore,
+    useNetflixTvsStore,
+    useTrendingMoviesStore,
+    useTrendingTvsStore,
+    useNetflixMoviesStore,
+    useAppleMoviesStore,
+    useAppleTvsStore,
+} from '@/stores';
+import { SelectElement } from '@/types';
 
 export const useContent = () => {
     const params = useRouteStore((state) => state.getParams());
     const selectAsset = useAppStore((state) => state.selectAsset);
     const movieTrendsState = useTrendingMoviesStore((state) => state);
+    const tvTrendsState = useTrendingTvsStore((state) => state);
+    const netflixMoviesState = useNetflixMoviesStore((state) => state);
+    const netflixTvsState = useNetflixTvsStore((state) => state);
+    const appleMoviesState = useAppleMoviesStore((state) => state);
+    const appleTvsState = useAppleTvsStore((state) => state);
     const { ref, setFocus, focusKey } = useFocusable({
         focusable: true,
         trackChildren: true,
     });
 
-    const getWeeklyMovieTrends = async (
-        page?: number,
-    ): Promise<ApiResponse<Pagination<MovieSlim>>> =>
-        // TODO find way to typing enum string literal in generated documentation
-        // @ts-ignore
-        getTrends({
-            mediaType: MediaType.MOVIE,
-            timeWindow: TimeWindow.WEEK,
-            page,
-        });
-
     const paramItem = useMemo(() => {
         return params['selectedAssetId'] || null;
     }, [params]);
 
-    const handleRowFocus = useCallback(
-        (layout: FocusableComponentLayout) => {
-            ref.current.scrollTo({
-                top: layout.y,
+    const handleRowFocus = useCallback((layout: FocusableComponentLayout) => {
+        setTimeout(() => {
+            layout.node.scrollIntoView({
+                block: 'start',
                 behavior: 'smooth',
+                inline: 'start',
             });
-        },
-        [ref],
-    );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const selectAssetDebounce = useCallback(
-        debounce((asset: SelectElement) => {
-            selectAsset(asset);
-        }, 600),
-        [],
-    );
+        });
+    }, []);
 
     const handleAssetFocus = useCallback(
         (layout: FocusableComponentLayout, asset: SelectElement) => {
-            layout.node.scrollIntoView({
-                block: 'nearest',
-                behavior: 'smooth',
-                inline: 'center',
+            setTimeout(() => {
+                layout.node.scrollIntoView({
+                    block: 'nearest',
+                    behavior: 'smooth',
+                    inline: 'center',
+                });
             });
 
-            selectAssetDebounce(asset);
+            selectAsset(asset);
         },
-        [selectAssetDebounce],
+        [selectAsset],
     );
 
     const handleOnLoadFocus = useCallback(
@@ -93,7 +81,11 @@ export const useContent = () => {
         focusKey,
         paramItem,
         movieTrendsState,
-        getWeeklyMovieTrends,
+        tvTrendsState,
+        netflixMoviesState,
+        netflixTvsState,
+        appleMoviesState,
+        appleTvsState,
         handleRowFocus,
         handleOnLoadFocus,
         handleAssetFocus,

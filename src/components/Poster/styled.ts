@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Blurhash } from 'react-blurhash';
 
-export const PosterContainer = styled.img`
+export const PosterContainer = styled.img<{ opacity?: string }>`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -9,11 +8,8 @@ export const PosterContainer = styled.img`
     left: 0;
     object-fit: cover;
     object-position: center;
-`;
-export const BlurHashContainer = styled(Blurhash)<{ opacity?: string }>`
-    position: absolute !important;
-    top: 0;
-    left: 0;
     opacity: ${({ opacity }) => opacity};
     transition: ${({ theme }) => theme.transition};
 `;
+
+export const PosterPreviewContainer = styled(PosterContainer)``;

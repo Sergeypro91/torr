@@ -11,17 +11,10 @@ import {
 } from './styled';
 
 export const Asset = memo((props: AssetProps) => {
-    const { focusId, data, style } = props;
-    const {
-        ref,
-        focused,
-        handleAssetClick,
-        handleAssetDoubleClick,
-    } = useAsset({ ...props });
-
-    React.useEffect(() => {
-        console.log('RENDER ASSET');
-    }, [focusId]);
+    const { data, style } = props;
+    const { ref, focused, handleAssetClick, handleAssetDoubleClick } = useAsset(
+        { ...props },
+    );
 
     if (!data) {
         return <AssetSkeleton style={style} />;
@@ -30,7 +23,7 @@ export const Asset = memo((props: AssetProps) => {
     return (
         <AssetWrapper
             ref={ref}
-            id={focusId}
+            id={data.tmdbId}
             onClick={handleAssetClick}
             onDoubleClick={handleAssetDoubleClick}
             style={style}

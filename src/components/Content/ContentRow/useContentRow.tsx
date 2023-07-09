@@ -69,6 +69,7 @@ export const useContentRow = ({
      * @describe Calculates the length of the list component to further calculate the size of nested elements
      * */
     useEffect(() => {
+        console.log('REF', ref.current.getBoundingClientRect().width);
         if (ref.current) {
             setRowWidth(ref.current.getBoundingClientRect().width);
         }
@@ -106,6 +107,14 @@ export const useContentRow = ({
         ) {
             const [row, itemId, itemType] = selectedItem.split('|');
             const isSelectedItemFromRow = rowId.replace(/\s/g, '') === row;
+            const scrollToRow = (element: Element) => {
+                setTimeout(() => {
+                    element.scrollIntoView({
+                        block: 'start',
+                        inline: 'start',
+                    });
+                }, 300);
+            };
 
             if (isSelectedItemFromRow) {
                 const selectedItemDataIndex = dataState.findIndex(
@@ -121,6 +130,7 @@ export const useContentRow = ({
 
                 if (!isItemOnScreen) {
                     setTimeout(() => {
+                        scrollToRow(ref.current);
                         listRef?.current?.scrollToItem(
                             selectedItemDataIndex,
                             'center',
@@ -129,7 +139,8 @@ export const useContentRow = ({
                 }
             }
         }
-    }, [rowId, dataState, selectedItem]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return {
         ref,

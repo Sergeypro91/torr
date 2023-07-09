@@ -40,22 +40,5 @@ export const getImageSrc = ({
             data['backdropPath' as keyof typeof data];
     }
 
-    return result ? `${imgService}${size}${result}` : '';
-};
-
-type GetImageBlurHashOption = {
-    data?: null | Partial<MovieSlim | TvSlim | PersonSlim>;
-    type: ImageType;
-};
-export const getImageBlurHash = ({ data, type }: GetImageBlurHashOption) => {
-    const imgType = `${type}BlurHash` as const;
-    let result;
-
-    if (data) {
-        result =
-            data[imgType as keyof typeof data] ||
-            data['backdropPathBlurHash' as keyof typeof data];
-    }
-
-    return result ? `${result}` : 'L00000fQfQfQfQfQfQfQfQfQfQfQ';
+    return result ? `${imgService}/${size}${result}` : '';
 };

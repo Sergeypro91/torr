@@ -1,1 +1,1 @@
-export * from './useTrendsStore';
+export * from './useTrendingMoviesStore';

@@ -4,10 +4,15 @@ import {
     FocusableComponentLayout,
     FocusDetails,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { UseTrendsStore } from '@/stores';
 
-export type TrendsProps = {
-    state: UseTrendsStore<AssetType>;
+export type PictureLineStore<S> = {
+    dataState: null | Pagination<S>;
+
+    setDataState: (trendMovies: Pagination<S>) => void;
+};
+
+export type PictureLineProps = {
+    state: PictureLineStore<AssetType>;
     getTrends: (page?: number) => Promise<ApiResponse<Pagination<AssetType>>>;
     queryKey: (page?: number) => (string | number)[];
     name?: string;

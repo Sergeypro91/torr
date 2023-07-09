@@ -1,12 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useAssetInfo } from '../hooks';
 import { About, AssetInfoGeneralContainer, Genre, TypeAndDate } from './styled';
 import { RingRating } from '@/components/AssetInfo/RingRating';
 import { isOverflown } from '@/utils';
 import { lorem } from '../constants';
+import { MediaType } from '@/types';
 
-export const AssetInfoGeneral = () => {
-    const { rating, genres, type, releaseDate } = useAssetInfo();
+type AssetInfoGeneralProps = {
+    genres: null | string;
+    rating: number;
+    type: MediaType.MOVIE | MediaType.TV | MediaType.PERSON | null;
+    releaseDate: null | number;
+};
+
+export const AssetInfoGeneral = ({
+    genres,
+    rating,
+    type,
+    releaseDate,
+}: AssetInfoGeneralProps) => {
     const genreRef = useRef<HTMLDivElement>(null);
     const [isGenreOverflown, setIsGenreOverflown] = useState(false);
 

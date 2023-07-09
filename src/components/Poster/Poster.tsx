@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
-import { getImageBlurHash, getImageSrc, getImageTitle } from '@/utils';
+import { getImageSrc, getImageTitle } from '@/utils';
 import { TvSlim, MovieSlim, PersonSlim, ImageSize, ImageType } from '@/types';
-import { BlurHashContainer, PosterContainer } from './styled';
+import { PosterContainer, PosterPreviewContainer } from './styled';
 
 export type PosterProps = {
     data?: Partial<MovieSlim | TvSlim | PersonSlim> | null;
@@ -28,8 +28,8 @@ export const Poster = ({
         return data ? getImageSrc({ data, size, type }) : '';
     }, [data, size, type]);
 
-    const blurHash = useMemo(() => {
-        return getImageBlurHash({ data, type });
+    const imagePreviewSrc = useMemo(() => {
+        return data ? getImageSrc({ data, size: 'w45', type }) : '';
     }, [data, type]);
 
     const handleLoad = () => {
@@ -43,20 +43,17 @@ export const Poster = ({
 
     return (
         <>
+            <PosterPreviewContainer
+                src={imagePreviewSrc}
+                alt={alt ?? title}
+                loading="lazy"
+            />
             <PosterContainer
                 src={imageSrc}
-                alt={alt || title}
+                alt={alt ?? title}
                 loading="lazy"
                 onLoad={handleLoad}
-            />
-            <BlurHashContainer
-                opacity={isLoaded ? '0' : '1'}
-                hash={blurHash}
-                width={'100%'}
-                height={'100%'}
-                resolutionX={32}
-                resolutionY={32}
-                punch={1}
+                opacity={isLoaded ? '1' : '0'}
             />
         </>
     );

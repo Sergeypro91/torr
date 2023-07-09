@@ -15,3 +15,8 @@ export const getTrends = apiClient
     .path('/api/picture/trends/{mediaType}/{timeWindow}')
     .method('get')
     .create();
+
+export const getNetworkPictures = apiClient
+    .path('/api/picture/network/{mediaType}/{network}')
+    .method('get')
+    .create();
