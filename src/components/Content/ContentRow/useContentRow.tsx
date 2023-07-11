@@ -69,7 +69,6 @@ export const useContentRow = ({
      * @describe Calculates the length of the list component to further calculate the size of nested elements
      * */
     useEffect(() => {
-        console.log('REF', ref.current.getBoundingClientRect().width);
         if (ref.current) {
             setRowWidth(ref.current.getBoundingClientRect().width);
         }

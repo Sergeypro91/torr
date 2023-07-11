@@ -14,10 +14,15 @@ export const MenuItemContainer = styled.div<FocusedItem>`
     mix-blend-mode: ${({ focused }) => (focused ? 'lighten' : 'none')};
     text-transform: uppercase;
     transition: ${({ theme }) => theme.transition};
+    overflow: hidden;
 
     &:hover {
         cursor: pointer;
         box-shadow: ${({ theme, focused }) =>
             !focused ? theme.boxShadow.targetBorder : 'none'};
+    }
+
+    & > * {
+        ${({ theme }) => theme.typography.ellipsis}
     }
 `;

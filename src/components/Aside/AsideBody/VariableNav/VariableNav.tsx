@@ -1,48 +1,32 @@
-import React, { Fragment, memo, useCallback } from 'react';
-import { useRouteStore } from '@/stores';
-import { FocusDetails } from '@noriginmedia/norigin-spatial-navigation';
+import React, { Fragment, memo } from 'react';
 import { NavItem } from '@/components';
-import { NavProps } from '@/types';
-import { rows } from '@/assets/data';
-import { MenuItem } from '@/components/Aside/AsideBody/MenuItem';
-import { Devider } from '@/components/Aside/AsideBody/VariableNav/styled';
+import { MenuItem } from '../MenuItem';
+import { VariableNavProps } from './types';
+import { Devider } from './styled';
+import { useVariableNav } from './useVariableNav';
 
-type VariableNavProps = {
-    setFocus: (
-        focusKey: string,
-        focusDetails?: FocusDetails | undefined,
-    ) => void;
-};
+export const VariableNav = memo((props: VariableNavProps) => {
+    const { variableNav, navigateTo } = useVariableNav(props);
 
-export const VariableNav = memo(({ setFocus }: VariableNavProps) => {
-    const route = useRouteStore((state) => state.route);
+    return (
+        <>
+            {variableNav.map(({ title, link }, id) => {
+                return (
+                    <Fragment key={link}>
+                        {!id ? <Devider key="devider" /> : null}
 
-    const navigateTo = useCallback(
-        (props: NavProps) => {
-            setFocus(props.pathName);
-        },
-        [setFocus],
+                        <NavItem
+                            route={{ pathName: link.replace(/\s/g, '') }}
+                            navigateTo={navigateTo}
+                            render={(props) => (
+                                <MenuItem {...props}>{title}</MenuItem>
+                            )}
+                        />
+                    </Fragment>
+                );
+            })}
+        </>
     );
-
-    const mainNavRender = useCallback(() => {
-        return rows.map(({ title }, id) => {
-            return (
-                <Fragment key={title}>
-                    {!id ? <Devider key="devider" /> : null}
-
-                    <NavItem
-                        route={{ pathName: title }}
-                        navigateTo={navigateTo}
-                        render={(props) => (
-                            <MenuItem {...props}>{title}</MenuItem>
-                        )}
-                    />
-                </Fragment>
-            );
-        });
-    }, [navigateTo]);
-
-    return <>{!route.pathName ? mainNavRender() : null}</>;
 });
 
 VariableNav.displayName = 'VariableNav';

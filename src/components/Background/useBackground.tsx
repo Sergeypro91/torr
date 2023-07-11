@@ -55,7 +55,9 @@ export const useBackground = () => {
 
     useEffect(() => {
         if (assets.length > 1) {
-            leaveNewAsset();
+            setTimeout(() => {
+                leaveNewAsset();
+            }, 600);
         }
     }, [assets]);
 
