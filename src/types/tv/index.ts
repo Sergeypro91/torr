@@ -6,9 +6,6 @@ export type TvSlim = {
     posterPath: string | null;
     hPosterPath: string | null;
     backdropPath: string | null;
-    posterPathBlurHash: string | null;
-    hPosterPathBlurHash: string | null;
-    backdropPathBlurHash: string | null;
     title: string;
     originalTitle: string;
     overview: string | null;
@@ -16,4 +13,5 @@ export type TvSlim = {
     releaseDate: string;
     popularity: number;
     voteAverage: number;
+    trailer: string;
 };

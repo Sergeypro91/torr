@@ -37,7 +37,7 @@ export const PercentRing = styled.circle<{ percent: number }>`
     fill: none;
     transform: rotate(-90deg);
     transform-origin: center;
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
     transition: ${({ theme }) => theme.transition};
     will-change: transform;
 `;

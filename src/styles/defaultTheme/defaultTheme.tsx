@@ -95,6 +95,10 @@ const theme = {
         },
     },
     transition: 'all 300ms ease-out',
+    animations: {
+        backAndForth:
+            '@keyframes backAndForth {\n        0%,\n        20% {\n            transform: translateX(0%);\n            left: 0;\n        }\n        80%,\n        100% {\n            transform: translateX(-100%);\n            left: 100%;\n        }\n    }',
+    },
     boxShadow: {
         targetBorder: '0 0 0 4px white',
     },

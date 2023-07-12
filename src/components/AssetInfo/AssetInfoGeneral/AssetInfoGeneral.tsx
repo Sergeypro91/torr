@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { About, AssetInfoGeneralContainer, Genre, TypeAndDate } from './styled';
-import { RingRating } from '@/components/AssetInfo/RingRating';
-import { isOverflown } from '@/utils';
-import { lorem } from '../constants';
+import { isOverflown, calculateTickerTime } from '@/utils';
 import { MediaType } from '@/types';
+import { lorem } from '../constants';
+import { RingRating } from '../RingRating';
+import { About, AssetInfoGeneralContainer, Genre, TypeAndDate } from './styled';
 
 type AssetInfoGeneralProps = {
     genres: null | string;
@@ -20,9 +20,11 @@ export const AssetInfoGeneral = ({
 }: AssetInfoGeneralProps) => {
     const genreRef = useRef<HTMLDivElement>(null);
     const [isGenreOverflown, setIsGenreOverflown] = useState(false);
+    const [tickerTime, setTickerTime] = useState(0);
 
     useEffect(() => {
         if (genreRef.current) {
+            setTickerTime(calculateTickerTime(genreRef.current));
             setIsGenreOverflown(isOverflown(genreRef.current));
         }
     }, [genres]);
@@ -35,8 +37,9 @@ export const AssetInfoGeneral = ({
                     ref={genreRef}
                     isOverflown={isGenreOverflown}
                     isEmpty={!genres}
+                    tickerTime={tickerTime}
                 >
-                    <h4>{genres || lorem}</h4>
+                    <h4>{genres ?? lorem}</h4>
                 </Genre>
                 <TypeAndDate isEmpty={!type}>
                     {type ? `${type}・${releaseDate}` : lorem}

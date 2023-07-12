@@ -42,8 +42,8 @@ export const App = ({ children }: PropsWithChildren) => {
                 <GlobalStyle />
                 <FocusContext.Provider value={focusKey}>
                     <AppContainer ref={ref}>
-                        <Background />
-                        <AppWrapper focused={isNavActive}>
+                        <Background id="backgroun" />
+                        <AppWrapper id="app" focused={isNavActive}>
                             {children}
                         </AppWrapper>
                         {/*<WelcomeScreen />*/}

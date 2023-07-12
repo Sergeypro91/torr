@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { FocusedItem } from '@/types';
 
-export const MenuItemContainer = styled.div<FocusedItem>`
+export const MenuItemContainer = styled.div<
+    FocusedItem & { tickerTime?: number; isItemOverflown?: boolean }
+>`
     height: ${({ theme }) => theme.spacing(12)};
     display: flex;
     align-items: center;
@@ -14,15 +16,29 @@ export const MenuItemContainer = styled.div<FocusedItem>`
     mix-blend-mode: ${({ focused }) => (focused ? 'lighten' : 'none')};
     text-transform: uppercase;
     transition: ${({ theme }) => theme.transition};
+    white-space: nowrap;
     overflow: hidden;
 
     &:hover {
         cursor: pointer;
         box-shadow: ${({ theme, focused }) =>
             !focused ? theme.boxShadow.targetBorder : 'none'};
+
+        & > * {
+            animation: ${({ isItemOverflown, tickerTime }) =>
+                isItemOverflown
+                    ? `backAndForth ${tickerTime}ms infinite alternate ease-in-out;`
+                    : ''};
+        }
     }
 
     & > * {
-        ${({ theme }) => theme.typography.ellipsis}
+        display: inline-block;
+        position: relative;
+        animation: ${({ focused, isItemOverflown, tickerTime }) =>
+            focused && isItemOverflown
+                ? `backAndForth ${tickerTime}ms infinite alternate ease-in-out;`
+                : ''};
     }
+    ${({ theme }) => theme.animations.backAndForth}
 `;

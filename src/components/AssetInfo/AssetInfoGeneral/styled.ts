@@ -22,6 +22,7 @@ export const About = styled.div`
 export const Genre = styled.div<{
     isOverflown?: boolean;
     isEmpty?: boolean;
+    tickerTime?: number;
 }>`
     min-width: 0;
     white-space: nowrap;
@@ -33,22 +34,12 @@ export const Genre = styled.div<{
             isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
         display: inline-block;
         position: relative;
-        animation: ${({ isOverflown }) =>
+        animation: ${({ isOverflown, tickerTime }) =>
             isOverflown
-                ? 'backAndForth 3s infinite alternate ease-in-out;'
+                ? `backAndForth ${tickerTime}ms infinite alternate ease-in-out;`
                 : ''};
-    }
-    @keyframes backAndForth {
-        0%,
-        20% {
-            transform: translateX(0%);
-            left: 0;
-        }
-        80%,
-        100% {
-            transform: translateX(-100%);
-            left: 100%;
-        }
+
+        ${({ theme }) => theme.animations.backAndForth}
     }
 `;
 

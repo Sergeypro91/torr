@@ -5,3 +5,4 @@ export * from './getImageData';
 export * from './isOverflown';
 export * from './resizeText';
 export * from './getAssetSize';
+export * from './calculateTickerTime';

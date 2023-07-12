@@ -5,6 +5,5 @@ export type PersonSlim = {
     mediaType: MediaType.PERSON;
     name: string;
     profilePath: string | null;
-    profilePathBlurHash: string | null;
     popularity: number;
 };
