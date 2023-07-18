@@ -66,6 +66,7 @@ export const BackgroundContainer = styled.div<{
         opacity: ${({ showTrailer }) => (showTrailer ? 0 : 1)};
         transition: ${({ theme }) => theme.transition};
         will-change: background, opacity;
+        transform: translate3d(0, 0, 0);
     }
 
     ${Trailer} {

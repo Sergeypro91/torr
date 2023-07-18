@@ -13,3 +13,26 @@ export const PosterContainer = styled.img<{ opacity?: string }>`
 `;
 
 export const PosterPreviewContainer = styled(PosterContainer)``;
+
+export const NoImageContainer = styled.div`
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+
+    svg {
+        width: 50%;
+        height: auto;
+    }
+`;
+
+export const NoImageTitle = styled.h4`
+    height: 100%;
+    display: flex;
+    position: absolute;
+    padding: ${({ theme }) => theme.spacing(3)};
+    color: ${({ theme }) => theme.palette.white};
+    align-items: flex-end;
+    text-align: center;
+`;

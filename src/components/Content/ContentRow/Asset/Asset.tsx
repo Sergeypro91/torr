@@ -11,7 +11,7 @@ import {
 } from './styled';
 
 export const Asset = memo((props: AssetProps) => {
-    const { data, style } = props;
+    const { data, style, vertical } = props;
     const { ref, focused, handleAssetClick, handleAssetDoubleClick } = useAsset(
         { ...props },
     );
@@ -30,7 +30,11 @@ export const Asset = memo((props: AssetProps) => {
         >
             <AssetContainer focused={focused}>
                 <AssetBackground>
-                    <Poster size="w500" type="hPosterPath" data={data} />
+                    <Poster
+                        size="w500"
+                        type={vertical ? 'posterPath' : 'hPosterPath'}
+                        data={data}
+                    />
                 </AssetBackground>
                 <AssetInner>{}</AssetInner>
             </AssetContainer>

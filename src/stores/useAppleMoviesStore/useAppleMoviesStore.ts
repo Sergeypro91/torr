@@ -29,5 +29,9 @@ export const useAppleMoviesStore = create<PictureLineStore<any>>()(
 
                 return { dataState: response };
             }),
+        nulledDataState: () =>
+            set(() => ({
+                dataState: null,
+            })),
     })),
 );

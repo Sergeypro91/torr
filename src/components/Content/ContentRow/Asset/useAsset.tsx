@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { routes, useRouteStore } from '@/stores';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
 import { AssetProps } from './types';
@@ -17,8 +17,6 @@ export const useAsset = ({ focusId, data, onAssetFocus }: AssetProps) => {
     const { ref, focused, setFocus } = useFocusable({
         focusKey: focusId,
         onEnterPress: onPress,
-        onFocus: onAssetFocus,
-        extraProps: data ? { focusId, ...data } : undefined,
     });
 
     const handleAssetClick = useCallback(() => {
@@ -28,6 +26,12 @@ export const useAsset = ({ focusId, data, onAssetFocus }: AssetProps) => {
     const handleAssetDoubleClick = useCallback(() => {
         onPress();
     }, [onPress]);
+
+    useEffect(() => {
+        if (focused && ref.current) {
+            onAssetFocus(ref.current, { ...data, focusId });
+        }
+    }, [focused, data, focusId, onAssetFocus, ref]);
 
     return {
         ref,

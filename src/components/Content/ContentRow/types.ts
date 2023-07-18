@@ -1,7 +1,4 @@
-import {
-    FocusableComponentLayout,
-    FocusDetails,
-} from '@noriginmedia/norigin-spatial-navigation';
+import { FocusableComponentLayout } from '@noriginmedia/norigin-spatial-navigation';
 import { AssetType, SelectElement } from '@/types';
 
 export type ContentRowProps = {
@@ -15,15 +12,7 @@ export type ContentRowProps = {
     itemCount?: number;
     skeletonCount?: number;
     requestMore: () => void;
-    onRowFocus: (
-        layout: FocusableComponentLayout,
-        asset: AssetType,
-        details: FocusDetails,
-    ) => void;
-    onAssetFocus: (
-        layout: FocusableComponentLayout,
-        asset: SelectElement,
-        details: FocusDetails,
-    ) => void;
+    onRowFocus: (layout: FocusableComponentLayout, asset: AssetType) => void;
+    onAssetFocus: (layout: HTMLElement, asset: SelectElement) => void;
     onLoadFocus: (focusedAssetId: string) => void;
 };

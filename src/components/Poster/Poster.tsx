@@ -1,7 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { getImageSrc, getImageTitle } from '@/utils';
 import { TvSlim, MovieSlim, PersonSlim, ImageSize, ImageType } from '@/types';
-import { PosterContainer, PosterPreviewContainer } from './styled';
+import {
+    NoImageContainer,
+    NoImageTitle,
+    PosterContainer,
+    PosterPreviewContainer,
+} from './styled';
+import { NoImage } from '@/assets/images/svgr';
 
 export type PosterProps = {
     data?: Partial<MovieSlim | TvSlim | PersonSlim> | null;
@@ -41,7 +47,7 @@ export const Poster = ({
         return null;
     }
 
-    return (
+    return imageSrc || imagePreviewSrc ? (
         <>
             <PosterPreviewContainer
                 src={imagePreviewSrc}
@@ -56,5 +62,10 @@ export const Poster = ({
                 opacity={isLoaded ? '1' : '0'}
             />
         </>
+    ) : (
+        <NoImageContainer>
+            <NoImageTitle>{title}</NoImageTitle>
+            <NoImage />
+        </NoImageContainer>
     );
 };

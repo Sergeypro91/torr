@@ -8,11 +8,17 @@ import {
 import { AssetInfoGeneral } from './AssetInfoGeneral';
 import { resizeText } from '@/utils';
 import { useAssetInfo } from './hooks';
-import { lorem } from './constants';
 
 export const AssetInfo = () => {
-    const { title, description, type, rating, genres, releaseDate } =
-        useAssetInfo();
+    const {
+        selectedAsset,
+        title,
+        description,
+        type,
+        rating,
+        genres,
+        releaseDate,
+    } = useAssetInfo();
     const titleSpanRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
@@ -26,10 +32,10 @@ export const AssetInfo = () => {
         }
     }, [title]);
 
-    return (
+    return selectedAsset ? (
         <AssetInfoContainer>
             <AssetInfoTitle isEmpty={!title}>
-                <span ref={titleSpanRef}>{title ?? lorem}</span>
+                <span ref={titleSpanRef}>{title}</span>
             </AssetInfoTitle>
             <AssetInfoDetail>
                 <AssetInfoGeneral
@@ -39,9 +45,9 @@ export const AssetInfo = () => {
                     releaseDate={releaseDate}
                 />
                 <AssetInfoDescription isEmpty={!description}>
-                    {description ?? lorem}
+                    {description}
                 </AssetInfoDescription>
             </AssetInfoDetail>
         </AssetInfoContainer>
-    );
+    ) : null;
 };

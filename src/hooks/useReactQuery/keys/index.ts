@@ -27,3 +27,13 @@ export const APPLE_TRENDING_TVS = (page: number = 1) => [
     'apple trending tvs',
     page,
 ];
+
+export const SEARCH_PICTURE = ({
+    query,
+    filter,
+    page = 1,
+}: {
+    query: string;
+    filter?: string;
+    page: number;
+}) => ['search picture', query, filter, page];

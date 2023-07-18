@@ -26,6 +26,7 @@ export const AssetContainer = styled.div<FocusedItem>`
 `;
 
 export const AssetWrapper = styled.div`
+    width: 100%;
     padding: ${({ theme }) => theme.spacing(2)};
     cursor: pointer;
 `;

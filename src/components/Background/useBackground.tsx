@@ -74,6 +74,8 @@ export const useBackground = () => {
     useEffect(() => {
         if (selectedAsset) {
             addNewAsset(selectedAsset);
+        } else {
+            setAssets([]);
         }
     }, [selectedAsset, addNewAsset]);
 

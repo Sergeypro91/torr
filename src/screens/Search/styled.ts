@@ -14,4 +14,5 @@ export const SearchContainer = styled.div`
         ${({ theme }) => transparentize(1, theme.palette.black)} 0%,
         ${({ theme }) => transparentize(0, theme.palette.black)} 100%
     );
+    overflow: hidden;
 `;

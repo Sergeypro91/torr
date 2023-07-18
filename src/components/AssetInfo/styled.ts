@@ -19,6 +19,7 @@ export const AssetInfoTitle = styled.div<{ isEmpty?: boolean }>`
     overflow: scroll;
 
     * {
+        font-size: 76px;
         font-family: ${({ theme, isEmpty }) =>
             isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
         font-weight: ${({ theme }) => theme.typography.h1['font-weight']};

@@ -9,7 +9,7 @@ export const usePictureLine = ({
     queryKey,
 }: Omit<PictureLineProps, 'selectedItem'>) => {
     const { dataState, setDataState } = state;
-    const [page, setPage] = useState(dataState?.page || 1);
+    const [page, setPage] = useState(dataState?.page ?? 1);
 
     const rowId = useMemo(
         () => `${queryKey()[0]}`.replace(/\s/g, ''),

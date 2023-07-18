@@ -37,7 +37,8 @@ export const getImageSrc = ({
     if (data && type in data) {
         result =
             data[type as keyof typeof data] ||
-            data['backdropPath' as keyof typeof data];
+            data['backdropPath' as keyof typeof data] ||
+            data['posterPath' as keyof typeof data];
     }
 
     return result ? `${imgService}/${size}${result}` : '';

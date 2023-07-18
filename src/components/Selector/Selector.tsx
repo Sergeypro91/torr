@@ -12,9 +12,9 @@ import {
 } from './styled';
 
 type SelectorProps = {
-    currentOption?: string;
+    currentOption: string;
     options: string[];
-    setOption: (option?: string) => void;
+    setOption: (option: string) => void;
 };
 
 export const Selector = ({
@@ -23,11 +23,7 @@ export const Selector = ({
     setOption,
 }: SelectorProps) => {
     const selectorRef = useRef<HTMLDivElement>(null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const selectorOptions = [undefined, ...options];
-    const currentOptionId = selectorOptions.findIndex(
-        (item) => item === currentOption,
-    );
+    const currentOptionId = options.findIndex((item) => item === currentOption);
 
     const { ref, focused } = useFocusable({
         trackChildren: true,
@@ -36,19 +32,19 @@ export const Selector = ({
     const selectOption = useCallback(
         (direction: boolean) => {
             const newOption = direction
-                ? selectorOptions[
-                      currentOptionId >= selectorOptions.length - 1
+                ? options[
+                      currentOptionId >= options.length - 1
                           ? currentOptionId
                           : currentOptionId + 1
                   ]
-                : selectorOptions[
-                      currentOptionId < 0
+                : options[
+                      currentOptionId === 0
                           ? currentOptionId
                           : currentOptionId - 1
                   ];
             setOption(newOption);
         },
-        [currentOptionId, selectorOptions, setOption],
+        [currentOptionId, options, setOption],
     );
 
     const handleWheel = debounce((event: WheelEvent<HTMLDivElement>) => {
@@ -61,7 +57,7 @@ export const Selector = ({
         }
     }, 100);
 
-    const handleSelectOption = (option?: string) => {
+    const handleSelectOption = (option: string) => {
         return (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
             setOption(option);
 
@@ -89,14 +85,6 @@ export const Selector = ({
         <SelectorContainer ref={ref} onWheel={handleWheel} focused={focused}>
             <SelectorOptionsWrapper ref={selectorRef}>
                 <SelectorOptions>
-                    <SelectorOption
-                        key="all"
-                        id={!currentOption ? 'focus' : ''}
-                        selected={!currentOption}
-                        onClick={handleSelectOption(undefined)}
-                    >
-                        all
-                    </SelectorOption>
                     {options.map((option) => {
                         return (
                             <SelectorOption
@@ -115,7 +103,7 @@ export const Selector = ({
             <Arrows>
                 {currentOptionId > 0 ? <SmallArrow /> : null}
 
-                {currentOptionId < selectorOptions.length - 1 ? (
+                {currentOptionId < options.length - 1 ? (
                     <SmallArrow rotate={180} />
                 ) : null}
             </Arrows>

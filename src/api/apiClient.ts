@@ -20,3 +20,8 @@ export const getNetworkPictures = apiClient
     .path('/api/picture/network/{mediaType}/{network}')
     .method('get')
     .create();
+
+export const searchPicture = apiClient
+    .path('/api/picture')
+    .method('get')
+    .create();

@@ -29,5 +29,9 @@ export const useNetflixMoviesStore = create<PictureLineStore<any>>()(
 
                 return { dataState: response };
             }),
+        nulledDataState: () =>
+            set(() => ({
+                dataState: null,
+            })),
     })),
 );

@@ -5,4 +5,5 @@ export * from './logo';
 export * from './smallArrow';
 export * from './loupe';
 export * from './loading';
+export * from './noImage';
 export type * from './types';

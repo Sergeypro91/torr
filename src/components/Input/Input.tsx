@@ -1,7 +1,13 @@
-import React, { ChangeEvent, useCallback, useEffect, useRef } from 'react';
-import { InputContainer, InputField } from './styled';
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+import React, {
+    ChangeEvent,
+    KeyboardEvent,
+    useCallback,
+    useEffect,
+    useRef,
+} from 'react';
 import { debounce } from 'lodash-es';
+import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+import { InputContainer, InputField } from './styled';
 
 export type InputProps = {
     defaultValue?: string;
@@ -34,6 +40,8 @@ export const Input = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleInput = useCallback(
         debounce((event: ChangeEvent<HTMLInputElement>) => {
+            event.preventDefault();
+
             if (onInput) {
                 onInput(event.target.value);
             }
@@ -41,8 +49,22 @@ export const Input = ({
         [onInput],
     );
 
+    /**
+     * @description Prevent page reload on checkmark press
+     */
+    const handleSubmit = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.keyCode === 65376) {
+            event.preventDefault();
+        }
+    };
+
     return (
-        <InputContainer ref={ref} focused={focused} focusKey={focusKey}>
+        <InputContainer
+            ref={ref}
+            focused={focused}
+            focusKey={focusKey}
+            onKeyDown={handleSubmit}
+        >
             <InputField
                 ref={inputRef}
                 defaultValue={defaultValue}

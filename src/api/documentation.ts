@@ -177,6 +177,7 @@ export interface components {
       releaseDate: string;
       popularity: number;
       voteAverage: number;
+      trailer: string | null;
     };
     TvSlim: {
       tmdbId: string;
@@ -191,6 +192,7 @@ export interface components {
       releaseDate: string;
       popularity: number;
       voteAverage: number;
+      trailer: string | null;
     };
     PersonSlim: {
       tmdbId: string;
@@ -292,13 +294,13 @@ export interface components {
       results: (components["schemas"]["MovieSlim"] | components["schemas"]["TvSlim"])[];
     };
     GetPreviewResultDto: Record<string, never>;
-    GetTorrentDistributionInfoDto: {
+    GetTorrentDistributionInfoRequestDto: {
       tmdbId: string;
       imdbId?: string | null;
       /** @enum {string} */
       mediaType: "all" | "movie" | "tv" | "person";
     };
-    WebTorrentDto: Record<string, never>;
+    GetTorrentDistributionInfoResponseDto: Record<string, never>;
   };
   responses: never;
   parameters: never;
@@ -677,6 +679,7 @@ export interface operations {
     parameters: {
       query: {
         query: string;
+        mediaType: "all" | "movie" | "tv" | "person";
         page?: number;
       };
     };
@@ -861,13 +864,13 @@ export interface operations {
   WebtorrentController_getTorrentInfo: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["GetTorrentDistributionInfoDto"];
+        "application/json": components["schemas"]["GetTorrentDistributionInfoRequestDto"];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["WebTorrentDto"];
+          "application/json": components["schemas"]["GetTorrentDistributionInfoResponseDto"];
         };
       };
       400: {

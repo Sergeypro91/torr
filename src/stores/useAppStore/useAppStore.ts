@@ -13,7 +13,7 @@ type AppStore = {
     setData: (dataString: string) => void;
     toggleExit: (status?: boolean) => void;
     toggleBackPress: (status?: boolean) => void;
-    selectAsset: (asset: SelectElement) => void;
+    selectAsset: (asset: null | SelectElement) => void;
     toggleNavActive: (status?: boolean) => void;
     toggleWelcomeScreenShown: () => void;
 };

@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash-es';
 import { useAppStore } from '@/stores';
 import { MediaType, movieGenres, SelectElement, tvGenres } from '@/types';
+import { getDate } from '@/utils';
 
 export const useAssetInfo = () => {
     const selectedAsset = useAppStore((state) => state.selectedAsset);
-    const [asset, setAsset] = useState<SelectElement>();
+    const [asset, setAsset] = useState<null | SelectElement>(null);
 
     const title = useMemo(() => {
         if (asset) {
@@ -70,24 +71,36 @@ export const useAssetInfo = () => {
     }, [asset]);
 
     const releaseDate = useMemo(() => {
+        const calcRelease = (date: string | Date | number) => {
+            const { day, month, year } = getDate(date);
+
+            return `${day}.${month}.${year}`;
+        };
+
         return asset && asset.mediaType !== MediaType.PERSON
-            ? new Date(asset.releaseDate).getFullYear()
+            ? calcRelease(asset.releaseDate)
             : null;
     }, [asset]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const setAssetsDebounce = useCallback(
-        debounce((currentAsset: SelectElement) => {
+        debounce((currentAsset: null | SelectElement) => {
             setAsset(currentAsset);
         }, 600),
-        [],
+        [selectedAsset],
     );
 
     useEffect(() => {
-        if (selectedAsset) {
-            setAssetsDebounce(selectedAsset);
-        }
+        setAssetsDebounce(selectedAsset);
     }, [selectedAsset, setAssetsDebounce]);
 
-    return { title, description, rating, genres, type, releaseDate };
+    return {
+        selectedAsset,
+        title,
+        description,
+        rating,
+        genres,
+        type,
+        releaseDate,
+    };
 };

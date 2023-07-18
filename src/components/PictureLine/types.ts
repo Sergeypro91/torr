@@ -1,14 +1,12 @@
 import { AssetType, Pagination, SelectElement } from '@/types';
 import { ApiResponse } from 'openapi-typescript-fetch';
-import {
-    FocusableComponentLayout,
-    FocusDetails,
-} from '@noriginmedia/norigin-spatial-navigation';
+import { FocusableComponentLayout } from '@noriginmedia/norigin-spatial-navigation';
 
 export type PictureLineStore<S> = {
     dataState: null | Pagination<S>;
 
     setDataState: (trendMovies: Pagination<S>) => void;
+    nulledDataState: () => void;
 };
 
 export type PictureLineProps = {
@@ -17,15 +15,7 @@ export type PictureLineProps = {
     queryKey: (page?: number) => (string | number)[];
     name?: string;
     selectedItem: null | string;
-    onRowFocus?: (
-        layout: FocusableComponentLayout,
-        asset: AssetType,
-        details: FocusDetails,
-    ) => void;
-    onAssetFocus?: (
-        layout: FocusableComponentLayout,
-        asset: SelectElement,
-        details: FocusDetails,
-    ) => void;
+    onRowFocus?: (layout: FocusableComponentLayout, asset: AssetType) => void;
+    onAssetFocus?: (layout: HTMLElement, asset: SelectElement) => void;
     onLoadFocus?: (id: string) => void;
 };

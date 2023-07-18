@@ -52,13 +52,13 @@ export const useContent = () => {
                 behavior: 'smooth',
                 inline: 'start',
             });
-        });
+        }, 100);
     }, []);
 
     const handleAssetFocus = useCallback(
-        (layout: FocusableComponentLayout, asset: SelectElement) => {
+        (layout: HTMLElement, asset: SelectElement) => {
             setTimeout(() => {
-                layout.node.scrollIntoView({
+                layout?.scrollIntoView({
                     block: 'nearest',
                     behavior: 'smooth',
                     inline: 'center',

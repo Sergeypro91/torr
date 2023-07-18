@@ -5,12 +5,18 @@ export const useKeyDownListener = (
     selectOption: (direction: boolean) => void,
 ) => {
     const onKeyDown = useCallback(
-        (event: KeyboardEventInit) => {
-            if (event.code === 'ArrowUp') {
-                selectOption(false);
+        (event: KeyboardEvent) => {
+            if (['ArrowUp', 'ArrowDown'].includes(event.code)) {
+                event.stopPropagation();
             }
-            if (event.code === 'ArrowDown') {
-                selectOption(true);
+
+            switch (event.code) {
+                case 'ArrowUp':
+                    return selectOption(false);
+                case 'ArrowDown':
+                    return selectOption(true);
+                default:
+                    return;
             }
         },
         [selectOption],

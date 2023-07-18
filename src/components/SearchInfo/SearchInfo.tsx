@@ -1,6 +1,11 @@
 import React from 'react';
 import { SearchInfoContainer } from './styled';
+import { AssetInfo } from '@/components';
 
 export const SearchInfo = () => {
-    return <SearchInfoContainer>INFO</SearchInfoContainer>;
+    return (
+        <SearchInfoContainer>
+            <AssetInfo />
+        </SearchInfoContainer>
+    );
 };
