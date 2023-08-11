@@ -6,4 +6,7 @@ export * from './smallArrow';
 export * from './loupe';
 export * from './loading';
 export * from './noImage';
+export * from './search';
+export * from './empty';
+export * from './not-found';
 export type * from './types';

@@ -12,8 +12,8 @@ export const getAssetGridSize = ({
     ratio,
 }: GetAssetSizeOptions) => {
     const totalMargins = (rowCount - 1) * gap;
-    const width = Math.ceil((rowWidth - totalMargins) / rowCount);
-    const height = Math.ceil(width * ratio);
+    const width = Math.floor((rowWidth - totalMargins) / rowCount);
+    const height = Math.floor(width * ratio);
 
     return { width, height, gap };
 };

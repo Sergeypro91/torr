@@ -15,4 +15,8 @@ export const SearchContainer = styled.div`
         ${({ theme }) => transparentize(0, theme.palette.black)} 100%
     );
     overflow: hidden;
+
+    & > *:not(:first-child):not(:last-child) {
+        margin-right: ${({ theme }) => theme.spacing(10)};
+    }
 `;

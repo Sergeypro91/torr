@@ -9,3 +9,4 @@ export * from './getAssetGridSize';
 export * from './calculateTickerTime';
 export * from './createAssetId';
 export * from './getDate';
+export * from './scrollTo';

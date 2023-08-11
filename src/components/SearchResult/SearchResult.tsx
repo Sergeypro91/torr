@@ -1,14 +1,9 @@
 import React from 'react';
 import { VirtuosoGrid } from 'react-virtuoso';
 import { useSearchResult } from './useSearchResult';
-import { ItemContent } from './ItemContent';
-import { SearchResultProps, HeaderContainerOptions } from './types';
-import {
-    SearchResultContainer,
-    ItemContainer,
-    ListContainer,
-    HeaderContainer,
-} from './styled';
+import { HeaderContainer } from './HeaderContainer';
+import { SearchResultProps } from './types';
+import { SearchResultContainer, ItemContainer, ListContainer } from './styled';
 
 export const SearchResult = (props: SearchResultProps) => {
     const {
@@ -16,32 +11,12 @@ export const SearchResult = (props: SearchResultProps) => {
         ref,
         virtuosoRef,
         focusKey,
-        dataState,
         searchData,
-        rowId,
-        handleAssetFocus,
+        assetSize,
         isLoading,
         requestMore,
-        assetSize,
+        renderItemContent,
     } = useSearchResult(props);
-
-    const headerContainer = ({
-        isEmpty,
-        isLoading,
-        isNotFound,
-    }: HeaderContainerOptions) => {
-        if (isLoading) {
-            return <HeaderContainer>LOADING...</HeaderContainer>;
-        }
-        if (isNotFound) {
-            return <HeaderContainer>NOT FOUND</HeaderContainer>;
-        }
-        if (isEmpty) {
-            return <HeaderContainer>EMPTY</HeaderContainer>;
-        }
-
-        return null;
-    };
 
     return (
         <FocusContext.Provider value={focusKey}>
@@ -51,26 +26,13 @@ export const SearchResult = (props: SearchResultProps) => {
                     style={{ height: '100%' }}
                     data={searchData}
                     endReached={requestMore}
-                    overscan={{
-                        main: assetSize?.height ?? 300 * 2,
-                        reverse: assetSize?.height ?? 300 * 2,
-                    }}
+                    overscan={assetSize?.height}
                     components={{
                         Item: ItemContainer,
                         List: ListContainer,
-                        Header: () =>
-                            headerContainer({
-                                isLoading,
-                                isNotFound: !searchData.length,
-                                isEmpty: !dataState,
-                            }),
+                        Header: HeaderContainer(isLoading),
                     }}
-                    itemContent={(index, data) => (
-                        <ItemContent
-                            onFocus={handleAssetFocus}
-                            {...{ rowId, index, data }}
-                        />
-                    )}
+                    itemContent={renderItemContent}
                 />
             </SearchResultContainer>
         </FocusContext.Provider>

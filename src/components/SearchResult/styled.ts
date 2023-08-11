@@ -22,8 +22,7 @@ export const SearchResultContainer = styled.div<{
     height?: number;
 }>`
     grid-area: result;
-    padding: ${({ theme }) => theme.spacing(10, 10, 0, 5)};
-    overflow: hidden;
+    padding: ${({ theme }) => theme.spacing(0, 10, 0, 0)};
 
     ${ItemContainer} {
         width: ${({ width }) => `${width}px`};
@@ -31,15 +30,7 @@ export const SearchResultContainer = styled.div<{
     }
 
     & > * {
-        ${({ theme }) => theme.hideScrollbar}
+        ${({ theme }) => theme.hideScrollbar};
+        transform: translate3d(0, 0, 0);
     }
-`;
-
-export const HeaderContainer = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 `;

@@ -7,10 +7,16 @@ import { VirtuosoGridHandle } from 'react-virtuoso';
 import { useQuery } from '@tanstack/react-query';
 import { searchPicture } from '@/api';
 import { useAppStore, useRouteStore, useSearchStore } from '@/stores';
-import { SelectElement } from '@/types';
+import { AssetType, SelectElement } from '@/types';
 import { SEARCH_PICTURE } from '@/hooks';
-import { decipherAssetId, getAssetGridSize } from '@/utils';
-import { RequestOptions, ScrollOptions, SearchResultProps } from './types';
+import {
+    decipherAssetId,
+    getAssetGridSize,
+    scrollTo,
+    scrollToItem,
+} from '@/utils';
+import { RequestOptions, SearchResultProps } from './types';
+import { ItemContent } from './ItemContent';
 
 export const useSearchResult = ({
     rowId = 'search',
@@ -20,7 +26,6 @@ export const useSearchResult = ({
     const params = useRouteStore((state) => state.getParams());
     const setParams = useRouteStore((state) => state.setParams);
     const {
-        dataState,
         searchPage,
         searchQuery,
         searchFilter,
@@ -94,27 +99,24 @@ export const useSearchResult = ({
     }, [ref.current, gap, rowCount]);
 
     const handleAssetFocus = useCallback(
-        (layout: HTMLElement, asset: SelectElement) => {
-            setTimeout(() => {
-                layout.scrollIntoView({
-                    block: 'center',
-                    behavior: 'smooth',
-                });
-            });
-
+        (elemRef: HTMLElement, asset: SelectElement) => {
+            scrollTo({ elemRef, block: 'center' });
             selectAsset(asset);
         },
         [selectAsset],
     );
 
-    const scrollToItem = ({ element, index }: ScrollOptions) => {
-        setTimeout(() => {
-            element.scrollToIndex({
-                index,
-                align: 'center',
-            });
-        }, 300);
-    };
+    const renderItemContent = useCallback(
+        (index: number, data: AssetType) => {
+            return (
+                <ItemContent
+                    onFocus={handleAssetFocus}
+                    {...{ rowId, index, data }}
+                />
+            );
+        },
+        [handleAssetFocus, rowId],
+    );
 
     useEffect(() => {
         if (data) {
@@ -177,12 +179,10 @@ export const useSearchResult = ({
         ref,
         virtuosoRef,
         focusKey,
-        rowId,
-        assetSize,
-        dataState,
         searchData,
+        assetSize,
         isLoading: isFetching,
         requestMore,
-        handleAssetFocus,
+        renderItemContent,
     };
 };

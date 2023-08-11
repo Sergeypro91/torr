@@ -7,7 +7,6 @@ export const useSearchBar = () => {
     const setParams = useRouteStore((state) => state.setParams);
     const setSearchQuery = useSearchStore((state) => state.setSearchQuery);
     const setSearchFilter = useSearchStore((state) => state.setSearchFilter);
-    const nulledSearchState = useSearchStore((state) => state.nulledDataState);
 
     const searchQueryParam = useMemo(() => {
         return params?.search ?? '';
@@ -34,7 +33,6 @@ export const useSearchBar = () => {
     const handleSubmit = () => {
         setSearchQuery(searchQueryParam);
         setSearchFilter(searchFilterParam);
-        nulledSearchState();
     };
 
     return {

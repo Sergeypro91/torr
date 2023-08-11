@@ -24,7 +24,12 @@ export const useSearchStore = create<UseSearchStore>()(
         setSearchQuery: (query) =>
             set((state) => {
                 if (state.searchQuery !== query) {
-                    return { searchQuery: query, searchPage: 1 };
+                    console.log('ENTER');
+                    return {
+                        dataState: null,
+                        searchQuery: query,
+                        searchPage: 1,
+                    };
                 }
 
                 return { searchQuery: query };
