@@ -261,7 +261,7 @@ export interface components {
       overview: string | null;
       popularity: number;
       posterPath: string | null;
-      productionCompanies: (components["schemas"]["CompanyDto"])[];
+      production: (components["schemas"]["CompanyDto"])[];
       releaseDate: string;
       revenue: number;
       runtime: number | null;

@@ -3,11 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { PictureLineProps } from './types';
 import { debounce } from 'lodash-es';
 
-export const usePictureLine = ({
+export const usePictureLine = <ItemType,>({
     state,
     getTrends,
     queryKey,
-}: Omit<PictureLineProps, 'selectedItem'>) => {
+}: PictureLineProps<ItemType>) => {
     const { dataState, setDataState } = state;
     const [page, setPage] = useState(dataState?.page ?? 1);
 

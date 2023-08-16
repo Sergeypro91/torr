@@ -1,96 +1,51 @@
-import React, { useCallback } from 'react';
-import { ListChildComponentProps } from 'react-window';
-import InfiniteLoader from 'react-window-infinite-loader';
+import React from 'react';
+import { InfiniteList } from '@/components';
 import { useContentRow } from './useContentRow';
 import { ContentRowProps } from './types';
-import { Asset } from './Asset';
 import {
     ContentRowAssets,
     ContentRowContainer,
     ContentRowTitle,
-    ContentRowAssetList,
 } from './styled';
 
-export const ContentRow = (props: ContentRowProps) => {
+export const ContentRow = <ItemType,>(props: ContentRowProps<ItemType>) => {
     const {
         rowId,
         rowTitle,
         dataState,
-        margin = 40,
+        gap = 40,
         itemCount = 1000,
-        requestMore,
-        onAssetFocus,
+        requestMore = () => {},
+        renderItem,
+        defineRowItemId,
+        visibleItemsCount,
     } = props;
 
-    const {
-        ref,
-        focusKey,
-        rowWidth,
-        assetSize,
-        defineStyle,
-        FocusContext,
-        hasFocusedChild,
-        listRef,
-        infiniteLoaderRef,
-        handleListItemsRendered,
-    } = useContentRow({ ...props, margin });
-
-    const Row = useCallback(
-        ({ index, style }: ListChildComponentProps) => {
-            const currStyle = defineStyle(style);
-            const currAsset = dataState[index];
-            const currFocusId = `${rowId}|${dataState[index]?.tmdbId}|${dataState[index]?.mediaType}`;
-
-            return (
-                <Asset
-                    style={currStyle}
-                    onAssetFocus={onAssetFocus}
-                    data={currAsset}
-                    focusId={currFocusId}
-                />
-            );
-        },
-        [defineStyle, dataState, rowId, onAssetFocus],
-    );
+    const { ref, focusKey, FocusContext, hasFocusedChild } =
+        useContentRow(props);
 
     return (
         <FocusContext.Provider value={focusKey}>
             <ContentRowContainer ref={ref} focused={hasFocusedChild}>
-                <ContentRowTitle indent={margin}>{rowTitle}</ContentRowTitle>
+                <ContentRowTitle indent={gap}>{rowTitle}</ContentRowTitle>
 
                 <ContentRowAssets>
-                    <InfiniteLoader
-                        ref={infiniteLoaderRef}
-                        isItemLoaded={(index) => index < dataState.length}
+                    <InfiniteList
+                        itemRef={ref}
+                        rowId={rowId}
+                        gap={gap}
+                        visibleItemsCount={visibleItemsCount}
                         itemCount={itemCount}
-                        loadMoreItems={requestMore}
-                    >
-                        {({ onItemsRendered, ref }) => {
-                            return (
-                                <ContentRowAssetList
-                                    height={assetSize.height}
-                                    width={rowWidth}
-                                    itemCount={itemCount}
-                                    itemSize={assetSize.width + margin}
-                                    onItemsRendered={(event) => {
-                                        onItemsRendered(event);
-                                        handleListItemsRendered(event);
-                                    }}
-                                    layout="horizontal"
-                                    ref={(list) => {
-                                        listRef.current = list;
-                                        ref(list);
-                                    }}
-                                >
-                                    {Row}
-                                </ContentRowAssetList>
-                            );
-                        }}
-                    </InfiniteLoader>
+                        dataState={dataState}
+                        isItemLoaded={(index) => index < dataState.length}
+                        requestMore={requestMore}
+                        selectedItem={props.selectedItem}
+                        layout="horizontal"
+                        renderItem={renderItem}
+                        defineRowItemId={defineRowItemId}
+                    />
                 </ContentRowAssets>
             </ContentRowContainer>
         </FocusContext.Provider>
     );
 };
-
-ContentRow.displayName = 'ContentRow';

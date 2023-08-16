@@ -1,7 +1,15 @@
-import { MediaType } from '../';
+import {
+    MediaType,
+    Company,
+    PictureStatus,
+    Video,
+    ParticipantPerson,
+    Image,
+    PictureBase,
+} from '../';
+import { movieGenres } from '@/constants';
 
-export type MovieSlim = {
-    tmdbId: string;
+export type MovieSlim = PictureBase & {
     mediaType: MediaType.MOVIE;
     posterPath: string | null;
     hPosterPath: string | null;
@@ -14,4 +22,26 @@ export type MovieSlim = {
     popularity: number;
     voteAverage: number;
     trailer: string;
+};
+
+export type Movie = PictureBase & {
+    mediaType: MediaType.MOVIE;
+    backdropPath: string | null;
+    budget: number;
+    genres: typeof movieGenres;
+    originalTitle: string;
+    overview: string | null;
+    popularity: number;
+    posterPath: string | null;
+    production: Company[];
+    releaseDate: string;
+    revenue: number;
+    runtime: number | null;
+    status: PictureStatus;
+    tagline: string | null;
+    title: string;
+    voteAverage: number;
+    videos: { results: Video[] };
+    credits: { cast: ParticipantPerson[]; crew: ParticipantPerson[] };
+    images: { backdrops: Image[]; logos: Image[]; posters: Image[] };
 };

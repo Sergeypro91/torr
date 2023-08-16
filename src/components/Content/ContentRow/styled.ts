@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { FocusedItem } from '@/types';
-import { FixedSizeList } from 'react-window';
 
 export const ContentRowContainer = styled.div<FocusedItem>`
     display: flex;
@@ -26,8 +25,4 @@ export const ContentRowTitle = styled.h3<{ indent?: number }>`
 export const ContentRowAssets = styled.div`
     overflow: hidden;
     display: flex;
-`;
-
-export const ContentRowAssetList = styled(FixedSizeList)`
-    ${({ theme }) => theme.hideScrollbar}
 `;

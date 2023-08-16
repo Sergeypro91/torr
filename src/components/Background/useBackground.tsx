@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    KeyboardEvent,
+} from 'react';
 import { debounce } from 'lodash-es';
 import { useAppStore, useRouteStore } from '@/stores';
 import { getImageTitle } from '@/utils';
@@ -13,13 +20,14 @@ export const useBackground = () => {
     const { pathName } = useRouteStore((state) => state.route);
     const selectedAsset = useAppStore((state) => state.selectedAsset);
     const data = useAppStore((state) => state.data);
+    const ref = useRef<HTMLDivElement>(null);
 
     const title = useMemo(() => {
         return selectedAsset ? getImageTitle(selectedAsset) : '';
     }, [selectedAsset]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const addNewAsset = useCallback(
+    const showPreview = useCallback(
         debounce((assetData: SelectElement) => {
             setAssets((prevState) => {
                 const assetIds = prevState.map(
@@ -61,6 +69,21 @@ export const useBackground = () => {
         setRenderTrailer(false);
     };
 
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (['Escape'].includes(event.code)) {
+            event.stopPropagation();
+        }
+
+        switch (event.code) {
+            case 'Escape':
+                setShowTrailer(false);
+                setRenderTrailer(false);
+                return;
+            default:
+                return;
+        }
+    };
+
     useEffect(() => {
         const blurBackgroundTimeout = setTimeout(() => {
             setBlur(Boolean(pathName));
@@ -73,11 +96,11 @@ export const useBackground = () => {
 
     useEffect(() => {
         if (selectedAsset) {
-            addNewAsset(selectedAsset);
+            showPreview(selectedAsset);
         } else {
             setAssets([]);
         }
-    }, [selectedAsset, addNewAsset]);
+    }, [selectedAsset, showPreview]);
 
     useEffect(() => {
         setParams({ selectedAssetId: selectedAsset?.focusId ?? '' });
@@ -90,7 +113,7 @@ export const useBackground = () => {
             }, 600);
         }
 
-        const renderTrailerTimeout = setTimeout(() => {
+        const showTrailerTimeout = setTimeout(() => {
             setRenderTrailer(true);
         }, 5000);
 
@@ -98,7 +121,7 @@ export const useBackground = () => {
         setShowTrailer(false);
 
         return () => {
-            clearTimeout(renderTrailerTimeout);
+            clearTimeout(showTrailerTimeout);
         };
     }, [assets]);
 
@@ -107,6 +130,7 @@ export const useBackground = () => {
     }, [scaleAppToWatchTrailer]);
 
     return {
+        ref,
         blur,
         assets,
         title,
@@ -116,5 +140,6 @@ export const useBackground = () => {
         onTrailerStart,
         onTrailerEnd,
         onTrailerError,
+        handleKeyDown,
     };
 };

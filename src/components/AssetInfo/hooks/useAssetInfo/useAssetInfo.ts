@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash-es';
 import { useAppStore } from '@/stores';
-import { MediaType, movieGenres, SelectElement, tvGenres } from '@/types';
+import { MediaType, SelectElement } from '@/types';
+import { movieGenres, tvGenres } from '@/constants';
 import { getDate } from '@/utils';
 
 export const useAssetInfo = () => {
@@ -77,7 +78,9 @@ export const useAssetInfo = () => {
             return `${day}.${month}.${year}`;
         };
 
-        return asset && asset.mediaType !== MediaType.PERSON
+        return asset &&
+            asset.mediaType !== MediaType.PERSON &&
+            asset.releaseDate
             ? calcRelease(asset.releaseDate)
             : null;
     }, [asset]);

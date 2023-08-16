@@ -25,3 +25,8 @@ export const searchPicture = apiClient
     .path('/api/picture')
     .method('get')
     .create();
+
+export const getPictureById = apiClient
+    .path('/api/picture/{tmdbId}/{mediaType}')
+    .method('get')
+    .create();

@@ -3,10 +3,19 @@ import styled from 'styled-components';
 export const HomeContainer = styled.div`
     flex: 1 100%;
     display: grid;
-    grid: 2fr 1fr / repeat(3, 1fr);
+    grid: 140px auto 33% / repeat(3, 1fr);
     grid-template-areas:
+        'header header header'
         'left center right'
         'bottom bottom bottom';
+    overflow: hidden;
+`;
+
+export const HomeHeader = styled.div`
+    height: 140px;
+    grid-area: header;
+    display: flex;
+    padding: ${({ theme }) => theme.spacing(10)};
     overflow: hidden;
 `;
 

@@ -5,6 +5,7 @@ import { useRouteStore } from '@/stores';
 
 export const SearchHeader = () => {
     const { pathName } = useRouteStore((state) => state.route);
+
     return (
         <SearchHeaderContainer>
             <PageTitle>{pathName}</PageTitle>

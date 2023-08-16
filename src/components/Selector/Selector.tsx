@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, WheelEvent } from 'react';
-import { debounce } from 'lodash-es';
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+import React from 'react';
 import { SmallArrow } from '@/assets/images/svgr';
-import { useKeyDownListener } from '@/components/Selector/utils/useKeyDownListener';
+import { SelectorProps } from './types';
+import { useSelector } from './useSelector';
 import {
     SelectorContainer,
     SelectorOptionsWrapper,
@@ -10,79 +9,29 @@ import {
     SelectorOptions,
     Arrows,
 } from './styled';
+import { useFocus } from '@/hooks';
 
-type SelectorProps = {
-    currentOption: string;
-    options: string[];
-    setOption: (option: string) => void;
-};
-
-export const Selector = ({
-    currentOption,
-    options,
-    setOption,
-}: SelectorProps) => {
-    const selectorRef = useRef<HTMLDivElement>(null);
-    const currentOptionId = options.findIndex((item) => item === currentOption);
-
-    const { ref, focused } = useFocusable({
-        trackChildren: true,
-    });
-
-    const selectOption = useCallback(
-        (direction: boolean) => {
-            const newOption = direction
-                ? options[
-                      currentOptionId >= options.length - 1
-                          ? currentOptionId
-                          : currentOptionId + 1
-                  ]
-                : options[
-                      currentOptionId === 0
-                          ? currentOptionId
-                          : currentOptionId - 1
-                  ];
-            setOption(newOption);
-        },
-        [currentOptionId, options, setOption],
-    );
-
-    const handleWheel = debounce((event: WheelEvent<HTMLDivElement>) => {
-        if (event.deltaY > 0) {
-            selectOption(true);
-        }
-
-        if (event.deltaY < 0) {
-            selectOption(false);
-        }
-    }, 100);
-
-    const handleSelectOption = (option: string) => {
-        return (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-            setOption(option);
-
-            (e.target as HTMLDivElement).scrollIntoView({
-                block: 'center',
-                behavior: 'smooth',
-            });
-        };
-    };
-
-    useKeyDownListener(focused, selectOption);
-
-    useEffect(() => {
-        if (selectorRef.current) {
-            const focusedElement = selectorRef.current.querySelector('#focus');
-
-            focusedElement?.scrollIntoView({
-                block: 'center',
-                behavior: 'smooth',
-            });
-        }
-    }, [currentOption]);
+export const Selector = (props: SelectorProps) => {
+    const {
+        ref,
+        focused,
+        selectorRef,
+        options,
+        currentOption,
+        currentOptionId,
+        handleWheel,
+        handleKeyDown,
+        handleSelectOption,
+    } = useSelector(props);
+    useFocus({ ref, focused });
 
     return (
-        <SelectorContainer ref={ref} onWheel={handleWheel} focused={focused}>
+        <SelectorContainer
+            ref={ref}
+            focused={focused}
+            onWheel={handleWheel}
+            onKeyDown={handleKeyDown}
+        >
             <SelectorOptionsWrapper ref={selectorRef}>
                 <SelectorOptions>
                     {options.map((option) => {

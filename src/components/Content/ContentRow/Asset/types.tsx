@@ -1,10 +1,7 @@
 import { AssetType, SelectElement } from '@/types';
-import { CSSProperties } from 'react';
+import { ListItemOptions } from '@/components';
 
-export type AssetProps = {
-    data: AssetType;
-    focusId: string;
-    style?: CSSProperties;
-    onAssetFocus: (layout: HTMLElement, props: SelectElement) => void;
+export type AssetProps = ListItemOptions<AssetType> & {
     vertical?: boolean;
+    onAssetFocus?: (layout: HTMLElement, props: SelectElement) => void;
 };

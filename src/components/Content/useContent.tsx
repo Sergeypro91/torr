@@ -28,7 +28,7 @@ import { contentList } from '@/components/Content/constnats';
 
 export const useContent = () => {
     const params = useRouteStore((state) => state.getParams());
-    const selectAsset = useAppStore((state) => state.selectAsset);
+    const setAsset = useAppStore((state) => state.setAsset);
     const setVariableNav = useVariableNavStore((state) => state.setVariableNav);
     const movieTrendsState = useTrendingMoviesStore((state) => state);
     const tvTrendsState = useTrendingTvsStore((state) => state);
@@ -65,18 +65,9 @@ export const useContent = () => {
                 });
             });
 
-            selectAsset(asset);
+            setAsset(asset);
         },
-        [selectAsset],
-    );
-
-    const handleOnLoadFocus = useCallback(
-        (id: string) => {
-            if (!paramItem) {
-                setFocus(id);
-            }
-        },
-        [paramItem, setFocus],
+        [setAsset],
     );
 
     const getState = (key: string): PictureLineStore<any> => {
@@ -103,7 +94,7 @@ export const useContent = () => {
 
         const contentNav = contentList.map((elem) => ({
             title: elem.name,
-            link: `${elem.queryKey()[0]}`,
+            link: `${elem.queryKey()[0]}/#${elem.queryKey()[0]}`,
         }));
 
         setVariableNav(contentNav);
@@ -117,7 +108,6 @@ export const useContent = () => {
         paramItem,
         movieTrendsState,
         handleRowFocus,
-        handleOnLoadFocus,
         handleAssetFocus,
         getState,
     };

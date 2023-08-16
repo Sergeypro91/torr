@@ -8,6 +8,7 @@ import {
 import { useBackground } from './useBackground';
 import { BackgroundBackground, BackgroundContainer } from './styled';
 import { MediaType } from '@/types';
+import { useFocus } from '@/hooks';
 
 type BackgroundProps = {
     id?: string;
@@ -15,6 +16,7 @@ type BackgroundProps = {
 
 export const Background = ({ id }: BackgroundProps) => {
     const {
+        ref,
         blur,
         assets,
         title,
@@ -24,10 +26,18 @@ export const Background = ({ id }: BackgroundProps) => {
         onTrailerStart,
         onTrailerEnd,
         onTrailerError,
+        handleKeyDown,
     } = useBackground();
+    useFocus({ ref, focused: showTrailer });
 
     return (
-        <BackgroundContainer id={id} blur={blur} showTrailer={showTrailer}>
+        <BackgroundContainer
+            id={id}
+            blur={blur}
+            ref={ref}
+            showTrailer={showTrailer}
+            onKeyDown={handleKeyDown}
+        >
             <BackgroundBackground>
                 {[...assets].reverse().map((asset) => (
                     <BackgroundItem key={`${asset.tmdbId}${asset.mediaType}`}>

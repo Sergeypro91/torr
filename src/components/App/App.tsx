@@ -12,7 +12,7 @@ import {
     ExitPopup,
     KeydownListener,
 } from '@/components';
-import { useReactQuery, useTizenListener } from '@/hooks';
+import { useReactQuery } from '@/hooks';
 import {
     init,
     FocusContext,
@@ -31,8 +31,6 @@ export const App = ({ children }: PropsWithChildren) => {
         trackChildren: true,
         isFocusBoundary: true,
     });
-
-    useTizenListener();
 
     const { queryClient } = useReactQuery();
 

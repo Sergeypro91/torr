@@ -15,13 +15,12 @@ export const About = styled.div`
     overflow: hidden;
 
     & > *:not(:only-child):not(:first-child) {
-        margin-top: ${({ theme }) => theme.spacing(2)};
+        margin-top: ${({ theme }) => theme.spacing(1)};
     }
 `;
 
 export const Genre = styled.div<{
     isOverflown?: boolean;
-    isEmpty?: boolean;
     tickerTime?: number;
 }>`
     min-width: 0;
@@ -30,8 +29,6 @@ export const Genre = styled.div<{
     position: relative;
 
     & > * {
-        font-family: ${({ theme, isEmpty }) =>
-            isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
         display: inline-block;
         position: relative;
         animation: ${({ isOverflown, tickerTime }) =>
@@ -43,12 +40,7 @@ export const Genre = styled.div<{
     }
 `;
 
-export const TypeAndDate = styled.h2<{
-    isEmpty?: boolean;
-}>`
-    font-family: ${({ theme, isEmpty }) =>
-        isEmpty ? `${theme.typography.flowCircular}` : 'inherit'};
-
+export const TypeAndDate = styled.h2`
     ${({ theme }) => theme.typography.ellipsis}
 
     &:first-letter {

@@ -1,8 +1,14 @@
-import React, { memo } from 'react';
-import { PictureLine } from '@/components';
+import React, { memo, useCallback } from 'react';
+import {
+    DefineRowItemIdOptions,
+    ListItemOptions,
+    PictureLine,
+} from '@/components';
+import { AssetType } from '@/types';
+import { Asset } from './ContentRow/Asset';
 import { useContent } from './useContent';
-import { ContentWrapper } from './styled';
 import { contentList } from './constnats';
+import { ContentWrapper } from './styled';
 
 export const Content = memo(() => {
     const {
@@ -11,10 +17,23 @@ export const Content = memo(() => {
         focusKey,
         paramItem,
         handleRowFocus,
-        handleOnLoadFocus,
         handleAssetFocus,
         getState,
     } = useContent();
+
+    const renderItem = useCallback(
+        (props: ListItemOptions<AssetType>) => {
+            return <Asset {...props} onAssetFocus={handleAssetFocus} />;
+        },
+        [handleAssetFocus],
+    );
+
+    const defineRowItemId = ({
+        rowId,
+        itemData,
+    }: DefineRowItemIdOptions<AssetType>) => {
+        return `${rowId}|${itemData?.tmdbId}|${itemData?.mediaType}`;
+    };
 
     return (
         <FocusContext.Provider value={focusKey}>
@@ -22,14 +41,15 @@ export const Content = memo(() => {
                 {contentList.map((content, id) => (
                     <PictureLine
                         key={content.queryKey()[0]}
-                        name={content.name}
+                        rowTitle={content.name}
                         state={getState(`${content.queryKey()[0]}`)}
                         getTrends={content.getTrends}
                         queryKey={content.queryKey}
                         selectedItem={paramItem}
                         onRowFocus={handleRowFocus}
-                        onAssetFocus={handleAssetFocus}
-                        onLoadFocus={!id ? handleOnLoadFocus : undefined}
+                        onLoadFocus={!Boolean(id)}
+                        renderItem={renderItem}
+                        defineRowItemId={defineRowItemId}
                     />
                 ))}
             </ContentWrapper>

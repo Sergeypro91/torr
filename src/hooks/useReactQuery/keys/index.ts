@@ -1,3 +1,5 @@
+import { searchPicture, getPictureById } from '@/api';
+
 export const WEEK_TRENDING_MOVIES = (page: number = 1) => [
     'week trending movies',
     page,
@@ -30,10 +32,20 @@ export const APPLE_TRENDING_TVS = (page: number = 1) => [
 
 export const SEARCH_PICTURE = ({
     query,
-    filter,
+    mediaType,
     page = 1,
-}: {
-    query: string;
-    filter?: string;
-    page: number;
-}) => ['search picture', query, filter, page];
+}: Parameters<typeof searchPicture>[0]) => [
+    'search picture',
+    query,
+    mediaType,
+    page,
+];
+
+export const GET_PICTURE_BY_ID = ({
+    tmdbId,
+    mediaType,
+}: Parameters<typeof getPictureById>[0]) => [
+    'get picture by id',
+    tmdbId,
+    mediaType,
+];

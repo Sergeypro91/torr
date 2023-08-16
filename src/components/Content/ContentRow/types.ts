@@ -1,18 +1,20 @@
 import { FocusableComponentLayout } from '@noriginmedia/norigin-spatial-navigation';
-import { AssetType, SelectElement } from '@/types';
+import { InfiniteListProps } from '@/components';
 
-export type ContentRowProps = {
-    rowId: string;
+export type ContentRowProps<ItemType> = {
     rowTitle: string;
-    isError: boolean;
-    isLoading: boolean;
-    dataState: AssetType[];
-    selectedItem: null | string;
-    margin?: number;
-    itemCount?: number;
+    isError?: boolean;
+    isLoading?: boolean;
     skeletonCount?: number;
-    requestMore: () => void;
-    onRowFocus: (layout: FocusableComponentLayout, asset: AssetType) => void;
-    onAssetFocus: (layout: HTMLElement, asset: SelectElement) => void;
-    onLoadFocus: (focusedAssetId: string) => void;
-};
+    onLoadFocus?: boolean;
+    onRowFocus?: (layout: FocusableComponentLayout, asset: ItemType) => void;
+} & Partial<
+    Omit<
+        InfiniteListProps<ItemType>,
+        'dataState' | 'rowId' | 'renderItem' | 'defineRowItemId'
+    >
+> &
+    Pick<
+        InfiniteListProps<ItemType>,
+        'dataState' | 'rowId' | 'renderItem' | 'defineRowItemId'
+    >;

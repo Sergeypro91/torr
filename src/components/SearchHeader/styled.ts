@@ -4,8 +4,7 @@ export const SearchHeaderContainer = styled.div`
     grid-area: input;
     display: flex;
     align-items: center;
-    padding: ${({ theme }) => theme.spacing(10, 10, 0, 10)};
-    margin-bottom: ${({ theme }) => theme.spacing(10)};
+    padding: ${({ theme }) => theme.spacing(10)};
 
     & > *:not(:empty):not(:first-child) {
         margin-left: ${({ theme }) => theme.spacing(10)};

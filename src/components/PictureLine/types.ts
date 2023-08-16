@@ -1,6 +1,7 @@
-import { AssetType, Pagination, SelectElement } from '@/types';
 import { ApiResponse } from 'openapi-typescript-fetch';
 import { FocusableComponentLayout } from '@noriginmedia/norigin-spatial-navigation';
+import { Pagination } from '@/types';
+import { InfiniteListProps } from '@/components';
 
 export type PictureLineStore<S> = {
     dataState: null | Pagination<S>;
@@ -9,13 +10,11 @@ export type PictureLineStore<S> = {
     nulledDataState: () => void;
 };
 
-export type PictureLineProps = {
-    state: PictureLineStore<AssetType>;
-    getTrends: (page?: number) => Promise<ApiResponse<Pagination<AssetType>>>;
+export type PictureLineProps<ItemType> = {
+    rowTitle?: string;
+    state: PictureLineStore<ItemType>;
+    getTrends: (page?: number) => Promise<ApiResponse<Pagination<ItemType>>>;
     queryKey: (page?: number) => (string | number)[];
-    name?: string;
-    selectedItem: null | string;
-    onRowFocus?: (layout: FocusableComponentLayout, asset: AssetType) => void;
-    onAssetFocus?: (layout: HTMLElement, asset: SelectElement) => void;
-    onLoadFocus?: (id: string) => void;
-};
+    onRowFocus?: (layout: FocusableComponentLayout, asset: ItemType) => void;
+    onLoadFocus?: boolean;
+} & Partial<InfiniteListProps<ItemType>>;

@@ -1,27 +1,33 @@
 import React, { useCallback, useEffect } from 'react';
-import { routes, useRouteStore } from '@/stores';
 import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
+import { useRouteStore } from '@/stores';
 import { AssetProps } from './types';
 
-export const useAsset = ({ focusId, data, onAssetFocus }: AssetProps) => {
+export const useAsset = ({
+    itemData,
+    rowItemId,
+    onAssetFocus = () => {},
+}: AssetProps) => {
     const navigate = useRouteStore((store) => store.navigate);
 
     const onPress = useCallback(() => {
-        if (data?.tmdbId) {
-            const params = new URLSearchParams([['pictureId', data.tmdbId]]);
+        if (itemData?.tmdbId) {
+            const params = new URLSearchParams([
+                ['pictureId', itemData.tmdbId],
+            ]);
 
-            navigate({ pathName: routes.picture, params });
+            navigate({ pathName: itemData.mediaType, params });
         }
-    }, [navigate, data]);
+    }, [navigate, itemData]);
 
     const { ref, focused, setFocus } = useFocusable({
-        focusKey: focusId,
+        focusKey: rowItemId,
         onEnterPress: onPress,
     });
 
     const handleAssetClick = useCallback(() => {
-        setFocus(focusId);
-    }, [setFocus, focusId]);
+        setFocus(rowItemId);
+    }, [setFocus, rowItemId]);
 
     const handleAssetDoubleClick = useCallback(() => {
         onPress();
@@ -29,13 +35,14 @@ export const useAsset = ({ focusId, data, onAssetFocus }: AssetProps) => {
 
     useEffect(() => {
         if (focused && ref.current) {
-            onAssetFocus(ref.current, { ...data, focusId });
+            onAssetFocus(ref.current, { ...itemData, focusId: rowItemId });
         }
-    }, [focused, data, focusId, onAssetFocus, ref]);
+    }, [focused, itemData, rowItemId, onAssetFocus, ref]);
 
     return {
         ref,
         focused,
+        rowItemId,
         handleAssetClick,
         handleAssetDoubleClick,
     };

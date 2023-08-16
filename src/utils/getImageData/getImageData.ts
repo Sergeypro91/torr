@@ -20,17 +20,21 @@ export const getImageTitle = (data?: getImageTitleOption) => {
     return result ? `${result}` : '';
 };
 
-type getImageSrcOption = {
-    data?: null | Partial<MovieSlim | TvSlim | PersonSlim>;
+type getImageSrcOption<DataType> = {
+    data?: null | DataType;
     size: ImageSize;
     type: ImageType;
 };
 
-export const getImageSrc = ({
+export const getImageSrc = <
+    DataType extends Partial<MovieSlim | TvSlim | PersonSlim> = Partial<
+        MovieSlim | TvSlim | PersonSlim
+    >,
+>({
     data,
     size = 'original',
     type = 'posterPath',
-}: getImageSrcOption) => {
+}: getImageSrcOption<DataType>) => {
     const imgService = process.env.NEXT_PUBLIC_API_IMG;
     let result;
 

@@ -11,29 +11,28 @@ import {
 } from './styled';
 
 export const Asset = memo((props: AssetProps) => {
-    const { data, style, vertical } = props;
-    const { ref, focused, handleAssetClick, handleAssetDoubleClick } = useAsset(
-        { ...props },
-    );
+    const { itemData, rowItemId, itemStyle, vertical = false } = props;
+    const { ref, focused, handleAssetClick, handleAssetDoubleClick } =
+        useAsset(props);
 
-    if (!data) {
-        return <AssetSkeleton style={style} />;
+    if (!itemData) {
+        return <AssetSkeleton style={itemStyle} />;
     }
 
     return (
         <AssetWrapper
             ref={ref}
-            id={data.tmdbId}
+            id={rowItemId}
             onClick={handleAssetClick}
             onDoubleClick={handleAssetDoubleClick}
-            style={style}
+            style={itemStyle}
         >
             <AssetContainer focused={focused}>
                 <AssetBackground>
                     <Poster
                         size="w500"
                         type={vertical ? 'posterPath' : 'hPosterPath'}
-                        data={data}
+                        data={itemData}
                     />
                 </AssetBackground>
                 <AssetInner>{}</AssetInner>

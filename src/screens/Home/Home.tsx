@@ -1,18 +1,20 @@
 import React from 'react';
 import { AssetInfo, Content } from '@/components';
 import {
-    HomeBottom,
     HomeContainer,
-    HomeCenter,
+    HomeHeader,
     HomeLeft,
+    HomeCenter,
     HomeRight,
+    HomeBottom,
 } from './styled';
 
 export const Home = () => {
     return (
         <HomeContainer>
+            <HomeHeader />
             <HomeLeft>
-                <AssetInfo />
+                <AssetInfo overview={false} />
             </HomeLeft>
             <HomeCenter />
             <HomeRight />

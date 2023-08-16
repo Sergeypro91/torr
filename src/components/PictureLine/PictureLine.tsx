@@ -1,31 +1,33 @@
 import React from 'react';
 import { ContentRow } from '@/components';
-import { usePictureLine } from '@/components/PictureLine/usePictureLine';
+import { usePictureLine } from './usePictureLine';
 import { PictureLineProps } from './types';
 
-export const PictureLine = ({
-    name = '',
-    selectedItem,
-    onRowFocus = () => {},
-    onAssetFocus = () => {},
-    onLoadFocus = () => {},
-    ...restProps
-}: PictureLineProps) => {
+export const PictureLine = <ItemType,>(props: PictureLineProps<ItemType>) => {
+    const {
+        rowTitle = '',
+        selectedItem,
+        onRowFocus = () => {},
+        onLoadFocus,
+        renderItem = () => null,
+        defineRowItemId = () => '',
+    } = props;
     const { isError, isLoading, rowId, results, requestMore } =
-        usePictureLine(restProps);
+        usePictureLine(props);
 
     return (
         <ContentRow
             rowId={rowId}
-            rowTitle={name}
+            rowTitle={rowTitle}
             isError={isError}
             isLoading={isLoading}
             dataState={results ?? []}
             selectedItem={selectedItem}
             requestMore={requestMore}
             onRowFocus={onRowFocus}
-            onAssetFocus={onAssetFocus}
             onLoadFocus={onLoadFocus}
+            renderItem={renderItem}
+            defineRowItemId={defineRowItemId}
         />
     );
 };

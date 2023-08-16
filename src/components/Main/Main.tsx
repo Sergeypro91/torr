@@ -25,13 +25,16 @@ export const Main = () => {
                 return <Search />;
             case routes.downloads:
                 return <Downloads />;
-            case routes.picture:
+            case routes.movie:
+            case routes.tv:
                 return <Picture />;
             case routes.person:
                 return <Person />;
-            case `${routes.picture}/${routes.torrents}`:
+            case `${routes.movie}/${routes.torrents}`:
+            case `${routes.tv}/${routes.torrents}`:
                 return <Torrents />;
-            case `${routes.picture}/${routes.files}`:
+            case `${routes.movie}/${routes.files}`:
+            case `${routes.tv}/${routes.files}`:
                 return <Files />;
             case routes.profile:
                 return <Profile />;

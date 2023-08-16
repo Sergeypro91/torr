@@ -35,13 +35,13 @@ export const AssetInfoGeneral = ({
                 <Genre
                     ref={genreRef}
                     isOverflown={isGenreOverflown}
-                    isEmpty={!genres}
                     tickerTime={tickerTime}
                 >
-                    <h4>{genres}</h4>
+                    <h4>{genres || ''}</h4>
                 </Genre>
-                <TypeAndDate isEmpty={!type}>
-                    {type ? `${type}・${releaseDate}` : ''}
+                <TypeAndDate>
+                    <span>{`${type || ''} / `}</span>
+                    <small>{`${releaseDate || ''}`}</small>
                 </TypeAndDate>
             </About>
         </AssetInfoGeneralContainer>

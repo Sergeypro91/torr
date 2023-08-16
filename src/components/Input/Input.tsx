@@ -50,11 +50,20 @@ export const Input = ({
     );
 
     /**
-     * @description Prevent page reload on checkmark press
+     * @description Prevent page reload on checkmark press (on TV UI)
      */
     const handleSubmit = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.keyCode === 65376) {
             event.preventDefault();
+        }
+    };
+
+    /**
+     * @description Prevent blocking left/right arrow (on WEB UI)
+     */
+    const handleArrow = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (['ArrowLeft', 'ArrowRight'].includes(event.code)) {
+            event.stopPropagation();
         }
     };
 
@@ -70,6 +79,7 @@ export const Input = ({
                 defaultValue={defaultValue}
                 placeholder={placeholder}
                 onInput={handleInput}
+                onKeyDown={handleArrow}
             />
         </InputContainer>
     );

@@ -13,7 +13,7 @@ type AppStore = {
     setData: (dataString: string) => void;
     toggleExit: (status?: boolean) => void;
     toggleBackPress: (status?: boolean) => void;
-    selectAsset: (asset: null | SelectElement) => void;
+    setAsset: (asset: null | SelectElement) => void;
     toggleNavActive: (status?: boolean) => void;
     toggleWelcomeScreenShown: () => void;
 };
@@ -34,7 +34,7 @@ export const useAppStore = create<AppStore>()(
             set((state) => ({
                 isBackPress: status ?? !state.isBackPress,
             })),
-        selectAsset: (asset) => set(() => ({ selectedAsset: asset })),
+        setAsset: (asset) => set(() => ({ selectedAsset: asset })),
         toggleNavActive: (status) =>
             set((state) => ({
                 isNavActive: status ?? !state.isNavActive,

@@ -15,7 +15,7 @@ import {
     scrollTo,
     scrollToItem,
 } from '@/utils';
-import { RequestOptions, SearchResultProps } from './types';
+import { SearchResultProps } from './types';
 import { ItemContent } from './ItemContent';
 
 export const useSearchResult = ({
@@ -36,7 +36,7 @@ export const useSearchResult = ({
         (state) => state.dataState?.results ?? [],
     );
     const selectedAsset = useAppStore((state) => state.selectedAsset);
-    const selectAsset = useAppStore((state) => state.selectAsset);
+    const setAsset = useAppStore((state) => state.setAsset);
     const virtuosoRef = useRef<VirtuosoGridHandle>(null);
 
     const { ref, focusKey, setFocus } = useFocusable({
@@ -47,7 +47,12 @@ export const useSearchResult = ({
     const selectedAssetParam = useMemo(() => {
         return params['selectedAssetId'] || null;
     }, [params]);
-    const request = async ({ query, mediaType, page }: RequestOptions) => {
+
+    const request = async ({
+        query,
+        mediaType,
+        page,
+    }: Parameters<typeof searchPicture>[0]) => {
         const { data } = await searchPicture({ query, mediaType, page });
 
         return data;
@@ -56,7 +61,7 @@ export const useSearchResult = ({
     const { data, isFetching } = useQuery({
         queryKey: SEARCH_PICTURE({
             query: searchQuery,
-            filter: searchFilter,
+            mediaType: searchFilter,
             page: searchPage,
         }),
         queryFn: () =>
@@ -101,9 +106,9 @@ export const useSearchResult = ({
     const handleAssetFocus = useCallback(
         (elemRef: HTMLElement, asset: SelectElement) => {
             scrollTo({ elemRef, block: 'center' });
-            selectAsset(asset);
+            setAsset(asset);
         },
-        [selectAsset],
+        [setAsset],
     );
 
     const renderItemContent = useCallback(
@@ -126,9 +131,9 @@ export const useSearchResult = ({
 
     useEffect(() => {
         if (!searchData.length) {
-            selectAsset(null);
+            setAsset(null);
         }
-    }, [searchData, selectAsset, setFocus]);
+    }, [searchData, setAsset, setFocus]);
 
     useEffect(() => {
         if (selectedAssetParam && searchData && virtuosoRef.current) {
