@@ -3,7 +3,12 @@ import {
     FocusContext,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { routes, useRouteStore, useVariableNavStore } from '@/stores';
+import {
+    routes,
+    useBackgroundStore,
+    useRouteStore,
+    useVariableNavStore,
+} from '@/stores';
 import { useQuery } from '@tanstack/react-query';
 import { GET_PICTURE_BY_ID } from '@/hooks';
 import { getPictureById } from '@/api';
@@ -12,6 +17,7 @@ import { MediaType } from '@/types';
 export const usePicture = () => {
     const route = useRouteStore((store) => store.route);
     const getParams = useRouteStore((store) => store.getParams);
+    const isPlaying = useBackgroundStore((store) => store.isPlaying);
     const setVariableNav = useVariableNavStore((state) => state.setVariableNav);
     const params = getParams();
 
@@ -32,7 +38,7 @@ export const usePicture = () => {
         return data;
     };
 
-    const { data, isFetching } = useQuery({
+    const { data } = useQuery({
         queryKey: GET_PICTURE_BY_ID({ tmdbId: pictureId, mediaType }),
         queryFn: () => request({ tmdbId: pictureId, mediaType }),
         keepPreviousData: true,
@@ -79,5 +85,6 @@ export const usePicture = () => {
         budget,
         tagline,
         production,
+        isPlaying,
     };
 };

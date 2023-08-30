@@ -13,7 +13,7 @@ export const useContentRow = <ElemProps,>(
         rowId,
         dataState,
         onRowFocus = () => {},
-        onLoadFocus = false,
+        focusOnLoad = false,
         selectedItem,
     } = props;
     const { ref, focusKey, hasFocusedChild, setFocus } = useFocusable({
@@ -27,12 +27,12 @@ export const useContentRow = <ElemProps,>(
      * @describe Set focus to the first item in the list if no item is selected. Set by flag from parent component (only one per page)
      * */
     useEffect(() => {
-        if (!selectedItem && dataState.length && onLoadFocus) {
+        if (!selectedItem && dataState.length && focusOnLoad) {
             setFocus(
                 defineRowItemId.current({ rowId, itemData: dataState[0] }),
             );
         }
-    }, [onLoadFocus, rowId, dataState, selectedItem, setFocus]);
+    }, [focusOnLoad, rowId, dataState, selectedItem, setFocus]);
 
     /**
      * @describe Focus throttling

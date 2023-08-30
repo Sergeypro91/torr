@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
+
 import {
     FocusContext,
     FocusableComponentLayout,
@@ -23,8 +24,9 @@ import {
     NETFLIX_TRENDING_TVS,
     WEEK_TRENDING_TVS,
 } from '@/hooks';
+import { scrollTo } from '@/utils';
 import { PictureLineStore } from '@/components';
-import { contentList } from '@/components/Content/constnats';
+import { contentList } from './constnats';
 
 export const useContent = () => {
     const params = useRouteStore((state) => state.getParams());
@@ -57,14 +59,12 @@ export const useContent = () => {
 
     const handleAssetFocus = useCallback(
         (layout: HTMLElement, asset: SelectElement) => {
-            setTimeout(() => {
-                layout?.scrollIntoView({
-                    block: 'nearest',
-                    behavior: 'smooth',
-                    inline: 'center',
-                });
+            scrollTo({
+                elemRef: layout,
+                block: 'nearest',
+                behavior: 'smooth',
+                inline: 'center',
             });
-
             setAsset(asset);
         },
         [setAsset],

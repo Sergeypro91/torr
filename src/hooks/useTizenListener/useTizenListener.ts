@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useAppStore } from '@/stores';
+import { useAppStore, useBackgroundStore } from '@/stores';
 import { deepLink } from '@/utils';
 
 type UseTizenListenerOptions = { backPress?: () => void };
@@ -8,14 +8,15 @@ export const useTizenListener = (
     { backPress }: UseTizenListenerOptions = { backPress: () => {} },
 ) => {
     const setData = useAppStore((state) => state.setData); // TODO Replace by "setBackground
+    const isPlaying = useBackgroundStore((state) => state.isPlaying);
 
     const onKeyDown = useCallback(
         (event: KeyboardEventInit) => {
-            if (event.code === 'Escape') {
+            if (event.code === 'Escape' && !isPlaying) {
                 backPress && backPress();
             }
         },
-        [backPress],
+        [backPress, isPlaying],
     );
 
     const onDeepLink = useCallback(() => {

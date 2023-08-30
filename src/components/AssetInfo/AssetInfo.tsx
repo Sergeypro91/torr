@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { getImageSrc, resizeText } from '@/utils';
+import Image from 'next/image';
 import { AssetInfoGeneral } from './AssetInfoGeneral';
 import { useAssetInfo } from './hooks';
 import { AssetInfoProps } from './types';
@@ -61,7 +62,12 @@ export const AssetInfo = ({
             <AssetInfoProduction isShown={overview}>
                 {production?.map((company) => {
                     return company.logoPath ? (
-                        <img
+                        <Image
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ width: '100%', height: 'auto' }}
+                            key={company.name}
                             src={getImageSrc({
                                 data: company,
                                 size: 'w92',

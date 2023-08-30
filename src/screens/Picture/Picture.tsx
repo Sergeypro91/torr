@@ -12,11 +12,12 @@ export const Picture = () => {
         videos,
         tagline,
         production,
+        isPlaying,
     } = usePicture();
 
     return (
         <FocusContext.Provider value={focusKey}>
-            <PictureContainer ref={ref}>
+            <PictureContainer ref={ref} isShown={!isPlaying}>
                 <PictureHeader />
                 <PictureInfo {...{ tagline, production }} />
                 <PictureContent {...{ credits, videos }} />

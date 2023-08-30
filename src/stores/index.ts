@@ -1,5 +1,6 @@
 export * from './useAppStore';
 export * from './useRouteStore';
+export * from './useBackgroundStore';
 export * from './useVariableNav';
 export * from './useSearchStore';
 export * from './useTrendingMoviesStore';

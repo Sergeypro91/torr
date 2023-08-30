@@ -1,4 +1,3 @@
-import { debounce } from 'lodash-es';
 import { VirtuosoGridHandle } from 'react-virtuoso';
 
 type scrollToElemOptions = {
@@ -8,18 +7,20 @@ type scrollToElemOptions = {
     inline?: ScrollLogicalPosition;
 };
 
-export const scrollTo = debounce(
-    ({ elemRef, block, behavior = 'smooth', inline }: scrollToElemOptions) => {
-        setTimeout(() => {
-            elemRef.scrollIntoView({
-                block,
-                behavior,
-                inline,
-            });
+export const scrollTo = ({
+    elemRef,
+    block,
+    behavior = 'smooth',
+    inline,
+}: scrollToElemOptions) => {
+    setTimeout(() => {
+        elemRef.scrollIntoView({
+            block,
+            behavior,
+            inline,
         });
-    },
-    150,
-);
+    });
+};
 
 type scrollToItemOptions = {
     element: VirtuosoGridHandle;

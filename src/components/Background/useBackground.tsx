@@ -1,26 +1,18 @@
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    KeyboardEvent,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash-es';
-import { useAppStore, useRouteStore } from '@/stores';
+import { useAppStore, useBackgroundStore, useRouteStore } from '@/stores';
 import { getImageTitle } from '@/utils';
-import { SelectElement } from '@/types';
+import { MovieSlim, SelectElement, TvSlim } from '@/types';
 
 export const useBackground = () => {
+    const isPlaying = useBackgroundStore((store) => store.isPlaying);
     const [blur, setBlur] = useState(false);
     const [assets, setAssets] = useState<SelectElement[]>([]);
-    const [renderTrailer, setRenderTrailer] = useState(false);
-    const [showTrailer, setShowTrailer] = useState(false);
     const setParams = useRouteStore((state) => state.setParams);
     const { pathName } = useRouteStore((state) => state.route);
     const selectedAsset = useAppStore((state) => state.selectedAsset);
     const data = useAppStore((state) => state.data);
-    const ref = useRef<HTMLDivElement>(null);
+    const setVideoUrl = useBackgroundStore((store) => store.setVideoUrl);
 
     const title = useMemo(() => {
         return selectedAsset ? getImageTitle(selectedAsset) : '';
@@ -43,64 +35,28 @@ export const useBackground = () => {
         [],
     );
 
-    const scaleAppToWatchTrailer = useCallback(() => {
-        const appRef = document.querySelector('#app') as HTMLDivElement;
-
-        if (appRef) {
-            appRef.style.cssText = showTrailer
-                ? 'opacity: 0; transition: opacity 5s;'
-                : 'opacity: 1;';
-        }
-    }, [showTrailer]);
-
     const leaveNewAsset = () => {
         setAssets((prevState) => [prevState[0]]);
     };
 
-    const onTrailerStart = () => {
-        setShowTrailer(true);
-    };
-
-    const onTrailerEnd = () => {
-        setShowTrailer(false);
-    };
-
-    const onTrailerError = () => {
-        setRenderTrailer(false);
-    };
-
-    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-        if (['Escape'].includes(event.code)) {
-            event.stopPropagation();
-        }
-
-        switch (event.code) {
-            case 'Escape':
-                setShowTrailer(false);
-                setRenderTrailer(false);
-                return;
-            default:
-                return;
-        }
-    };
-
     useEffect(() => {
         const blurBackgroundTimeout = setTimeout(() => {
-            setBlur(Boolean(pathName));
+            setBlur(isPlaying ? !isPlaying : Boolean(pathName));
         }, 300);
 
         return () => {
             clearTimeout(blurBackgroundTimeout);
         };
-    }, [pathName]);
+    }, [pathName, isPlaying]);
 
     useEffect(() => {
         if (selectedAsset) {
             showPreview(selectedAsset);
+            setVideoUrl((selectedAsset as MovieSlim | TvSlim)?.trailer || null);
         } else {
             setAssets([]);
         }
-    }, [selectedAsset, showPreview]);
+    }, [selectedAsset, setVideoUrl, showPreview]);
 
     useEffect(() => {
         setParams({ selectedAssetId: selectedAsset?.focusId ?? '' });
@@ -112,34 +68,12 @@ export const useBackground = () => {
                 leaveNewAsset();
             }, 600);
         }
-
-        const showTrailerTimeout = setTimeout(() => {
-            setRenderTrailer(true);
-        }, 5000);
-
-        setRenderTrailer(false);
-        setShowTrailer(false);
-
-        return () => {
-            clearTimeout(showTrailerTimeout);
-        };
     }, [assets]);
 
-    useEffect(() => {
-        scaleAppToWatchTrailer();
-    }, [scaleAppToWatchTrailer]);
-
     return {
-        ref,
         blur,
         assets,
         title,
         data,
-        renderTrailer,
-        showTrailer,
-        onTrailerStart,
-        onTrailerEnd,
-        onTrailerError,
-        handleKeyDown,
     };
 };

@@ -1,31 +1,35 @@
 import React from 'react';
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
-import { ListItemOptions } from '@/components';
-import { Video } from '@/types';
-import { TrailerItemContainer } from './styled';
-
-export type TrailerItemProps = ListItemOptions<Video> & {
-    onAssetFocus?: (layout: HTMLElement, item: Video) => void;
-};
+import Image from 'next/image';
+import { TrailerItemProps } from './types';
+import { useTrailerItem } from './useTrailerItem';
+import { GET_YOUTUBE_IMAGE_URL } from './constants';
+import { TrailerItemContainer, TrailerItemWrapper } from './styled';
 
 export const TrailerItem = (props: TrailerItemProps) => {
-    const { rowItemId, itemStyle, itemData } = props;
-
-    const onPress = (props: Video) => {
-        console.log('ON PRESS', { props });
-    };
-
-    const { ref, focused } = useFocusable({
-        focusKey: rowItemId,
-        onEnterPress: onPress,
-        extraProps: itemData,
-    });
+    const { itemStyle, itemData } = props;
+    const { ref, focused, handleAssetClick, handleAssetDoubleClick } =
+        useTrailerItem(props);
 
     return (
         <TrailerItemContainer
+            key={itemData.key}
             ref={ref}
-            focused={focused}
             style={itemStyle}
-        ></TrailerItemContainer>
+            focused={focused}
+            onClick={handleAssetClick}
+            onDoubleClick={handleAssetDoubleClick}
+        >
+            <TrailerItemWrapper>
+                <Image
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    style={{ width: '100%', height: 'auto' }}
+                    src={GET_YOUTUBE_IMAGE_URL(itemData.key)}
+                    loading="lazy"
+                    alt={itemData.name}
+                />
+            </TrailerItemWrapper>
+        </TrailerItemContainer>
     );
 };

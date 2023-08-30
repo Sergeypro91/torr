@@ -15,6 +15,6 @@ export type PictureLineProps<ItemType> = {
     state: PictureLineStore<ItemType>;
     getTrends: (page?: number) => Promise<ApiResponse<Pagination<ItemType>>>;
     queryKey: (page?: number) => (string | number)[];
+    focusOnLoad?: boolean;
     onRowFocus?: (layout: FocusableComponentLayout, asset: ItemType) => void;
-    onLoadFocus?: boolean;
 } & Partial<InfiniteListProps<ItemType>>;

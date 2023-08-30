@@ -16,6 +16,7 @@ export const InfiniteList = <ItemType,>(props: InfiniteListProps<ItemType>) => {
         rowId,
         dataState,
         layout,
+        renderItem,
     } = props;
     const {
         gap,
@@ -26,7 +27,6 @@ export const InfiniteList = <ItemType,>(props: InfiniteListProps<ItemType>) => {
         infiniteLoaderRef,
         handleListItemsRendered,
     } = useInfiniteList(props);
-    const renderItem = useRef(props.renderItem);
     const defineRowItemId = useRef(props.defineRowItemId);
 
     const Item = useCallback(
@@ -35,14 +35,14 @@ export const InfiniteList = <ItemType,>(props: InfiniteListProps<ItemType>) => {
             const itemData = dataState[index];
             const rowItemId = defineRowItemId.current({ rowId, itemData });
 
-            return renderItem.current({
+            return renderItem({
                 itemStyle,
                 itemData,
                 rowId,
                 rowItemId,
             });
         },
-        [defineStyle, dataState, rowId],
+        [defineStyle, dataState, rowId, renderItem],
     );
 
     const List = ({
@@ -56,13 +56,14 @@ export const InfiniteList = <ItemType,>(props: InfiniteListProps<ItemType>) => {
             <ListContainer
                 width={rowWidth}
                 height={assetSize.height}
+                gap={gap}
+                layout={layout}
                 itemCount={itemCount}
                 itemSize={assetSize.width + gap}
                 onItemsRendered={(event) => {
                     onItemsRendered(event);
                     handleListItemsRendered(event);
                 }}
-                layout={layout}
                 ref={(list) => {
                     listRef.current = list;
                     ref(list);

@@ -8,7 +8,7 @@ export const PictureLine = <ItemType,>(props: PictureLineProps<ItemType>) => {
         rowTitle = '',
         selectedItem,
         onRowFocus = () => {},
-        onLoadFocus,
+        focusOnLoad,
         renderItem = () => null,
         defineRowItemId = () => '',
     } = props;
@@ -25,7 +25,7 @@ export const PictureLine = <ItemType,>(props: PictureLineProps<ItemType>) => {
             selectedItem={selectedItem}
             requestMore={requestMore}
             onRowFocus={onRowFocus}
-            onLoadFocus={onLoadFocus}
+            focusOnLoad={focusOnLoad}
             renderItem={renderItem}
             defineRowItemId={defineRowItemId}
         />

@@ -47,7 +47,7 @@ export const Content = memo(() => {
                         queryKey={content.queryKey}
                         selectedItem={paramItem}
                         onRowFocus={handleRowFocus}
-                        onLoadFocus={!Boolean(id)}
+                        focusOnLoad={!Boolean(id)}
                         renderItem={renderItem}
                         defineRowItemId={defineRowItemId}
                     />

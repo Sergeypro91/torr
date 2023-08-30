@@ -9,7 +9,11 @@ export type PictureContentProps = {
 };
 
 export const PictureContent = (props: PictureContentProps) => {
-    const videos = props.videos?.results || [];
+    // TODO provide processing of different services
+    const videos =
+        props.videos?.results.filter(
+            (video) => video.site.toLowerCase() === 'youtube',
+        ) || [];
 
     return (
         <PictureContentContainer>

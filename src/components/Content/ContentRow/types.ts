@@ -6,7 +6,7 @@ export type ContentRowProps<ItemType> = {
     isError?: boolean;
     isLoading?: boolean;
     skeletonCount?: number;
-    onLoadFocus?: boolean;
+    focusOnLoad?: boolean;
     onRowFocus?: (layout: FocusableComponentLayout, asset: ItemType) => void;
 } & Partial<
     Omit<

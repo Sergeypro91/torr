@@ -1,47 +1,16 @@
-import React, { useCallback } from 'react';
-import {
-    ContentRow,
-    DefineRowItemIdOptions,
-    ListItemOptions,
-} from '@/components';
-import { Video } from '@/types';
+import React from 'react';
+import { ContentRow } from '@/components';
+import { TrailersListProps } from './types';
+import { useTrailersList } from './useTrailersList';
 import { TrailersListContainer } from './styled';
-import { TrailerItem } from '@/components/PictureContent/TrailersList/TrailerItem';
-
-export type TrailersListProps = {
-    videos: Video[];
-    rowId?: string;
-};
 
 export const TrailersList = ({
     videos,
     rowId = 'trailer',
 }: TrailersListProps) => {
-    const handleAssetFocus = useCallback((layout: HTMLElement, item: Video) => {
-        setTimeout(() => {
-            layout?.scrollIntoView({
-                block: 'nearest',
-                behavior: 'smooth',
-                inline: 'center',
-            });
-        });
-    }, []);
+    const { renderItem, defineRowItemId } = useTrailersList();
 
-    const renderItem = useCallback(
-        (props: ListItemOptions<Video>) => {
-            return <TrailerItem {...props} onAssetFocus={handleAssetFocus} />;
-        },
-        [handleAssetFocus],
-    );
-
-    const defineRowItemId = ({
-        rowId,
-        itemData,
-    }: DefineRowItemIdOptions<Video>) => {
-        return `${rowId}|${itemData?.key}`;
-    };
-
-    return (
+    return videos.length ? (
         <TrailersListContainer>
             <ContentRow
                 rowId={rowId}
@@ -55,8 +24,8 @@ export const TrailersList = ({
                 itemCount={videos.length}
                 renderItem={renderItem}
                 defineRowItemId={defineRowItemId}
-                onLoadFocus
+                focusOnLoad
             />
         </TrailersListContainer>
-    );
+    ) : null;
 };
