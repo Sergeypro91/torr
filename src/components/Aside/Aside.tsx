@@ -11,6 +11,7 @@ import { AsideContainer, AsideWrapper } from './styled';
 
 export const Aside = memo(() => {
     const toggleNavActive = useAppStore((state) => state.toggleNavActive);
+    const asideNavWidth = useAppStore((state) => state.asideNavWidth);
     const { ref, focusKey, hasFocusedChild } = useFocusable({
         focusKey: 'NAV',
         trackChildren: true,
@@ -23,13 +24,13 @@ export const Aside = memo(() => {
 
     return (
         <FocusContext.Provider value={focusKey}>
-            <AsideWrapper ref={ref}>
-                <AsideContainer>
+            <AsideContainer ref={ref} asideNavWidth={asideNavWidth}>
+                <AsideWrapper>
                     <AsideHeader />
                     <AsideBody />
                     <AsideFooter />
-                </AsideContainer>
-            </AsideWrapper>
+                </AsideWrapper>
+            </AsideContainer>
         </FocusContext.Provider>
     );
 });

@@ -231,8 +231,11 @@ export interface components {
     };
     ParticipantPersonDto: {
       tmdbId: number;
+      department: string;
+      job: string | null;
       name: string;
       originalName: string;
+      character: string | null;
       popularity: number;
       profilePath: string | null;
     };

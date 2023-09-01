@@ -1,26 +1,26 @@
 import React from 'react';
 import { ContentRow } from '@/components';
-import { TrailersListProps } from './types';
-import { useTrailersList } from './useTrailersList';
+import { PersonsListProps } from './types';
+import { usePersonsList } from './usePersonsList';
 
-export const TrailersList = (props: TrailersListProps) => {
+export const PersonsList = (props: PersonsListProps) => {
     const { rowId, rowTitle, dataState } = props;
-    const { renderItem, defineRowItemId } = useTrailersList();
+    const { renderItem, defineRowItemId } = usePersonsList();
 
     return dataState.length ? (
         <ContentRow
             rowId={rowId}
+            ratio={4 / 3}
             rowTitle={rowTitle}
             dataState={dataState}
             selectedItem={null}
             onRowFocus={(layout, asset) => {
                 console.log('ROW FOCUS', { layout, asset });
             }}
-            visibleItemsCount={3.5}
+            visibleItemsCount={6.5}
             itemCount={dataState.length}
             renderItem={renderItem}
             defineRowItemId={defineRowItemId}
-            focusOnLoad
         />
     ) : null;
 };

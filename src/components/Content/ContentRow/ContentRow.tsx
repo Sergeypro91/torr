@@ -14,6 +14,7 @@ export const ContentRow = <ItemType,>(props: ContentRowProps<ItemType>) => {
         rowTitle,
         dataState,
         gap = 40,
+        ratio = 9 / 16,
         itemCount = 1000,
         requestMore = () => {},
         renderItem,
@@ -34,6 +35,7 @@ export const ContentRow = <ItemType,>(props: ContentRowProps<ItemType>) => {
                         itemRef={ref}
                         rowId={rowId}
                         gap={gap}
+                        ratio={ratio}
                         visibleItemsCount={visibleItemsCount}
                         itemCount={itemCount}
                         dataState={dataState}

@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware';
 import { SelectElement } from '@/types';
 
 type AppStore = {
+    asideNavWidth: number;
     data: string;
     exit: boolean;
     isBackPress: boolean;
@@ -20,6 +21,7 @@ type AppStore = {
 
 export const useAppStore = create<AppStore>()(
     devtools((set) => ({
+        asideNavWidth: 350,
         data: '',
         exit: false,
         isBackPress: false,

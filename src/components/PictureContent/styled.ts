@@ -1,11 +1,15 @@
 import styled from 'styled-components';
 import { ItemContainer } from '@/components';
 
-export const PictureContentContainer = styled.div`
+export const PictureContentContainer = styled.section`
     grid-area: content;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
+    & > *:not(:first-child):not(:empty) {
+        margin-top: ${({ theme }) => theme.spacing(10)};
+    }
 `;
 
 export const TrailerLine = styled.div<{

@@ -1,30 +1,24 @@
 import React from 'react';
-import { BackgroundContent, BackgroundItem, Poster } from '@/components';
+import { Poster } from '@/components';
 import { useBackground } from './useBackground';
-import { BackgroundBackground, BackgroundContainer } from './styled';
-import { BackgroundPlayer } from '@/components/Background/BackgroundPlayer';
+import { BackgroundPlayer } from './BackgroundPlayer';
+import { BackgroundContainer, BackgroundItem } from './styled';
 
 type BackgroundProps = {
     id?: string;
 };
 
 export const Background = ({ id }: BackgroundProps) => {
-    const { blur, assets, title, data } = useBackground();
+    const { blur, isPlaying, assets } = useBackground();
 
     return (
-        <BackgroundContainer id={id} blur={blur}>
-            <BackgroundBackground>
-                {[...assets].reverse().map((asset) => (
-                    <BackgroundItem key={`${asset.tmdbId}${asset.mediaType}`}>
-                        <Poster data={asset} type="backdropPath" />
-                    </BackgroundItem>
-                ))}
-                <BackgroundPlayer />
-            </BackgroundBackground>
-            <BackgroundContent>
-                <h3>{title}</h3>
-                <p>{data}</p>
-            </BackgroundContent>
+        <BackgroundContainer id={id} blur={blur} isPlaying={isPlaying}>
+            {[...assets].reverse().map((asset) => (
+                <BackgroundItem key={`${asset.tmdbId}${asset.mediaType}`}>
+                    <Poster data={asset} type="backdropPath" />
+                </BackgroundItem>
+            ))}
+            <BackgroundPlayer />
         </BackgroundContainer>
     );
 };

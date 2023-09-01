@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import ReactPlayer from 'react-player';
 
-export const BackgroundBackground = styled.div`
+export const BackgroundContent = styled.div`
     width: 100%;
     height: 100%;
     position: fixed;
@@ -25,20 +24,10 @@ export const BackgroundItem = styled.div`
     }
 `;
 
-export const Trailer = styled(ReactPlayer)<{ showTrailer?: boolean }>`
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    position: relative;
-    transition: ${({ theme }) => theme.transition};
-    will-change: opacity;
-`;
-
 export const BackgroundContainer = styled.div<{
     poster?: string;
     blur?: boolean;
-    showTrailer?: boolean;
+    isPlaying?: boolean;
 }>`
     width: 100%;
     height: 100%;
@@ -63,15 +52,9 @@ export const BackgroundContainer = styled.div<{
             blur
                 ? 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%)'
                 : 'linear-gradient(90deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 50%)'};
-        opacity: ${({ showTrailer }) => (showTrailer ? 0 : 1)};
+        opacity: ${({ isPlaying }) => (isPlaying ? 0 : 1)};
         transition: ${({ theme }) => theme.transition};
         will-change: background, opacity;
         transform: translate3d(0, 0, 0);
     }
-
-    ${Trailer} {
-        opacity: ${({ showTrailer }) => (showTrailer ? 1 : 0)};
-    }
 `;
-
-export const BackgroundContent = styled.div``;

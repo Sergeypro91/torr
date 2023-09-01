@@ -4,21 +4,16 @@ import React, { PropsWithChildren } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from 'styled-components';
-import { useAppStore } from '@/stores';
 import { defaultTheme, GlobalStyle } from '@/styles';
-import {
-    AppWrapper,
-    Background,
-    ExitPopup,
-    KeydownListener,
-} from '@/components';
+import { Background, ExitPopup, KeydownListener } from '@/components';
+import { useAppStore } from '@/stores';
 import { useReactQuery } from '@/hooks';
 import {
     init,
     FocusContext,
     useFocusable,
 } from '@noriginmedia/norigin-spatial-navigation';
-import { AppContainer } from './styled';
+import { AppContainer, AppWrapper } from './styled';
 
 init({
     debug: false,
@@ -26,6 +21,7 @@ init({
 });
 
 export const App = ({ children }: PropsWithChildren) => {
+    const asideNavWidth = useAppStore((state) => state.asideNavWidth);
     const isNavActive = useAppStore((state) => state.isNavActive);
     const { ref, focusKey } = useFocusable({
         trackChildren: true,
@@ -39,14 +35,17 @@ export const App = ({ children }: PropsWithChildren) => {
             <QueryClientProvider client={queryClient}>
                 <GlobalStyle />
                 <FocusContext.Provider value={focusKey}>
-                    <AppContainer ref={ref}>
-                        <Background id="backgroun" />
-                        <AppWrapper id="app" focused={isNavActive}>
-                            {children}
-                        </AppWrapper>
-                        {/*<WelcomeScreen />*/}
-                        <ExitPopup />
+                    <Background id="backgroun" />
+                    <AppContainer
+                        id="app"
+                        ref={ref}
+                        isNavActive={isNavActive}
+                        asideNavWidth={asideNavWidth}
+                    >
+                        <AppWrapper>{children}</AppWrapper>
                     </AppContainer>
+                    {/*<WelcomeScreen />*/}
+                    <ExitPopup />
                 </FocusContext.Provider>
                 <KeydownListener />
                 <ReactQueryDevtools initialIsOpen={false} />

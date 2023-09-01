@@ -12,7 +12,7 @@ export const PictureContainer = styled.div<{ isShown?: boolean }>`
     overflow: hidden;
 `;
 
-export const PictureHeader = styled.div`
+export const PictureHeader = styled.section`
     height: 140px;
     grid-area: header;
     display: flex;

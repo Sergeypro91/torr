@@ -120,8 +120,11 @@ export type Video = {
 
 export type ParticipantPerson = {
     tmdbId: number;
+    department: string;
+    job: string | null;
     name: string;
     originalName: string;
+    character: string | null;
     popularity: number;
     profilePath: string | null;
 };

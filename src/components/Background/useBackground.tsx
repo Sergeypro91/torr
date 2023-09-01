@@ -5,7 +5,6 @@ import { getImageTitle } from '@/utils';
 import { MovieSlim, SelectElement, TvSlim } from '@/types';
 
 export const useBackground = () => {
-    const isPlaying = useBackgroundStore((store) => store.isPlaying);
     const [blur, setBlur] = useState(false);
     const [assets, setAssets] = useState<SelectElement[]>([]);
     const setParams = useRouteStore((state) => state.setParams);
@@ -13,6 +12,7 @@ export const useBackground = () => {
     const selectedAsset = useAppStore((state) => state.selectedAsset);
     const data = useAppStore((state) => state.data);
     const setVideoUrl = useBackgroundStore((store) => store.setVideoUrl);
+    const isPlaying = useBackgroundStore((store) => store.isPlaying);
 
     const title = useMemo(() => {
         return selectedAsset ? getImageTitle(selectedAsset) : '';
@@ -41,13 +41,13 @@ export const useBackground = () => {
 
     useEffect(() => {
         const blurBackgroundTimeout = setTimeout(() => {
-            setBlur(isPlaying ? !isPlaying : Boolean(pathName));
+            setBlur(Boolean(pathName));
         }, 300);
 
         return () => {
             clearTimeout(blurBackgroundTimeout);
         };
-    }, [pathName, isPlaying]);
+    }, [pathName]);
 
     useEffect(() => {
         if (selectedAsset) {
@@ -72,6 +72,7 @@ export const useBackground = () => {
 
     return {
         blur,
+        isPlaying,
         assets,
         title,
         data,

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { FocusedItem } from '@/types';
 
-export const ContentRowContainer = styled.div<FocusedItem>`
+export const ContentRowContainer = styled.article<FocusedItem>`
     display: flex;
     flex-direction: column;
     opacity: ${({ focused }) => (focused ? 1 : 0.5)};
